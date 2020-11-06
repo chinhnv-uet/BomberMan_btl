@@ -27,5 +27,48 @@ public abstract class Entity {
 
         gc.drawImage(base, x * Sprite.SCALED_SIZE, y * Sprite.SCALED_SIZE);
     }
-    public abstract void update();
+    
+
+    public boolean checkCollision(Entity e1, Entity e2) {
+    	
+    	if (e1.getX() == e2.getX() && e1.getY() == e2.getY()) {
+    		return true;
+    	}
+    	return false;
+    	
+    }
+    
+    public void removeFromGame() {
+    	this.setImg(null);
+    	this.setX(-1);
+    	this.setY(-1);
+    }
+    
+    
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public Image getImg() {
+		return img;
+	}
+
+	public void setImg(Image img) {
+		this.img = img;
+	}
+
+	public abstract void update();
+    
 }
