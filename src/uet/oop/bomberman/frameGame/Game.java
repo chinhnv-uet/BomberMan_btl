@@ -4,18 +4,21 @@ package uet.oop.bomberman.frameGame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.Grass;
-import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.stillsobject.Grass;
+import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.graphics.Sprite;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private List<Entity> entities;
-    private List<Entity> stillObjects;
+    private List<Wall> wallList;
+    private List<Grass> grassList;
+    //list enemy
+    //list brick
+    //list item
+    //portal
     Entity bomberman;
     //Level
 
@@ -23,36 +26,47 @@ public class Game {
     private final int HEIGHT = 15;
 
     public Game() {
-        entities = new ArrayList<>();
-        stillObjects = new ArrayList<>();
+        grassList = new ArrayList<>();
+        wallList = new ArrayList<>();
     }
 
-    public void createMap() {
+    public void createMap() { //TODO: chuyen thanh doc file txt
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
                 if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                    wallList.add(new Wall(i, j));
+                } else if (j % 2 == 0 && i != 1 && i != WIDTH - 2) {
+                    wallList.add(new Wall(i, j));
                 } else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                    grassList.add(new Grass(i, j));
                 }
-                stillObjects.add(object);
             }
         }
 
         bomberman = new Bomber(1, 1, new Keyboard());
-        entities.add(bomberman);
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+        //enemy update
+        //brick update
+        bomberman.update();
     }
 
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        stillObjects.forEach(g -> g.render(gc));
-        entities.forEach(g -> g.render(gc));
+        grassList.forEach(g -> g.render(gc));
+        wallList.forEach(g -> g.render(gc));
+        bomberman.render(gc);
     }
 
+    public Entity getEntityOnCoodinate(int x, int y) {
+        for (Wall e : wallList) {
+            if (e.getXUnit() == x && e.getYUnit() == y) {
+                return e;
+            }
+        }
+        //TODO: for brick, enemy
+        return null;
+    }
 }

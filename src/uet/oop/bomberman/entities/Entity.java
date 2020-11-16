@@ -1,10 +1,7 @@
 package uet.oop.bomberman.entities;
 
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import uet.oop.bomberman.graphics.Sprite;
 
 public abstract class Entity {
@@ -70,4 +67,12 @@ public abstract class Entity {
 
     public abstract void update();
 
+    //xUnit, yUnit is coodinate calculated by tiles
+    public int getXUnit() {
+        return (int) x / Sprite.SCALED_SIZE;
+    }
+
+    public int getYUnit() {
+        return (int) y / Sprite.SCALED_SIZE;
+    }
 }

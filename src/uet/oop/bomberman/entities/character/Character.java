@@ -8,7 +8,7 @@ public abstract class Character extends AnimatedEntity {
     protected boolean alive = true;
     protected boolean moving = false;
     protected int velocity;
-    protected final int timeTransfer = 30;
+    protected final int timeTransfer = 26;
 
     public Character(int x, int y, Image img) {
         super(x, y, img);
@@ -53,4 +53,8 @@ public abstract class Character extends AnimatedEntity {
     public abstract void update();
 
     public abstract void render();
+
+    public abstract void calculateMove();
+
+    public abstract boolean canMove();
 }

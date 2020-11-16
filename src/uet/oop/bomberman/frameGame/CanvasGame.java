@@ -4,6 +4,7 @@ package uet.oop.bomberman.frameGame;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
+import uet.oop.bomberman.entities.Entity;
 
 public class CanvasGame extends Canvas {
     private int width;
@@ -38,7 +39,6 @@ public class CanvasGame extends Canvas {
 
     public void update() {
         game.update();
-
     }
 
     public void render() {
@@ -47,5 +47,9 @@ public class CanvasGame extends Canvas {
 
     public Keyboard getInput() {
         return input;
+    }
+
+    public Entity getEntityInCoodinate(int x, int y) {
+        return game.getEntityOnCoodinate(x, y);
     }
 }
