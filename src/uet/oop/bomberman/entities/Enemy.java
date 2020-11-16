@@ -4,14 +4,15 @@ import javafx.scene.image.Image;
 
 public abstract class Enemy extends Entity {
 
-	public Enemy(int x, int y, Image img) {
-		super(x, y, img);
-	}
+    public Enemy(int x, int y, Image img) {
+        super(x, y, img);
+    }
 
-	@Override
-	public void update() {
-		
-	}
-	public abstract void deadCollision();
-	
+    @Override
+    public void update() {
+
+    }
+
+    public abstract void deadAnimation();
+
 }
