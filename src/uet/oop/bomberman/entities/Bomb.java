@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 public class Bomb extends Entity {
 
     private List<Entity> bricks;
-    private List<Entity> enemies;
+    private List<Enemy> enemies;
 
     public Bomb(int x, int y, Image img) {
         super(x, y, img);
@@ -25,17 +25,17 @@ public class Bomb extends Entity {
                     checkCollision(e, new Bomb(x, y + 1, null)) ||
                     checkCollision(e, new Bomb(x, y - 1, null))
             ) {
-
+            	
                 e.removeFromGame();
             }
         }
-        for (Entity e : enemies) {
+        for (Enemy e : enemies) {
             if (checkCollision(e, new Bomb(x + 1, y, null)) ||
                     checkCollision(e, new Bomb(x - 1, y, null)) ||
                     checkCollision(e, new Bomb(x, y + 1, null)) ||
                     checkCollision(e, new Bomb(x, y - 1, null))
             ) {
-
+            	e.deadAnimation();
                 e.removeFromGame();
             }
         }
@@ -50,11 +50,11 @@ public class Bomb extends Entity {
         this.bricks = bricks;
     }
 
-    public List<Entity> getEnemies() {
+    public List<Enemy> getEnemies() {
         return enemies;
     }
 
-    public void setEnemies(List<Entity> enemies) {
+    public void setEnemies(List<Enemy> enemies) {
         this.enemies = enemies;
     }
 
