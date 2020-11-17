@@ -21,7 +21,6 @@ public class Game {
 
     public static String[] paths = {"res\\levels\\Level1.txt"};
     //list enemy
-    //list brick
     //list item
     //portal
     Entity bomberman;
@@ -33,7 +32,7 @@ public class Game {
 
     public void createMap() {
 
-        level.createMapLevel(paths[currentLevel-1]);
+        level.createMapLevel(paths[currentLevel - 1]);
 
         this.setWallList(level.getWallList());
         this.setGrassList(level.getGrassList());
@@ -72,17 +71,9 @@ public class Game {
         return null;
     }
 
-//    public List<Wall> getWallList() {
-//        return wallList;
-//    }
-
     public void setWallList(List<Wall> wallList) {
         this.wallList = wallList;
     }
-
-//    public List<Grass> getGrassList() {
-//        return grassList;
-//    }
 
     public void setGrassList(List<Grass> grassList) {
         this.grassList = grassList;
