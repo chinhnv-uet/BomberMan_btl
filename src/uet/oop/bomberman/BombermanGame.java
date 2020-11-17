@@ -16,13 +16,12 @@ import java.util.List;
 
 public class BombermanGame extends Application {
 
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
 
     private GraphicsContext gc;
     public static CanvasGame canvas;
     private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
 
 
     public static void main(String[] args) {

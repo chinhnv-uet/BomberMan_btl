@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.character;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
@@ -94,6 +95,9 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             int newY = (getY() + AddToYToCheckCollision[i])/Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
             if (e instanceof Wall) {
+                return false;
+            }
+            if (e instanceof Brick) {
                 return false;
             }
             //TODO: check for other entities

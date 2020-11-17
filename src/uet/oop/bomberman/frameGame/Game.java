@@ -4,6 +4,7 @@ package uet.oop.bomberman.frameGame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Grass;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.entities.character.Bomber;
@@ -13,14 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    //TODO: sau nay toi uu thanh it list hon
     private List<Wall> wallList;
     private List<Grass> grassList;
+    private List<Brick> brickList;
 
-	
-
-	public static String[] paths = {"C:\\Users\\Administrator\\Documents\\GitHub\\BomberMan_btl\\src\\uet\\oop\\bomberman\\frameGame\\Level1.txt",
-									"Level2.txt", 
-									"Level3.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt"};
     //list enemy
     //list brick
     //list item
@@ -28,21 +27,18 @@ public class Game {
     Entity bomberman;
     private Level level = new Level();
     private int currentLevel = 1;
-    private final int WIDTH = 20;
-    private final int HEIGHT = 15;
 
     public Game() {
-        grassList = new ArrayList<>();
-        wallList = new ArrayList<>();
     }
 
-    public void createMap() throws IOException { 
-    	
-        level.createMapLevel("C:\\Users\\Administrator\\Documents\\GitHub\\BomberMan_btl\\src\\uet\\oop\\bomberman\\frameGame\\Level1.txt");
-        
+    public void createMap() {
+
+        level.createMapLevel(paths[currentLevel-1]);
+
         this.setWallList(level.getWallList());
         this.setGrassList(level.getGrassList());
-        bomberman = new Bomber(1, 1, new Keyboard());
+        this.setBrickList(level.getBrickList());
+        bomberman = level.getBomber();
     }
 
     public void update() {
@@ -56,6 +52,7 @@ public class Game {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         grassList.forEach(g -> g.render(gc));
         wallList.forEach(g -> g.render(gc));
+        brickList.forEach(g -> g.render(gc));
         bomberman.render(gc);
     }
 
@@ -65,22 +62,33 @@ public class Game {
                 return e;
             }
         }
-        //TODO: for brick, enemy
+
+        for (Brick b : brickList) {
+            if (b.getXUnit() == x && b.getYUnit() == y) {
+                return b;
+            }
+        }
+        //TODO: for enemy
         return null;
     }
-    public List<Wall> getWallList() {
-		return wallList;
-	}
 
-	public void setWallList(List<Wall> wallList) {
-		this.wallList = wallList;
-	}
+//    public List<Wall> getWallList() {
+//        return wallList;
+//    }
 
-	public List<Grass> getGrassList() {
-		return grassList;
-	}
+    public void setWallList(List<Wall> wallList) {
+        this.wallList = wallList;
+    }
 
-	public void setGrassList(List<Grass> grassList) {
-		this.grassList = grassList;
-	}
+//    public List<Grass> getGrassList() {
+//        return grassList;
+//    }
+
+    public void setGrassList(List<Grass> grassList) {
+        this.grassList = grassList;
+    }
+
+    public void setBrickList(List<Brick> brickList) {
+        this.brickList = brickList;
+    }
 }
