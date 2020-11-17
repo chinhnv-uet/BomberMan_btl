@@ -1,6 +1,8 @@
 package uet.oop.bomberman.frameGame;
 
 
+import java.io.IOException;
+
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
@@ -13,7 +15,7 @@ public class CanvasGame extends Canvas {
     private Keyboard input = new Keyboard();
     public static final String TITTLE = "Bomberman";
 
-    public CanvasGame(int width, int height) {
+    public CanvasGame(int width, int height) throws IOException {
         super(width, height);
         this.width = width;
         this.height = height;

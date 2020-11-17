@@ -8,20 +8,26 @@ import uet.oop.bomberman.entities.stillsobject.Grass;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.entities.character.Bomber;
 
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
     private List<Wall> wallList;
     private List<Grass> grassList;
+
+	
+
+	public static String[] paths = {"C:\\Users\\Administrator\\Documents\\GitHub\\BomberMan_btl\\src\\uet\\oop\\bomberman\\frameGame\\Level1.txt",
+									"Level2.txt", 
+									"Level3.txt"};
     //list enemy
     //list brick
     //list item
     //portal
     Entity bomberman;
-    //Level
-
+    private Level level = new Level();
+    private int currentLevel = 1;
     private final int WIDTH = 20;
     private final int HEIGHT = 15;
 
@@ -30,19 +36,12 @@ public class Game {
         wallList = new ArrayList<>();
     }
 
-    public void createMap() { //TODO: chuyen thanh doc file txt
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    wallList.add(new Wall(i, j));
-                } else if (j % 2 == 0 && i != 1 && i != WIDTH - 2) {
-                    wallList.add(new Wall(i, j));
-                } else {
-                    grassList.add(new Grass(i, j));
-                }
-            }
-        }
-
+    public void createMap() throws IOException { 
+    	
+        level.createMapLevel("C:\\Users\\Administrator\\Documents\\GitHub\\BomberMan_btl\\src\\uet\\oop\\bomberman\\frameGame\\Level1.txt");
+        
+        this.setWallList(level.getWallList());
+        this.setGrassList(level.getGrassList());
         bomberman = new Bomber(1, 1, new Keyboard());
     }
 
@@ -69,4 +68,19 @@ public class Game {
         //TODO: for brick, enemy
         return null;
     }
+    public List<Wall> getWallList() {
+		return wallList;
+	}
+
+	public void setWallList(List<Wall> wallList) {
+		this.wallList = wallList;
+	}
+
+	public List<Grass> getGrassList() {
+		return grassList;
+	}
+
+	public void setGrassList(List<Grass> grassList) {
+		this.grassList = grassList;
+	}
 }
