@@ -6,63 +6,42 @@ import java.util.Random;
 
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.ai.AILevel1;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Balloon extends Enemy {
 
-    private List<Entity> obstacles = new ArrayList<>();
 
-    public Balloon(int x, int y, Image img) {
-        super(x, y, img);
+    public Balloon(int x, int y) {
+        super(x, y, Sprite.balloom_left1.getFxImage());
+        ai = new AILevel1();
     }
 
     @Override
     public void deadAnimation() {
 
         this.setImg(Sprite.balloom_dead.getFxImage());
-        //TODO: time-sleep 1s --> tao hieu ung bien mat
-
+        
         //day balloon ra khoi map
         this.removeFromGame();
     }
 
-
-    public boolean canMove(int x, int y) {
-
-        for (Entity e : obstacles) {
-
-            if (e.getX() == x && e.getY() == y) {
-                return false;
-            }
-
-        }
-
-        return true;
-    }
-
-
     public void move() {
-        Random generator = new Random();
-        while (true) {
-            int direct = generator.nextInt(4);
-            // 1 left, 2 right, 3 up, 4 down
+        while (isAlive) {
+            direction = ai.setDirect();
             int tempX = x, tempY = y;
-            switch (direct) {
+            switch (direction) {
                 case 1:
                     tempX = x - 1;
-
                     break;
                 case 2:
                     tempX = x + 1;
-
                     break;
                 case 3:
                     tempY = y - 1;
-
                     break;
                 case 4:
                     tempY = y + 1;
-
                     break;
             }
 
@@ -70,21 +49,28 @@ public class Balloon extends Enemy {
             if (canMove(tempX, tempY)) {
                 this.setX(tempX);
                 this.setY(tempY);
-
-                this.setImg(Sprite.balloom_left1.getFxImage());
-                this.setImg(Sprite.balloom_right1.getFxImage());
             }
         }
 
     }
 
-    public List<Entity> getObstacles() {
-        return obstacles;
+    @Override
+    public void update() {
+    	if (!isAlive) {
+    		deadAnimation();
+    	} else {
+    		animate();
+    		move();
+    		if (direction == 0)
+    			this.setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, timeTransfer).getFxImage());
+    		if (direction == 1)
+    			this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, animate, timeTransfer).getFxImage());
+    		if (direction == 2)
+    			this.setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_right1, Sprite.balloom_left3, animate, timeTransfer).getFxImage());
+    		if (direction == 0)
+    			this.setImg(Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_left2, Sprite.balloom_right2, animate, timeTransfer).getFxImage());
+    		
+    	}
     }
-
-    public void setObstacles(List<Entity> obstacles) {
-        this.obstacles = obstacles;
-    }
-
 
 }

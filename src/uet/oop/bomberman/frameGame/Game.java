@@ -3,10 +3,8 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.stillsobject.Brick;
-import uet.oop.bomberman.entities.stillsobject.Grass;
-import uet.oop.bomberman.entities.stillsobject.Wall;
+import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
 
 import java.io.IOException;
@@ -18,12 +16,13 @@ public class Game {
     private List<Wall> wallList;
     private List<Grass> grassList;
     private List<Brick> brickList;
-
+    private List<Enemy> enemyList;
+    
     public static String[] paths = {"res\\levels\\Level1.txt"};
-    //list enemy
+   
     //list item
     //portal
-    Entity bomberman;
+    public Bomber bomberman;
     private Level level = new Level();
     private int currentLevel = 1;
 
@@ -37,12 +36,13 @@ public class Game {
         this.setWallList(level.getWallList());
         this.setGrassList(level.getGrassList());
         this.setBrickList(level.getBrickList());
+        this.setEnemyList(level.getEnemyList());
         bomberman = level.getBomber();
     }
 
     public void update() {
-        //enemy update
-        //brick update
+      //  enemyList.forEach(e -> e.update());
+        brickList.forEach(b -> b.update());
         bomberman.update();
     }
 
@@ -52,6 +52,13 @@ public class Game {
         grassList.forEach(g -> g.render(gc));
         wallList.forEach(g -> g.render(gc));
         brickList.forEach(g -> g.render(gc));
+        
+        for (Enemy e : enemyList) {
+        	e.render(gc);
+        	e.setBomber(bomberman);
+        	e.setWallList(wallList);
+        	e.setBrickList(brickList);
+        }
         bomberman.render(gc);
     }
 
@@ -67,7 +74,11 @@ public class Game {
                 return b;
             }
         }
-        //TODO: for enemy
+        for (Enemy e : enemyList) {
+        	if (e.getXUnit() == x && e.getYUnit() == y) {
+                return e;
+            }
+        }
         return null;
     }
 
@@ -82,4 +93,9 @@ public class Game {
     public void setBrickList(List<Brick> brickList) {
         this.brickList = brickList;
     }
+
+	public void setEnemyList(List<Enemy> enemyList) {
+		this.enemyList = enemyList;
+	}
+    
 }

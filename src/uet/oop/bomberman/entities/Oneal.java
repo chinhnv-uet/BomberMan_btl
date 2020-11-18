@@ -7,95 +7,48 @@ import java.util.Random;
 import com.sun.javafx.geom.Rectangle;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.ai.AILevel1;
+import uet.oop.bomberman.ai.AILevel2;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.stillsobject.*;
+import uet.oop.bomberman.frameGame.Game;
 import uet.oop.bomberman.graphics.Sprite;
 
-@SuppressWarnings("restriction")
+
 public class Oneal extends Enemy {
-
-    public Bomber bomber;
-
-    private List<Entity> obstacles = new ArrayList<>();
-
-    public Oneal(int x, int y, Image img) {
-        super(x, y, img);
+	
+    public Oneal(int x, int y) {
+        super(x, y, Sprite.oneal_left1.getFxImage());
+        ai = new AILevel2(bomber, this);
+        direction = ai.setDirect();
     }
 
     @Override
     public void deadAnimation() {
         this.setImg(Sprite.oneal_dead.getFxImage());
-        //TO-DO time-sleep 1s
+        //TODO time-sleep 1s
 
 
         this.removeFromGame();
     }
 
-
-    public boolean recognizeBomberman() {
-        //neu tim thay vi tri cua Bomberman trong pham vi 3 don vi thi di chuyen gan toi do
-
-        Rectangle rec = new Rectangle(x - 3, y - 3, 6, 6);
-        Rectangle postitionOfBomberman = new Rectangle(x, y, 1, 1);
-        if (rec.contains(postitionOfBomberman)) return true;
-        return false;
-    }
-
-    public boolean canMove(int x, int y) {
-        for (Entity e : obstacles) {
-            if (e.getX() == x && e.getY() == y) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    
     public void move() {
 
-        Random generator = new Random();
-        int direct = 1;
-        // 1 left, 2 right, 3 up, 4 down
-        while (true) {
-            if (!recognizeBomberman()) {
-
-                direct = generator.nextInt(4);
-
-            } else {
-
-                if (x > bomber.getX()) {
-                    direct = 1;
-                } else if (x < bomber.getX()) {
-                    direct = 2;
-                } else if (y > bomber.getY()) {
-                    direct = 3;
-                } else if (y < bomber.getY()) {
-                    direct = 4;
-                }
-
-            }
-
+        while (isAlive) {
             int tempX = x, tempY = y;
-            switch (direct) {
-                case 1:
+            switch (direction) {
+                case 0:
                     tempX = x - 1;
-
-                    this.setImg(Sprite.oneal_left1.getFxImage());
+                    break;
+                case 1:
+                    tempX = x + 1;
                     break;
                 case 2:
-                    tempX = x + 1;
-
-                    this.setImg(Sprite.oneal_right1.getFxImage());
+                    tempY = y - 1;
                     break;
                 case 3:
-                    tempY = y - 1;
-
-                    this.setImg(Sprite.oneal_left1.getFxImage());
-                    this.setImg(Sprite.oneal_right1.getFxImage());
-                    break;
-                case 4:
                     tempY = y + 1;
-
-                    this.setImg(Sprite.oneal_left1.getFxImage());
-                    this.setImg(Sprite.oneal_right1.getFxImage());
                     break;
             }
 
@@ -106,14 +59,25 @@ public class Oneal extends Enemy {
         }
 
     }
-
-    public Bomber getBomber() {
-        return bomber;
+    
+    @Override
+    public void update() {
+    	
+    	if (!isAlive) {
+    		deadAnimation();
+    	} else {
+    		animate();
+    		move();
+    		if (direction == 0)
+    			this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
+    		if (direction == 1)
+    			this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, timeTransfer).getFxImage());
+    		if (direction == 2)
+    			this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_right1, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
+    		if (direction == 0)
+    			this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_left2, Sprite.oneal_right2, animate, timeTransfer).getFxImage());
+    		
+    	}
     }
-
-    public void setBomber(Bomber bomber) {
-        this.bomber = bomber;
-    }
-
 
 }
