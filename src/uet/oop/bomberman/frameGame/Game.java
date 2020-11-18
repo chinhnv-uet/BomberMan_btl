@@ -4,11 +4,10 @@ package uet.oop.bomberman.frameGame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
@@ -44,6 +43,7 @@ public class Game {
       //  enemyList.forEach(e -> e.update());
         brickList.forEach(b -> b.update());
         bomberman.update();
+        enemyList.forEach(e->e.update());
     }
 
     public void render(Canvas canvas) {
@@ -56,8 +56,8 @@ public class Game {
         for (Enemy e : enemyList) {
         	e.render(gc);
         	e.setBomber(bomberman);
-        	e.setWallList(wallList);
-        	e.setBrickList(brickList);
+//        	e.setWallList(wallList);
+//        	e.setBrickList(brickList);
         }
         bomberman.render(gc);
     }

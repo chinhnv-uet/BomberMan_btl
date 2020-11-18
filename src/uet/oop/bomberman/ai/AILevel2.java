@@ -1,9 +1,11 @@
 package uet.oop.bomberman.ai;
 
-import com.sun.javafx.geom.Rectangle;
 
-import uet.oop.bomberman.entities.Enemy;
+
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.character.Bomber;
+
+import java.awt.*;
 
 @SuppressWarnings("restriction")
 public class AILevel2 extends AI {

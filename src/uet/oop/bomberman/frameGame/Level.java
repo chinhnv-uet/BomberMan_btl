@@ -6,6 +6,9 @@ import java.util.List;
 
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.enemy.Balloon;
+import uet.oop.bomberman.entities.enemy.Enemy;
+import uet.oop.bomberman.entities.enemy.Oneal;
 import uet.oop.bomberman.entities.stillsobject.*;
 
 public class Level {
@@ -151,8 +154,8 @@ public class Level {
 		return enemyList;
 	}
 
-	public void setEnemyList(List<Enemy> enemyList) {
-		this.enemyList = enemyList;
-	}
+//	public void setEnemyList(List<Enemy> enemyList) {
+//		this.enemyList = enemyList;
+//	}
 
 }

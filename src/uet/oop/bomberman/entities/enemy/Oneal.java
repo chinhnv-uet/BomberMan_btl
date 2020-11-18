@@ -1,17 +1,7 @@
-package uet.oop.bomberman.entities;
+package uet.oop.bomberman.entities.enemy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import com.sun.javafx.geom.Rectangle;
-
-import javafx.scene.image.Image;
-import uet.oop.bomberman.ai.AILevel1;
 import uet.oop.bomberman.ai.AILevel2;
-import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.stillsobject.*;
-import uet.oop.bomberman.frameGame.Game;
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
 
