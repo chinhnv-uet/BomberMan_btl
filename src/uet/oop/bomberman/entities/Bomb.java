@@ -6,58 +6,31 @@ import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends AnimatedEntity {
-
-    private List<Entity> bricks;
-    private List<Enemy> enemies;
+    private int timeBeforeExplore = 200;
+    private int timeFrame = 10;
+    private int timeTransfer = 40;
+    private boolean explored;
 
     public Bomb(int x, int y) {
         super(x, y, Sprite.bomb.getFxImage());
+        animate = 0;
+        explored = false;
     }
 
     @Override
     public void update() {
         animate();
+        if (explored == false) {
+            if (animate < timeBeforeExplore) {
+                setImg(Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, timeTransfer).getFxImage());
+            } else {
+                explored = true;
+                animate = 0;
+            }
+        }
     }
 
-//    public void destroyBricksAndEnemies() {
-//        for (Entity e : bricks) {
-//            if (checkCollision(e, new Bomb(x + 1, y, null)) ||
-//                    checkCollision(e, new Bomb(x - 1, y, null)) ||
-//                    checkCollision(e, new Bomb(x, y + 1, null)) ||
-//                    checkCollision(e, new Bomb(x, y - 1, null))
-//            ) {
-//
-//                e.removeFromGame();
-//            }
-//        }
-//        for (Enemy e : enemies) {
-//            if (checkCollision(e, new Bomb(x + 1, y, null)) ||
-//                    checkCollision(e, new Bomb(x - 1, y, null)) ||
-//                    checkCollision(e, new Bomb(x, y + 1, null)) ||
-//                    checkCollision(e, new Bomb(x, y - 1, null))
-//            ) {
-//            	e.deadAnimation();
-//                e.removeFromGame();
-//            }
-//        }
-//
-//    }
-
-    public List<Entity> getBricks() {
-        return bricks;
+    public boolean isExplored() {
+        return explored;
     }
-
-    public void setBricks(List<Entity> bricks) {
-        this.bricks = bricks;
-    }
-
-    public List<Enemy> getEnemies() {
-        return enemies;
-    }
-
-    public void setEnemies(List<Enemy> enemies) {
-        this.enemies = enemies;
-    }
-
-
 }

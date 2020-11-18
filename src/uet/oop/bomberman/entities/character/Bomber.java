@@ -1,16 +1,22 @@
 package uet.oop.bomberman.entities.character;
 
+import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomber extends uet.oop.bomberman.entities.character.Character {
-    //listbom
-    protected Keyboard input;
-    //protect int maxBom
+    private List<Bomb> bombList = new ArrayList<>();
+    private Keyboard input;
+    private int maxBom = 3;
+    private int frameLen = 1;
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE-1, Sprite.SCALED_SIZE-1};
 
@@ -24,10 +30,19 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
 
     public void update() {
         animate();
+        bombUpdate();
         input = BombermanGame.canvas.getInput();
         if (!isAlive()) {
             //TODO showDeadAnimation
         } else {
+            if (input.space) {
+                if (bombList.size() < maxBom) {
+                    Entity e = BombermanGame.canvas.getEntityInCoodinate(getXUnit(), getYUnit());
+                    if (e == null) {
+                        bombList.add(new Bomb(getXUnit(), getYUnit()));
+                    }
+                }
+            }
             if (input.up || input.right || input.left || input.down) {
                 setMoving(true);
             } else {
@@ -55,6 +70,20 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
 
     public void render() {
 
+    }
+
+    public void bombRender(GraphicsContext gc) {
+        bombList.forEach(b->b.render(gc));
+    }
+
+    public void bombUpdate() {
+        bombList.forEach(b->b.update());
+        for (Bomb b : bombList) {
+            if (b.isExplored()) {
+                bombList.remove(b);
+                break;
+            }
+        }
     }
 
     public void calculateMove() {
@@ -103,5 +132,9 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             //TODO: check for other entities
         }
         return true;
+    }
+
+    public List<Bomb> getBombList() {
+        return bombList;
     }
 }

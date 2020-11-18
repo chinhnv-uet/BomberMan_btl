@@ -16,6 +16,7 @@ public class Game {
     private List<Grass> grassList;
     private List<Brick> brickList;
     private List<Enemy> enemyList;
+    private List<Bomb> bombs;
     
     public static String[] paths = {"res\\levels\\Level1.txt"};
    
@@ -40,7 +41,6 @@ public class Game {
     }
 
     public void update() {
-      //  enemyList.forEach(e -> e.update());
         brickList.forEach(b -> b.update());
         bomberman.update();
         enemyList.forEach(e->e.update());
@@ -52,13 +52,11 @@ public class Game {
         grassList.forEach(g -> g.render(gc));
         wallList.forEach(g -> g.render(gc));
         brickList.forEach(g -> g.render(gc));
-        
         for (Enemy e : enemyList) {
         	e.render(gc);
         	e.setBomber(bomberman);
-//        	e.setWallList(wallList);
-//        	e.setBrickList(brickList);
         }
+        bomberman.bombRender(gc);
         bomberman.render(gc);
     }
 
@@ -77,6 +75,12 @@ public class Game {
         for (Enemy e : enemyList) {
         	if (e.getXUnit() == x && e.getYUnit() == y) {
                 return e;
+            }
+        }
+        bombs = bomberman.getBombList();
+        for (Bomb b : bombs) {
+            if (b.getXUnit() == x && b.getYUnit() == y) {
+                return b;
             }
         }
         return null;
