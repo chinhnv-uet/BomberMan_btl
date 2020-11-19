@@ -1,13 +1,10 @@
 package uet.oop.bomberman.entities.enemy;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AI;
 import uet.oop.bomberman.entities.AnimatedEntity;
-import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.stillsobject.*;

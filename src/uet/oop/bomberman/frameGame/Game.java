@@ -4,6 +4,7 @@ package uet.oop.bomberman.frameGame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class Game {
     private List<Grass> grassList;
-    private List<Entity> entitiyLst; // list to check collision
+    private List<Entity> entityList; // list to check collision
     private List<Bomb> bombs;
 
     public static String[] paths = {"res\\levels\\Level1.txt"};
@@ -29,12 +30,26 @@ public class Game {
         this.setGrassList(level.getGrassList());
 
         bomberman = level.getBomber();
-        entitiyLst = level.getCollidableEntities();
+        entityList = level.getCollidableEntities();
     }
 
     public void update() {
         bomberman.update();
-        entitiyLst.forEach(e -> e.update());// for (), if instanceof enemy thi setbomber, brick if destroy ko portal thi xoa, if co portal thi them
+//        entitiyLst.forEach(e -> e.update());TODO: for (), if instanceof enemy thi setbomber, brick if destroy ko portal thi xoa, if co portal thi them
+        for (Entity e : entityList) {
+            if (e.getImg() == null) {
+                if (e instanceof Brick) {
+                    if (((Brick) e).isBrickHasPortal()) {
+                        this.addEntity(new Portal(e.getXUnit(), e.getYUnit()));
+                    }
+                    //TODO: if has item , add item
+                }
+                entityList.remove(e);
+                break;
+            } else {
+                e.update();
+            }
+        }
     }
 
     public void render(Canvas canvas) {
@@ -45,13 +60,13 @@ public class Game {
 //        	e.render(gc);
 //        	e.setBomber(bomberman);
 //        }
-        entitiyLst.forEach(e -> e.render(gc));
+        entityList.forEach(e -> e.render(gc));
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }
 
     public Entity getEntityOnCoodinate(int x, int y) {
-        for (Entity e : entitiyLst) {
+        for (Entity e : entityList) {
             if (e.getXUnit() == x && e.getYUnit() == y) {
                 return e;
             }
@@ -69,4 +84,7 @@ public class Game {
         this.grassList = grassList;
     }
 
+    public void addEntity(Entity e) {
+        entityList.add(e);
+    }
 }

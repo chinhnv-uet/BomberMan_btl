@@ -48,13 +48,9 @@ public class Level {
                             collidableEntities.add(object);
                             break;
                         case 'x':
-                            object = new Portal(j, i);
-                            collidableEntities.add(object);
-
-                            // insert a brick above
-                            Entity object2 = new Brick(j, i);
-                            collidableEntities.add(object);
-                            collidableEntities.add(object2);
+                            Brick object2 = new Brick(j, i);
+                            object2.setBrickHasPortal(true);
+                            collidableEntities.add((Entity) object2);
                             break;
                         case 'p':
                             bomber = new Bomber(j, i, new Keyboard());

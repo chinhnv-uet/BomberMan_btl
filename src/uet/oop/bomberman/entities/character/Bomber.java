@@ -2,10 +2,11 @@ package uet.oop.bomberman.entities.character;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.Bomb;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
+import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
@@ -17,7 +18,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
     private List<Bomb> bombList = new ArrayList<>();
     private Keyboard input;
     private int maxBom = 3;
-    private int frameLen = 1;
+    private int frameLen = 10;
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE-1, Sprite.SCALED_SIZE-1};
 
@@ -40,7 +41,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
                 if (bombList.size() < maxBom) {
                     Entity e = BombermanGame.canvas.getEntityInCoodinate(getXUnit(), getYUnit());
                     if (e == null) {
-                        bombList.add(new Bomb(getXUnit(), getYUnit()));
+                        bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen));
                     }
                 }
             }
@@ -74,13 +75,19 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
     }
 
     public void bombRender(GraphicsContext gc) {
-        bombList.forEach(b->b.render(gc));
+        for(Bomb b : bombList) {
+            if (b.isExplored()) {
+                b.frameRender(gc);
+            } else {
+                b.render(gc);
+            }
+        }
     }
 
-    public void bombUpdate() {
+    public void bombUpdate() {//TODO: check
         bombList.forEach(b->b.update());
         for (Bomb b : bombList) {
-            if (b.isExplored()) {
+            if (b.getImg() == null) {
                 bombList.remove(b);
                 break;
             }
@@ -124,13 +131,10 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             int newX = (getX() + AddToXToCheckCollision[i])/Sprite.SCALED_SIZE;
             int newY = (getY() + AddToYToCheckCollision[i])/Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
-            if (e instanceof Wall) {
+            if (e instanceof Wall || e instanceof Brick || e instanceof Portal) {
                 return false;
             }
-            if (e instanceof Brick) {
-                return false;
-            }
-            if (e instanceof Enemy) {
+            if (e instanceof Enemy) { //TODO: co loi bomber o giua 2 o khi va cham enemy ko chet, co the tack check enemy ra cai khac ko cong x, y nua
                 setAlive(false);
                 return true;
             }
