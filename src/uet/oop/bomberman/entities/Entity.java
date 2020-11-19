@@ -69,10 +69,10 @@ public abstract class Entity {
 
     //xUnit, yUnit is coodinate calculated by tiles
     public int getXUnit() {
-        return (int) x / Sprite.SCALED_SIZE;
+        return (int) (x + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE;
     }
 
     public int getYUnit() {
-        return (int) y / Sprite.SCALED_SIZE;
+        return (int) (y + Sprite.DEFAULT_SIZE) / Sprite.SCALED_SIZE;
     }
 }

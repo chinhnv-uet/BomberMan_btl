@@ -4,24 +4,19 @@ package uet.oop.bomberman.frameGame;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.entities.*;
-import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
 
 import java.util.List;
 
 public class Game {
-    //TODO: sau nay toi uu thanh it list hon
-    private List<Wall> wallList;
     private List<Grass> grassList;
-    private List<Brick> brickList;
-    private List<Enemy> enemyList;
+    private List<Entity> entitiyLst; // list to check collision
     private List<Bomb> bombs;
-    
+
     public static String[] paths = {"res\\levels\\Level1.txt"};
-   
+
     //list item
-    //portal
     public Bomber bomberman;
     private Level level = new Level();
     private int currentLevel = 1;
@@ -30,50 +25,34 @@ public class Game {
     }
 
     public void createMap() {
-
         level.createMapLevel(paths[currentLevel - 1]);
-
-        this.setWallList(level.getWallList());
         this.setGrassList(level.getGrassList());
-        this.setBrickList(level.getBrickList());
-        this.setEnemyList(level.getEnemyList());
+
         bomberman = level.getBomber();
+        entitiyLst = level.getCollidableEntities();
     }
 
     public void update() {
-        brickList.forEach(b -> b.update());
         bomberman.update();
-        enemyList.forEach(e->e.update());
+        entitiyLst.forEach(e -> e.update());// for (), if instanceof enemy thi setbomber, brick if destroy ko portal thi xoa, if co portal thi them
     }
 
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         grassList.forEach(g -> g.render(gc));
-        wallList.forEach(g -> g.render(gc));
-        brickList.forEach(g -> g.render(gc));
-        for (Enemy e : enemyList) {
-        	e.render(gc);
-        	e.setBomber(bomberman);
-        }
+//        for (Enemy e : enemyList) {
+//        	e.render(gc);
+//        	e.setBomber(bomberman);
+//        }
+        entitiyLst.forEach(e -> e.render(gc));
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }
 
     public Entity getEntityOnCoodinate(int x, int y) {
-        for (Wall e : wallList) {
+        for (Entity e : entitiyLst) {
             if (e.getXUnit() == x && e.getYUnit() == y) {
-                return e;
-            }
-        }
-
-        for (Brick b : brickList) {
-            if (b.getXUnit() == x && b.getYUnit() == y) {
-                return b;
-            }
-        }
-        for (Enemy e : enemyList) {
-        	if (e.getXUnit() == x && e.getYUnit() == y) {
                 return e;
             }
         }
@@ -86,20 +65,8 @@ public class Game {
         return null;
     }
 
-    public void setWallList(List<Wall> wallList) {
-        this.wallList = wallList;
-    }
-
     public void setGrassList(List<Grass> grassList) {
         this.grassList = grassList;
     }
 
-    public void setBrickList(List<Brick> brickList) {
-        this.brickList = brickList;
-    }
-
-	public void setEnemyList(List<Enemy> enemyList) {
-		this.enemyList = enemyList;
-	}
-    
 }

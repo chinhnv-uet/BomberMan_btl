@@ -12,150 +12,104 @@ import uet.oop.bomberman.entities.enemy.Oneal;
 import uet.oop.bomberman.entities.stillsobject.*;
 
 public class Level {
-	private int level, w, h;
-	private List<Entity> entities;
-	private List<Grass> grassList;
+    private int level, w, h;
+    private List<Entity> collidableEntities;
+    private List<Grass> grassList;
 
-	private List<Wall> wallList;
+    private Bomber bomber;
 
-	private List<Brick> brickList;
+    public void createMapLevel(String path) {
+        collidableEntities = new ArrayList<>();
+        grassList = new ArrayList<>();
+        try {
+            FileReader in = new FileReader(path);
+            BufferedReader br = new BufferedReader(in);
 
-	private List<Enemy> enemyList;
+            String infoOfMap;
+            infoOfMap = br.readLine();
+            level = Integer.parseInt(infoOfMap.substring(0, 1));
+            h = Integer.parseInt(infoOfMap.substring(2, 4));
+            w = Integer.parseInt(infoOfMap.substring(5));
 
-	private Bomber bomber;
+            for (int i = 0; i < h; i++) {
+                String temp = br.readLine();
+                Entity object;
+                for (int j = 0; j < temp.length(); j++) {
+                    object = new Grass(j, i);
+                    grassList.add((Grass) object);
 
-	public void createMapLevel(String path) {
-		entities = new ArrayList<>();
-		grassList = new ArrayList<>();
-		wallList = new ArrayList<>();
-		brickList = new ArrayList<>();
-		enemyList = new ArrayList<>();
-		try {
-			FileReader in = new FileReader(path);
-			BufferedReader br = new BufferedReader(in);
+                    switch (temp.charAt(j)) {
+                        case '#':
+                            object = new Wall(j, i);
+                            collidableEntities.add(object);
+                            break;
+                        case '*':
+                            object = new Brick(j, i);
+                            collidableEntities.add(object);
+                            break;
+                        case 'x':
+                            object = new Portal(j, i);
+                            collidableEntities.add(object);
 
-			String infoOfMap = "";
-			infoOfMap = br.readLine();
-			level = Integer.parseInt(infoOfMap.substring(0, 1));
-			h = Integer.parseInt(infoOfMap.substring(2, 4));
-			w = Integer.parseInt(infoOfMap.substring(5));
+                            // insert a brick above
+                            Entity object2 = new Brick(j, i);
+                            collidableEntities.add(object);
+                            collidableEntities.add(object2);
+                            break;
+                        case 'p':
+                            bomber = new Bomber(j, i, new Keyboard());
+                            break;
+                        case '1':
+                            object = new Balloon(j, i);
+                            collidableEntities.add((Enemy)object);
+                            break;
+                        case '2':
+                            object = new Oneal(j, i);
+                            collidableEntities.add((Enemy)object);
+                            break;
+                    }
+                }
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			for (int i = 0; i < h; i++) {
-				String temp = br.readLine();
-				Entity object;
-				for (int j = 0; j < temp.length(); j++) {
-					object = new Grass(j, i);
-					entities.add(object);
-					grassList.add((Grass) object);
+    public int getLevel() {
+        return level;
+    }
 
-					switch (temp.charAt(j)) {
-					case '#':
-						object = new Wall(j, i);
-						entities.add(object);
-						wallList.add((Wall) object);
-						break;
-					case '*':
-						object = new Brick(j, i);
-						entities.add(object);
-						brickList.add((Brick) object);
-						break;
-					case 'x':
-						object = new Portal(j, i);
-						entities.add(object);
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-						// insert a brick above
-						Entity object2 = new Brick(j, i);
-						entities.add(object);
-						brickList.add((Brick) object2);
-						break;
-					case 'p':
-						bomber = new Bomber(j, i, new Keyboard());
-						break;
-					case '1':
-						object = new Balloon(j, i);
-						entities.add(object);
-						enemyList.add((Balloon) object);
-						break;
-					case '2':
-						object = new Oneal(j, i);
-						entities.add(object);
-						enemyList.add((Oneal) object);
-						break;
-					}
-				}
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
-	}
-
-	public int getW() {
-		return w;
-	}
-
-	public void setW(int w) {
-		this.w = w;
-	}
-
-	public int getH() {
-		return h;
-	}
-
-	public void setH(int h) {
-		this.h = h;
-	}
-
-	public List<Entity> getEntities() {
-		return entities;
-	}
-
-	public void setEntities(List<Entity> entities) {
-		this.entities = entities;
-	}
-
-	public List<Grass> getGrassList() {
-		return grassList;
-	}
-
-//    public void setGrassList(List<Grass> grassList) {
-//        this.grassList = grassList;
+//    public int getW() {
+//        return w;
+//    }
+//
+//    public void setW(int w) {
+//        this.w = w;
+//    }
+//
+//    public int getH() {
+//        return h;
+//    }
+//
+//    public void setH(int h) {
+//        this.h = h;
 //    }
 
-	public List<Wall> getWallList() {
-		return wallList;
-	}
+    public List<Entity> getCollidableEntities() {
+        return collidableEntities;
+    }
 
-//    public void setWallList(List<Wall> wallList) {
-//        this.wallList = wallList;
-//    }
+    public List<Grass> getGrassList() {
+        return grassList;
+    }
 
-	public List<Brick> getBrickList() {
-		return brickList;
-	}
-
-//    public void setBrickList(List<Brick> brickList) {
-//        this.brickList = brickList;
-//    }
-
-	public Bomber getBomber() {
-		return bomber;
-	}
-
-	public List<Enemy> getEnemyList() {
-		return enemyList;
-	}
-
-//	public void setEnemyList(List<Enemy> enemyList) {
-//		this.enemyList = enemyList;
-//	}
+    public Bomber getBomber() {
+        return bomber;
+    }
 
 }

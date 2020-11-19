@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
@@ -33,7 +34,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         bombUpdate();
         input = BombermanGame.canvas.getInput();
         if (!isAlive()) {
-            //TODO showDeadAnimation
+            this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
         } else {
             if (input.space) {
                 if (bombList.size() < maxBom) {
@@ -129,7 +130,10 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             if (e instanceof Brick) {
                 return false;
             }
-            //TODO: check for other entities
+            if (e instanceof Enemy) {
+                setAlive(false);
+                return true;
+            }
         }
         return true;
     }

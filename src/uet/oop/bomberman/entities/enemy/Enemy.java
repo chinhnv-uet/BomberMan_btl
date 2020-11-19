@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AI;
 import uet.oop.bomberman.entities.AnimatedEntity;
+import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.stillsobject.*;
@@ -36,7 +37,7 @@ public abstract class Enemy extends AnimatedEntity {
         int xUnit = (int) x / Sprite.SCALED_SIZE;
         int yUnit = (int) y / Sprite.SCALED_SIZE;
         Entity e = BombermanGame.canvas.getEntityInCoodinate(xUnit, yUnit);
-        if (e instanceof Wall || e instanceof Brick) {
+        if (e instanceof Wall || e instanceof Brick || e instanceof Bomb) {
             return false;
         }
         return true;
@@ -57,6 +58,5 @@ public abstract class Enemy extends AnimatedEntity {
     public void setDirection(int direction) {
         this.direction = direction;
     }
-
 
 }
