@@ -35,9 +35,8 @@ public class Game {
 
     public void update() {
         bomberman.update();
-//        entitiyLst.forEach(e -> e.update());TODO: for (), if instanceof enemy thi setbomber, brick if destroy ko portal thi xoa, if co portal thi them
         for (Entity e : entityList) {
-            if (e.getImg() == null) {
+            if (e.getImg() == null) { // if img == null, thi xoa entity do
                 if (e instanceof Brick) {
                     if (((Brick) e).isBrickHasPortal()) {
                         this.addEntity(new Portal(e.getXUnit(), e.getYUnit()));

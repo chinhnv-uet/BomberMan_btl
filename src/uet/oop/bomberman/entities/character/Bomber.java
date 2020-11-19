@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
@@ -17,8 +18,10 @@ import java.util.List;
 public class Bomber extends uet.oop.bomberman.entities.character.Character {
     private List<Bomb> bombList = new ArrayList<>();
     private Keyboard input;
-    private int maxBom = 3;
-    private int frameLen = 10;
+    private int maxBom = 1;
+    private int frameLen = 1;
+    private boolean canPassBom = true;
+
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE-1, Sprite.SCALED_SIZE-1};
 
@@ -33,6 +36,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
     public void update() {
         animate();
         bombUpdate();
+        ifCollisionWithFlameOrEnemy();
         input = BombermanGame.canvas.getInput();
         if (!isAlive()) {
             this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
@@ -74,6 +78,18 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
 
     }
 
+    public List<Bomb> getBombList() {
+        return bombList;
+    }
+
+    public void setCanPassBom(boolean canPassBom) {
+        this.canPassBom = canPassBom;
+    }
+
+    public boolean isCanPassBom() {
+        return canPassBom;
+    }
+
     public void bombRender(GraphicsContext gc) {
         for(Bomb b : bombList) {
             if (b.isExplored()) {
@@ -84,7 +100,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         }
     }
 
-    public void bombUpdate() {//TODO: check
+    public void bombUpdate() {
         bombList.forEach(b->b.update());
         for (Bomb b : bombList) {
             if (b.getImg() == null) {
@@ -134,7 +150,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             if (e instanceof Wall || e instanceof Brick || e instanceof Portal) {
                 return false;
             }
-            if (e instanceof Enemy) { //TODO: co loi bomber o giua 2 o khi va cham enemy ko chet, co the tack check enemy ra cai khac ko cong x, y nua
+            if (e instanceof Enemy) {
                 setAlive(false);
                 return true;
             }
@@ -142,7 +158,21 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         return true;
     }
 
-    public List<Bomb> getBombList() {
-        return bombList;
+    public void ifCollisionWithFlameOrEnemy() {
+        int x = getXUnit();
+        int y = getYUnit();
+        for (Bomb b : bombList) {
+            List<Flame> fl = b.getFlameList();
+            for (Flame f : fl) {
+                if (f.getXUnit() == x && f.getYUnit() == y) {
+                    setAlive(false);
+                    break;
+                }
+            }
+        }
+        Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
+        if (e instanceof Enemy) {
+            setAlive(false);
+        }
     }
 }

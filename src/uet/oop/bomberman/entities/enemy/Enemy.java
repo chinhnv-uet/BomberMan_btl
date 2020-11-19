@@ -24,6 +24,7 @@ public abstract class Enemy extends AnimatedEntity {
 
     protected Bomber bomber = new Bomber(0, 0, new Keyboard());
     protected final int timeTransfer = 26;
+    protected int timeDead = 26;
 
     public Enemy(int x, int y, Image img) {
         super(x, y, img);
@@ -51,9 +52,11 @@ public abstract class Enemy extends AnimatedEntity {
         return direction;
     }
 
-
     public void setDirection(int direction) {
         this.direction = direction;
     }
 
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 }

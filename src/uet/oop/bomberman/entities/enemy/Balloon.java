@@ -15,18 +15,16 @@ public class Balloon extends Enemy {
 
     @Override
     public void deadAnimation() {
-
-        this.setImg(Sprite.balloom_dead.getFxImage());
-        
-        //day balloon ra khoi map
-        this.removeFromGame();
+        if (timeDead-- > 0) {
+            this.setImg(Sprite.movingSprite(Sprite.balloom_dead, Sprite.mob_dead1, Sprite.mob_dead2, animate, timeTransfer).getFxImage());
+        }
+        else {
+            this.removeFromGame();
+        }
     }
 
     public void move() {
         if (isAlive) {
-//            if (animate%200 == 0) {
-//                direction = 1-direction;
-//            }
             int tempX = x, tempY = y;
             switch (direction) {
                 case 0:
@@ -59,10 +57,10 @@ public class Balloon extends Enemy {
 
     @Override
     public void update() {
+        animate();
     	if (!isAlive) {
     		deadAnimation();
     	} else {
-    		animate();
     		move();
     		if (direction == 0)
     			this.setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, timeTransfer).getFxImage());
@@ -75,5 +73,4 @@ public class Balloon extends Enemy {
     		
     	}
     }
-
 }

@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
@@ -14,7 +15,7 @@ import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends AnimatedEntity {
-    private int timeBeforeExplore = 150;
+    private int timeBeforeExplore = 130;
     private int timeFlame = 15;
     private int timeTransfer = 40;
     private boolean explored;
@@ -40,8 +41,6 @@ public class Bomb extends AnimatedEntity {
         } else {
             if (timeFlame-- == 0) {
                 setImg(null);
-            } else {
-//                frameRender();
             }
         }
     }
@@ -51,17 +50,20 @@ public class Bomb extends AnimatedEntity {
         int y = getYUnit();
 
         flameList.add(new Flame(x, y, 4, false));// add center
+        //truong hop bomber o tren qua bom
+        Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
+        canPassThrough(e);
 
         //check left
         int il = 1;
-        for (; il <= flameLen; il++) {
+        for (; il <= flameLen; il++) { //check tu 1 den FrameLen neu gap vat can break
             int xLeft = x - il;
-            Entity e = BombermanGame.canvas.getEntityInCoodinate(xLeft, y);
+            e = BombermanGame.canvas.getEntityInCoodinate(xLeft, y);
             if (!canPassThrough(e)) {
                 break;
             }
         }
-        for (int i = 1; i < il; i++) {
+        for (int i = 1; i < il; i++) { // them flame tu 1 den do dai frame lon nhat co the
             if (i == il - 1) {
                 flameList.add(new Flame(x - i, y, 2, true));
             } else {
@@ -73,7 +75,7 @@ public class Bomb extends AnimatedEntity {
         int ir = 1;
         for (; ir <= flameLen; ir++) {
             int xRight = x + ir;
-            Entity e = BombermanGame.canvas.getEntityInCoodinate(xRight, y);
+            e = BombermanGame.canvas.getEntityInCoodinate(xRight, y);
             if (!canPassThrough(e)) {
                 break;
             }
@@ -90,7 +92,7 @@ public class Bomb extends AnimatedEntity {
         int iu = 1;
         for (; iu <= flameLen; iu++) {
             int yUp = y - iu;
-            Entity e = BombermanGame.canvas.getEntityInCoodinate(x, yUp);
+            e = BombermanGame.canvas.getEntityInCoodinate(x, yUp);
             if (!canPassThrough(e)) {
                 break;
             }
@@ -107,7 +109,7 @@ public class Bomb extends AnimatedEntity {
         int id = 1;
         for (; id <= flameLen; id++) {
             int yDown = y + id;
-            Entity e = BombermanGame.canvas.getEntityInCoodinate(x, yDown);
+            e = BombermanGame.canvas.getEntityInCoodinate(x, yDown);
             if (!canPassThrough(e)) {
                 break;
             }
@@ -137,6 +139,16 @@ public class Bomb extends AnimatedEntity {
         if (e instanceof Wall || e instanceof Portal) {
             return false;
         }
+        if (e instanceof Enemy) {
+            ((Enemy) e).setAlive(false);
+        }
+        if (e instanceof Bomber) {
+            ((Bomber) e).setAlive(false);
+        }
         return true;
+    }
+
+    public List<Flame> getFlameList() {
+        return flameList;
     }
 }

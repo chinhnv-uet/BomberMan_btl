@@ -36,8 +36,6 @@ public abstract class Entity {
 
     public void removeFromGame() {
         this.setImg(null);
-        this.setX(-1);
-        this.setY(-1);
     }
 
 

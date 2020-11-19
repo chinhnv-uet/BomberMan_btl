@@ -8,7 +8,7 @@ public class Flame extends Entity {
     private boolean last = false;
 
     public Flame(int xUnit, int yUnit, int direct, boolean last) {
-        super(xUnit, yUnit, null);////////TODO; sua sau
+        super(xUnit, yUnit, null);
         switch (direct) {
             case 0:
                 if (last) {
