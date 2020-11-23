@@ -4,14 +4,18 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Item;
+import uet.oop.bomberman.items.PlusBombItem;
 
 public class Brick extends AnimatedEntity {
 
     private boolean isDestroyed = false;
     private int timeAnimate = 30;//time show animation brick explosion
     private int timeTransfer = 40; // time transfer between img
+    
     private boolean brickHasItem = false;
-    //String idItem
+    private Item item;
+    
     private boolean brickHasPortal = false;
 
     public Brick(int x, int y) {
@@ -24,9 +28,7 @@ public class Brick extends AnimatedEntity {
 
     public void setBrickHasItem(boolean brickHasItem, Item item) {
         this.brickHasItem = brickHasItem;
-        if (isDestroyed) {
-            this.setImg(item.getImg());
-        }
+        this.item = item;
     }
 
     public boolean isBrickHasPortal() {
@@ -55,5 +57,9 @@ public class Brick extends AnimatedEntity {
     public void setDestroyed(boolean destroyed) {
         isDestroyed = destroyed;
     }
+
+	public Item getItem() {
+		return item;
+	}
 
 }

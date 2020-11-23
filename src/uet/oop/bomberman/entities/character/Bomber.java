@@ -11,6 +11,9 @@ import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Item;
+import uet.oop.bomberman.items.PlusBombItem;
+import uet.oop.bomberman.items.PlusSpeedItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,12 +38,17 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
 
     public void update() {
         animate();
+        
         bombUpdate();
+        
         ifCollisionWithFlameOrEnemy();
+        
         input = BombermanGame.canvas.getInput();
+        
         if (!isAlive()) {
             this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
         } else {
+        	
             if (input.space) {
                 if (bombList.size() < maxBom) {
                     Entity e = BombermanGame.canvas.getEntityInCoodinate(getXUnit(), getYUnit());
@@ -49,6 +57,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
                     }
                 }
             }
+            
             if (input.up || input.right || input.left || input.down) {
                 setMoving(true);
             } else {
@@ -71,6 +80,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             if (isMoving()) {
                 calculateMove();
             }
+            
         }
     }
 

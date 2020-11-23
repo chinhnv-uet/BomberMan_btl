@@ -10,21 +10,24 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.PlusBombItem;
+import uet.oop.bomberman.items.PlusFlameItem;
 
 public abstract class Enemy extends AnimatedEntity {
 
-    protected boolean isAlive = true;
+	protected int velocity = 0;
+
+	protected boolean isAlive = true;
     protected int direction = 0;
-    //0 left, 1 right, 2 up, 3 down
+    //0 up, 1 down, 2 left, 3 right
 
     protected AI ai;
-
-    protected final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2, 2};
-    protected final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2};
 
     protected Bomber bomber = new Bomber(0, 0, new Keyboard());
     protected final int timeTransfer = 26;
     protected int timeDead = 26;
+    public static final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2, 2};
+    public static final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2};
 
     public Enemy(int x, int y, Image img) {
         super(x, y, img);
@@ -35,12 +38,24 @@ public abstract class Enemy extends AnimatedEntity {
         int xUnit = (int) x / Sprite.SCALED_SIZE;
         int yUnit = (int) y / Sprite.SCALED_SIZE;
         Entity e = BombermanGame.canvas.getEntityInCoodinate(xUnit, yUnit);
-        if (e instanceof Wall || e instanceof Brick || e instanceof Bomb) {
+        if (e instanceof Wall || e instanceof Brick || e instanceof Bomb || e instanceof Portal) {
             return false;
         }
         return true;
     }
 
+    private int tempX = 0, tempY = 0;
+    public boolean isMoving() {
+    	if (isAlive) {
+    		if (tempX != this.getXUnit() && tempY != this.getYUnit()) {
+    			tempX = this.getXUnit();
+    			tempY = this.getYUnit();
+    			return true;
+    		} else return false;
+    	}
+    	return false;
+    }
+    
     public abstract void deadAnimation();
 
     public void setBomber(Bomber bomber) {
@@ -48,6 +63,10 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
 
+	public Bomber getBomber() {
+		return bomber;
+	}
+	
     public int getDirection() {
         return direction;
     }
@@ -59,4 +78,17 @@ public abstract class Enemy extends AnimatedEntity {
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
+
+    public int getVelocity() {
+  		return velocity;
+  	}
+
+
+  	public void setVelocity(int velocity) {
+  		this.velocity = velocity;
+  	}
+
+
+    
+    
 }
