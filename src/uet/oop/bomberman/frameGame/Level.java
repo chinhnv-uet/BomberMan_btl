@@ -10,12 +10,17 @@ import uet.oop.bomberman.entities.enemy.Balloon;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.enemy.Oneal;
 import uet.oop.bomberman.entities.stillsobject.*;
+import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.Item;
+import uet.oop.bomberman.items.PlusBombItem;
+import uet.oop.bomberman.items.PlusFlameItem;
 
 public class Level {
     private int level, w, h;
+    
     private List<Entity> collidableEntities;
     private List<Grass> grassList;
-
+    
     private Bomber bomber;
 
     public void createMapLevel(String path) {
@@ -50,19 +55,53 @@ public class Level {
                         case 'x':
                             Brick object2 = new Brick(j, i);
                             object2.setBrickHasPortal(true);
-                            collidableEntities.add((Entity) object2);
+                            collidableEntities.add((Brick) object2);
                             break;
                         case 'p':
                             bomber = new Bomber(j, i, new Keyboard());
                             break;
                         case '1':
                             object = new Balloon(j, i);
-                            collidableEntities.add((Enemy)object);
+                            collidableEntities.add((Balloon)object);
                             break;
                         case '2':
                             object = new Oneal(j, i);
-                            collidableEntities.add((Enemy)object);
+                            collidableEntities.add((Oneal)object);
                             break;
+                        case 'b':
+                        	object = new Brick(j, i);
+                        	((Brick) object).setBrickHasItem(true, new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage()));
+                        	
+                        	collidableEntities.add((Brick) object);
+                        	
+                        	Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
+                        	pbi.setId("pbi");
+                        	
+                        	
+                        	
+                        	break;
+                        case 'f':
+                        	object = new Brick(j, i);
+                        	((Brick) object).setBrickHasItem(true, new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage()));
+                        	
+                        	collidableEntities.add((Brick) object);
+                        	
+                        	Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
+                        	pfi.setId("pfi");
+                        	break;
+                        case 's':
+                        	object = new Brick(j, i);
+                        	((Brick) object).setBrickHasItem(true, new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage()));
+                        	
+                        	collidableEntities.add((Brick) object);
+                        	
+                        	Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
+                        	psi.setId("psi");
+                        	break;
+                        
+                        	
+                      
+                        	
                     }
                 }
             }
@@ -80,21 +119,6 @@ public class Level {
         this.level = level;
     }
 
-//    public int getW() {
-//        return w;
-//    }
-//
-//    public void setW(int w) {
-//        this.w = w;
-//    }
-//
-//    public int getH() {
-//        return h;
-//    }
-//
-//    public void setH(int h) {
-//        this.h = h;
-//    }
 
     public List<Entity> getCollidableEntities() {
         return collidableEntities;
@@ -107,5 +131,7 @@ public class Level {
     public Bomber getBomber() {
         return bomber;
     }
+
+	
 
 }

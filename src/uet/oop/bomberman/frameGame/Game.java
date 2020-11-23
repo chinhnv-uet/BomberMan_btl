@@ -7,6 +7,7 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.enemy.Oneal;
 
 import java.util.List;
 
@@ -41,7 +42,9 @@ public class Game {
                     if (((Brick) e).isBrickHasPortal()) {
                         this.addEntity(new Portal(e.getXUnit(), e.getYUnit()));
                     }
-                    //TODO: if has item , add item
+                    if (((Brick) e).isBrickHasItem()) {
+                        this.addEntity(((Brick) e).getItem());
+                    }
                 }
                 entityList.remove(e);
                 break;
@@ -55,11 +58,13 @@ public class Game {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         grassList.forEach(g -> g.render(gc));
-//        for (Enemy e : enemyList) {
-//        	e.render(gc);
-//        	e.setBomber(bomberman);
-//        }
-        entityList.forEach(e -> e.render(gc));
+
+        entityList.forEach(e -> {
+        	e.render(gc);
+        	if (e instanceof Oneal) {
+        		((Oneal) e).setBomber(bomberman);
+        	}
+        });
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }
