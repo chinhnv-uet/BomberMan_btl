@@ -70,11 +70,11 @@ public class Level {
                             break;
                         case 'b':
                         	object = new Brick(j, i);
-                        	((Brick) object).setBrickHasItem(true, new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage()));
+                        	Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
                         	
+                        	((Brick) object).setBrickHasItem(true, pbi);
                         	collidableEntities.add((Brick) object);
                         	
-                        	Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
                         	pbi.setId("pbi");
                         	
                         	
@@ -82,20 +82,20 @@ public class Level {
                         	break;
                         case 'f':
                         	object = new Brick(j, i);
-                        	((Brick) object).setBrickHasItem(true, new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage()));
+                        	Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
                         	
+                        	((Brick) object).setBrickHasItem(true, pfi);
                         	collidableEntities.add((Brick) object);
                         	
-                        	Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
                         	pfi.setId("pfi");
                         	break;
                         case 's':
                         	object = new Brick(j, i);
-                        	((Brick) object).setBrickHasItem(true, new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage()));
+                        	Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
                         	
+                        	((Brick) object).setBrickHasItem(true, psi);
                         	collidableEntities.add((Brick) object);
                         	
-                        	Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
                         	psi.setId("psi");
                         	break;
                         

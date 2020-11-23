@@ -35,7 +35,7 @@ public class AILevel2 extends AI {
 
         } else {
         	//TODO, sua lai thuat toan...du da phat hien ra Bomber, nhung quai vat khong duoi theo?
-        	System.out.println("yes");
+        	//System.out.println("yes");
         	
         	if (e.isMoving()) {
         		
