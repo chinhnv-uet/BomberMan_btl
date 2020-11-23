@@ -62,7 +62,7 @@ public class Oneal extends Enemy {
             this.setY(tempY);
             
           //enemy gap bat ky item auto se tang speed
-            Entity e = BombermanGame.canvas.getEntityInCoodinate(tempX/Sprite.SCALED_SIZE, tempY/Sprite.SCALED_SIZE);
+            Entity e = BombermanGame.canvas.getEntityInCoodinate(this.getXUnit(), this.getYUnit());
             if (e instanceof PlusFlameItem || e instanceof PlusBombItem || e instanceof PlusSpeedItem) {
             	setVelocity(velocity + 1);
             	e.setImg(null);

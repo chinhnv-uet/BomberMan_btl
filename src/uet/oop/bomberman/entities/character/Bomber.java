@@ -11,19 +11,18 @@ import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.Item;
-import uet.oop.bomberman.items.PlusBombItem;
-import uet.oop.bomberman.items.PlusSpeedItem;
+import uet.oop.bomberman.items.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bomber extends uet.oop.bomberman.entities.character.Character {
+public class Bomber extends Character {
     private List<Bomb> bombList = new ArrayList<>();
     private Keyboard input;
     private int maxBom = 1;
     private int frameLen = 1;
     private boolean canPassBom = true;
+    private boolean speed_up = false;
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE-1, Sprite.SCALED_SIZE-1};
@@ -41,7 +40,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         
         bombUpdate();
         
-        ifCollisionWithFlameOrEnemy();
+        ifCollisionWithFlameOrEnemyOrItem();
         
         input = BombermanGame.canvas.getInput();
         
@@ -80,6 +79,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
             if (isMoving()) {
                 calculateMove();
             }
+            
             
         }
     }
@@ -121,6 +121,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
     }
 
     public void calculateMove() {
+    	
         if (input.up) {
             y -= velocity;
             if (!canMove()) {
@@ -168,7 +169,7 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         return true;
     }
 
-    public void ifCollisionWithFlameOrEnemy() {
+    public void ifCollisionWithFlameOrEnemyOrItem() {
         int x = getXUnit();
         int y = getYUnit();
         for (Bomb b : bombList) {
@@ -183,6 +184,23 @@ public class Bomber extends uet.oop.bomberman.entities.character.Character {
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Enemy) {
             setAlive(false);
+        }
+        
+        if (e instanceof Item) {
+        	switch (((Item) e).getId()) {
+        	case "psi":
+        		velocity++;
+        		break;
+        	case "pbi":
+        		maxBom++;
+        		break;
+        	case "pfi":
+        		frameLen++;
+        		break;
+        	}
+
+    		e.setImg(null);
+        	
         }
     }
 }
