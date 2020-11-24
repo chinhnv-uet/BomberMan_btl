@@ -17,15 +17,16 @@ import uet.oop.bomberman.items.PlusFlameItem;
 
 public class Level {
     private int level, w, h;
-    
+
     private List<Entity> collidableEntities;
     private List<Grass> grassList;
-    
+    private List<Enemy> enemyList;
     private Bomber bomber;
 
     public void createMapLevel(String path) {
         collidableEntities = new ArrayList<>();
         grassList = new ArrayList<>();
+        enemyList = new ArrayList<>();
         try {
             FileReader in = new FileReader(path);
             BufferedReader br = new BufferedReader(in);
@@ -62,47 +63,46 @@ public class Level {
                             break;
                         case '1':
                             object = new Balloon(j, i);
-                            collidableEntities.add((Balloon)object);
+                            enemyList.add((Balloon) object);
                             break;
                         case '2':
                             object = new Oneal(j, i);
-                            collidableEntities.add((Oneal)object);
+                            enemyList.add((Oneal) object);
                             break;
                         case 'b':
-                        	object = new Brick(j, i);
-                        	Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
-                        	
-                        	((Brick) object).setBrickHasItem(true, pbi);
-                        	collidableEntities.add((Brick) object);
-                        	
-                        	pbi.setId("pbi");
-                        	
-                        	
-                        	
-                        	break;
+                            object = new Brick(j, i);
+                            Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
+
+                            ((Brick) object).setBrickHasItem(true, pbi);
+                            collidableEntities.add((Brick) object);
+
+                            pbi.setId("pbi");
+                            break;
                         case 'f':
-                        	object = new Brick(j, i);
-                        	Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
-                        	
-                        	((Brick) object).setBrickHasItem(true, pfi);
-                        	collidableEntities.add((Brick) object);
-                        	
-                        	pfi.setId("pfi");
-                        	break;
+                            object = new Brick(j, i);
+                            Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
+
+                            ((Brick) object).setBrickHasItem(true, pfi);
+                            collidableEntities.add((Brick) object);
+
+                            pfi.setId("pfi");
+                            break;
                         case 's':
-                        	object = new Brick(j, i);
-                        	Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
-                        	
-                        	((Brick) object).setBrickHasItem(true, psi);
-                        	collidableEntities.add((Brick) object);
-                        	
-                        	psi.setId("psi");
-                        	break;
-                        
-                        	
-                      
-                        	
+                            object = new Brick(j, i);
+                            Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
+
+                            ((Brick) object).setBrickHasItem(true, psi);
+                            collidableEntities.add((Brick) object);
+
+                            psi.setId("psi");
+                            break;
                     }
+                }
+            }
+            for (Entity e : enemyList) {
+                if (e instanceof Oneal) {
+                    ((Enemy) e).setBomber(bomber);
+                    ((Oneal) e).updateBomberForAI();
                 }
             }
             br.close();
@@ -132,6 +132,7 @@ public class Level {
         return bomber;
     }
 
-	
-
+    public List<Enemy> getEnemyList() {
+        return enemyList;
+    }
 }

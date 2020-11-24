@@ -145,10 +145,17 @@ public class Bomb extends AnimatedEntity {
         if (e instanceof Bomber) {
             ((Bomber) e).setAlive(false);
         }
+        if (e instanceof Bomb) {
+            ((Bomb) e).setTimeBeforeExplore(2);
+        }
         return true;
     }
 
     public List<Flame> getFlameList() {
         return flameList;
+    }
+
+    public void setTimeBeforeExplore(int timeBeforeExplore) {
+        this.timeBeforeExplore = timeBeforeExplore;
     }
 }

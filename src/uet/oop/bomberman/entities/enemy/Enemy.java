@@ -10,14 +10,13 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.PlusBombItem;
-import uet.oop.bomberman.items.PlusFlameItem;
+import uet.oop.bomberman.items.Item;
 
 public abstract class Enemy extends AnimatedEntity {
 
-	protected int velocity = 0;
+    protected int velocity = 0;
 
-	protected boolean isAlive = true;
+    protected boolean isAlive = true;
     protected int direction = 0;
     //0 up, 1 down, 2 left, 3 right
 
@@ -26,8 +25,8 @@ public abstract class Enemy extends AnimatedEntity {
     protected Bomber bomber = new Bomber(0, 0, new Keyboard());
     protected final int timeTransfer = 26;
     protected int timeDead = 26;
-    public static final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2, 2};
-    public static final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE-2, Sprite.SCALED_SIZE-2};
+    public static final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2, 2};
+    public static final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2};
 
     public Enemy(int x, int y, Image img) {
         super(x, y, img);
@@ -45,17 +44,18 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
     private int tempX = 0, tempY = 0;
+
     public boolean isMoving() {
-    	if (isAlive) {
-    		if (tempX != this.getXUnit() && tempY != this.getYUnit()) {
-    			tempX = this.getXUnit();
-    			tempY = this.getYUnit();
-    			return true;
-    		} else return false;
-    	}
-    	return false;
+        if (isAlive) {
+            if (tempX != this.getXUnit() && tempY != this.getYUnit()) {
+                tempX = this.getXUnit();
+                tempY = this.getYUnit();
+                return true;
+            } else return false;
+        }
+        return false;
     }
-    
+
     public abstract void deadAnimation();
 
     public void setBomber(Bomber bomber) {
@@ -63,10 +63,10 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
 
-	public Bomber getBomber() {
-		return bomber;
-	}
-	
+    public Bomber getBomber() {
+        return bomber;
+    }
+
     public int getDirection() {
         return direction;
     }
@@ -80,15 +80,21 @@ public abstract class Enemy extends AnimatedEntity {
     }
 
     public int getVelocity() {
-  		return velocity;
-  	}
+        return velocity;
+    }
 
 
-  	public void setVelocity(int velocity) {
-  		this.velocity = velocity;
-  	}
+    public void setVelocity(int velocity) {
+        this.velocity = velocity;
+    }
 
+    public void ifCollideWithItem() {
+        //enemy gap bat ky item auto se tang speed
+        Entity e = BombermanGame.canvas.getEntityInCoodinate(this.getXUnit(), this.getYUnit());
+        if (e instanceof Item) {
+            setVelocity(velocity + 1);
+            e.setImg(null);
+        }
+    }
 
-    
-    
 }
