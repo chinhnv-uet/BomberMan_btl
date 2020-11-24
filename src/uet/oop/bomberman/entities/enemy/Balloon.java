@@ -1,16 +1,8 @@
 package uet.oop.bomberman.entities.enemy;
 
 
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AILevel1;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.entities.stillsobject.Grass;
 import uet.oop.bomberman.graphics.Sprite;
-import uet.oop.bomberman.items.Item;
-import uet.oop.bomberman.items.PlusBombItem;
-import uet.oop.bomberman.items.PlusFlameItem;
-import uet.oop.bomberman.items.PlusSpeedItem;
 
 public class Balloon extends Enemy {
 
@@ -71,7 +63,7 @@ public class Balloon extends Enemy {
             deadAnimation();
         } else {
             move();
-            ifCollideWithItem();
+            ifCollideWithItemOrFlame();
             if (direction == 0)
                 this.setImg(Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, animate, timeTransfer).getFxImage());
             else if (direction == 1)

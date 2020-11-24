@@ -65,7 +65,7 @@ public class Oneal extends Enemy {
         } else {
             animate();
             move();
-            ifCollideWithItem();
+            ifCollideWithItemOrFlame();
 
             if (animate % (3 * Sprite.SCALED_SIZE) == 0 && !ai.wantToChangeDirect) ai.setWantToChangeDirect(true);
             else ai.setWantToChangeDirect(false);

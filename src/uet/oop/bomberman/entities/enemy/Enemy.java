@@ -6,11 +6,14 @@ import uet.oop.bomberman.ai.AI;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
+
+import java.util.List;
 
 public abstract class Enemy extends AnimatedEntity {
 
@@ -88,12 +91,24 @@ public abstract class Enemy extends AnimatedEntity {
         this.velocity = velocity;
     }
 
-    public void ifCollideWithItem() {
+    public void ifCollideWithItemOrFlame() {
+        int x = getXUnit();
+        int y = getYUnit();
         //enemy gap bat ky item auto se tang speed
-        Entity e = BombermanGame.canvas.getEntityInCoodinate(this.getXUnit(), this.getYUnit());
+        Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Item) {
             setVelocity(velocity + 1);
             e.setImg(null);
+        }
+        List<Bomb> bombList = bomber.getBombList();
+        for (Bomb b : bombList) {
+            List<Flame> fl = b.getFlameList();
+            for (Flame f : fl) {
+                if (f.getXUnit() == x && f.getYUnit() == y) {
+                    setAlive(false);
+                    break;
+                }
+            }
         }
     }
 

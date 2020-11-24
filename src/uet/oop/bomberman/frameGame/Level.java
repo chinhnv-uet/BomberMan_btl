@@ -100,9 +100,11 @@ public class Level {
                 }
             }
             for (Entity e : enemyList) {
-                if (e instanceof Oneal) {
+                if (e instanceof Enemy) {
                     ((Enemy) e).setBomber(bomber);
-                    ((Oneal) e).updateBomberForAI();
+                    if (e instanceof Oneal) {
+                        ((Oneal) e).updateBomberForAI();
+                    }
                 }
             }
             br.close();
