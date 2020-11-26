@@ -18,11 +18,12 @@ public class Game {
     private List<Bomb> bombs;
     private List<Enemy> enemyList;
 
-   
+
     public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt"};
     public int WIDTH, HEIGHT;
-    //list item
-    public static Bomber bomberman;
+
+    public Bomber bomberman = new Bomber(1, 1, new Keyboard());
+    public Bomber bomberInPreLevel = new Bomber(1, 1, new Keyboard());
     public Level level = new Level();
     private int currentLevel = 1;
     private boolean gameOver = false;
@@ -31,20 +32,24 @@ public class Game {
     }
 
     public void createMap() {
-    	
+
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
         HEIGHT = level.getH();
-        
+
         this.setGrassList(level.getGrassList());
-        bomberman = level.getBomber();
+
+        //phuc hoi cac thuoc tinh bomber cua level truoc va set vi tri moi
+        Bomber tmp = level.getBomber();
+        bomberman.restoreBomber(bomberInPreLevel);
+        bomberman.setX(tmp.getX());
+        bomberman.setY(tmp.getY());
+
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
     }
-    
-    int numberOfEnemies = 0;
+
     public void update() {
-    	numberOfEnemies = 0;
         bomberman.update();
         for (Entity e : enemyList) {
             if (e.getImg() == null) {
@@ -55,9 +60,9 @@ public class Game {
             }
         }
 
-        
+
         for (Entity e : entityList) {
-        	
+
             if (e.getImg() == null) { // if img == null, thi xoa entity do
                 if (e instanceof Brick) {
                     if (((Brick) e).isBrickHasPortal()) {
@@ -68,21 +73,19 @@ public class Game {
                     }
                 }
                 entityList.remove(e);
-                
-                entityList.forEach(o -> {
-            		if (o instanceof Enemy) numberOfEnemies++;
-            	});
-
-                bomberman.setKillAllEnemies((numberOfEnemies == 0) ? true : false);
                 break;
             } else {
                 e.update();
             }
         }
+        if (enemyList.size() == 0) {
+            bomberman.setKillAllEnemies((true));
+        }
         if (bomberman.isCollideWithAPortal()) {
-        	currentLevel++;
-        	this.createMap();
-        } 
+            bomberInPreLevel.restoreBomber(bomberman);
+            currentLevel++;
+            this.createMap();
+        }
         if (bomberman.isAlive() == false) gameOver = true;
 
     }
@@ -93,17 +96,17 @@ public class Game {
         grassList.forEach(g -> g.render(gc));
 
         entityList.forEach(e -> {
-        	e.render(gc);
-        	if (e instanceof Enemy) {
-        		((Enemy) e).setBomber(bomberman);
-        	}
+            e.render(gc);
+            if (e instanceof Enemy) {
+                ((Enemy) e).setBomber(bomberman);
+            }
         });
         enemyList.forEach(e -> e.render(gc));
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }
-    
-    
+
+
     public Entity getEntityOnCoodinate(int x, int y) {
         for (Entity e : entityList) {
             if (e.getXUnit() == x && e.getYUnit() == y) {
@@ -132,27 +135,25 @@ public class Game {
         entityList.add(e);
     }
 
-	public int getWIDTH() {
-		return WIDTH;
-	}
+    public int getWIDTH() {
+        return WIDTH;
+    }
 
-	public void setWIDTH(int wIDTH) {
-		WIDTH = wIDTH;
-	}
+    public void setWIDTH(int wIDTH) {
+        WIDTH = wIDTH;
+    }
 
-	public int getHEIGHT() {
-		return HEIGHT;
-	}
+    public int getHEIGHT() {
+        return HEIGHT;
+    }
 
-	public void setHEIGHT(int hEIGHT) {
-		HEIGHT = hEIGHT;
-	}
+    public void setHEIGHT(int hEIGHT) {
+        HEIGHT = hEIGHT;
+    }
 
-	public boolean isGameOver() {
-		return gameOver;
-	}
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
 
-	
-    
 }
