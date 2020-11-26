@@ -99,14 +99,15 @@ public class Level {
                     }
                 }
             }
-            for (Entity e : enemyList) {
-                if (e instanceof Enemy) {
-                    ((Enemy) e).setBomber(bomber);
-                    if (e instanceof Oneal) {
-                        ((Oneal) e).updateBomberForAI();
-                    }
-                }
-            }
+            //updates in Game class
+//            for (Entity e : enemyList) {
+//                if (e instanceof Enemy) {
+//                    ((Enemy) e).setBomber(bomber);
+//                    if (e instanceof Oneal) {
+//                        ((Oneal) e).updateBomberForAI();
+//                    }
+//                }
+//            }
             br.close();
         } catch (IOException e) {
             e.printStackTrace();

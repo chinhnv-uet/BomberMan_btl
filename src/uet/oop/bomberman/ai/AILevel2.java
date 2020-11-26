@@ -16,7 +16,6 @@ public class AILevel2 extends AI {
 
     public boolean recognizeBomberman() {
         //tra ve true, neu bomber va enemy cach nhau 3 don vi
-        //TODO thuat toan ko hieu qua
         double distance = Math.pow(e.getX() - bomberman.getX(), 2) +
                 Math.pow(e.getY() - bomberman.getY(), 2);
 
@@ -33,7 +32,6 @@ public class AILevel2 extends AI {
         if (!recognizeBomberman()) {
             return generate.nextInt(4);
         } else {
-            System.out.println("yes");
             if (e.isMoving()) {
                 int randomCheckDir = generate.nextInt(2); //check Row or Col first?
                 if (randomCheckDir == 0) {        //checkRow first

@@ -3,12 +3,10 @@ package uet.oop.bomberman;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.frameGame.CanvasGame;
-import uet.oop.bomberman.frameGame.Game;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -21,12 +19,14 @@ public class BombermanGame extends Application {
 
     public static int WIDTH = 31;
     public static int HEIGHT = 13;
+    public static int timeLiving = 200; //(seconds) time in a level
     public static Group root;
     private GraphicsContext gc;
     public static CanvasGame canvas;
     private List<Entity> entities = new ArrayList<>();
-    
-    
+
+	public static int scores = 0;
+	public static int lives = 3;
     public static Stage window;
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -60,10 +60,7 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-        if (canvas.getGame().isGameOver()) {
-        	timer.stop();
-        	System.out.println("yes");
-        }
+
     }
 
     

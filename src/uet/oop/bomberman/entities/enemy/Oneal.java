@@ -1,10 +1,6 @@
 package uet.oop.bomberman.entities.enemy;
 
 import uet.oop.bomberman.ai.AILevel2;
-import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.frameGame.Game;
 import uet.oop.bomberman.graphics.Sprite;
 
 

@@ -9,7 +9,6 @@ import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
-import uet.oop.bomberman.frameGame.Game;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.*;
@@ -20,12 +19,12 @@ import java.util.List;
 public class Bomber extends Character {
 	private List<Bomb> bombList = new ArrayList<>();
 	private Keyboard input;
-	private int maxBom = 1;
-	private int frameLen = 1;
+	private static int maxBom = 1;
+	private static int frameLen = 1;
 	private boolean canPassBom = true;
 	private boolean killAllEnemies = false;
 	private boolean collideWithAPortal = false;
-
+	
 	private final int[] AddToXToCheckCollision = { 0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0 };
 	private final int[] AddToYToCheckCollision = { 7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1 };
 
@@ -239,5 +238,6 @@ public class Bomber extends Character {
 	public void setCollideWithAPortal(boolean collideWithAPortal) {
 		this.collideWithAPortal = collideWithAPortal;
 	}
+
 	
 }

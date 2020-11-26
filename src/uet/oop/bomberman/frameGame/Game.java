@@ -3,6 +3,7 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.enemy.Enemy;
@@ -11,6 +12,9 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.*;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Game {
     private List<Grass> grassList;
@@ -40,13 +44,12 @@ public class Game {
         bomberman = level.getBomber();
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
+        setTime();
     }
     
-    int numberOfEnemies = 0;
     public void update() {
-    	numberOfEnemies = 0;
         bomberman.update();
-        for (Entity e : enemyList) {
+    	for (Entity e : enemyList) {
             if (e.getImg() == null) {
                 enemyList.remove(e);
                 break;
@@ -54,6 +57,7 @@ public class Game {
                 e.update();
             }
         }
+        
 
         
         for (Entity e : entityList) {
@@ -68,37 +72,52 @@ public class Game {
                     }
                 }
                 entityList.remove(e);
-                
-                entityList.forEach(o -> {
-            		if (o instanceof Enemy) numberOfEnemies++;
-            	});
+               
 
-                bomberman.setKillAllEnemies((numberOfEnemies == 0) ? true : false);
                 break;
             } else {
                 e.update();
             }
         }
-        if (bomberman.isCollideWithAPortal()) {
+        
+
+        if (enemyList.size() == 0) bomberman.setKillAllEnemies(true);
+        if (bomberman.isCollideWithAPortal() ) {
         	currentLevel++;
+        	if (currentLevel > paths.length) {
+        		System.out.println("You win");
+        		gameOver = true;
+        		bomberman.setAlive(false);
+        		return;
+        	}
         	this.createMap();
         } 
-        if (bomberman.isAlive() == false) gameOver = true;
+        if (bomberman.isAlive() == false) {
+        	BombermanGame.lives = BombermanGame.lives - 1;
 
+        	System.out.println("Lives: " + BombermanGame.lives);
+        	System.out.println("Scores:" + BombermanGame.scores);
+            if (BombermanGame.lives == 0) {
+            	gameOver = true;
+            } else {
+            	this.createMap();
+            }
+        	
+        }
     }
-
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         grassList.forEach(g -> g.render(gc));
 
-        entityList.forEach(e -> {
+        entityList.forEach(e -> e.render(gc));
+        enemyList.forEach(e -> {
         	e.render(gc);
-        	if (e instanceof Enemy) {
-        		((Enemy) e).setBomber(bomberman);
+        	e.setBomber(bomberman);
+        	if (e instanceof Oneal) {
+        		((Oneal) e).updateBomberForAI();
         	}
         });
-        enemyList.forEach(e -> e.render(gc));
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }
@@ -124,6 +143,36 @@ public class Game {
         return null;
     }
 
+    // set timer for one life
+    static Timer timer;
+    static int interval;
+    public void setTime() {
+    	int delay = 1000;
+    	int period = 1000;
+    	timer = new Timer();
+    	interval = BombermanGame.timeLiving;
+    	timer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (bomberman.isAlive()) System.out.println(setInterval());
+			}
+    		
+    	}, delay, period);
+    	
+    	
+    }
+    public static final int setInterval() {
+    	if (interval <= 1) {
+    		timer.cancel();
+    		bomberman.setAlive(false);
+    	} 
+    	return --interval;
+    	
+    }
+    
+    
+    
     public void setGrassList(List<Grass> grassList) {
         this.grassList = grassList;
     }
@@ -150,6 +199,10 @@ public class Game {
 
 	public boolean isGameOver() {
 		return gameOver;
+	}
+
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 
 
