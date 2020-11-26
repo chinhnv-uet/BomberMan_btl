@@ -15,6 +15,7 @@ import uet.oop.bomberman.items.Item;
 
 import java.util.List;
 
+
 public abstract class Enemy extends AnimatedEntity {
 
     protected int velocity = 0;

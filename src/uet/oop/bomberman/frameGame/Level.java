@@ -134,7 +134,19 @@ public class Level {
         return bomber;
     }
 
+
     public List<Enemy> getEnemyList() {
         return enemyList;
     }
+	public int getW() {
+		return w;
+	}
+
+
+	public int getH() {
+		return h;
+	}
+
+	
+	
 }
