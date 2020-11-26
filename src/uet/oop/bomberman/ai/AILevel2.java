@@ -50,6 +50,7 @@ public class AILevel2 extends AI {
                 return generate.nextInt(4);
             }
 
+        	
         }
     }
 

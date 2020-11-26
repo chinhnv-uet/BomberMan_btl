@@ -39,7 +39,8 @@ public class CanvasGame extends Canvas {
         game.createMap();
     }
 
-    public void update() {
+    
+	public void update() {
         game.update();
     }
 
@@ -54,4 +55,10 @@ public class CanvasGame extends Canvas {
     public Entity getEntityInCoodinate(int x, int y) {
         return game.getEntityOnCoodinate(x, y);
     }
+
+	public Game getGame() {
+		return game;
+	}
+
+    
 }

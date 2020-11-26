@@ -22,17 +22,34 @@ public class Bomber extends Character {
     private int maxBom = 1;
     private int frameLen = 1;
     private boolean canPassBom = false;
-//    private boolean speed_up = false;
+    private boolean killAllEnemies = false;
+    private boolean collideWithAPortal = false;
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
 
     public Bomber(int x, int y, Keyboard kb) {
-        super(x, y, Sprite.player_down.getFxImage()); //luc dau mac dinh la huong xuong
+        super(x, y, Sprite.player_down.getFxImage()); // luc dau mac dinh la huong xuong
         this.input = kb;
         direction = 1;
         velocity = 2;
         input = kb;
+    }
+
+    //copy cac thuoc tinh cua bomber vao 1 bomber moi
+    public void restoreBomber(Bomber newBomber) {
+        this.setX(0);
+        this.setY(0);
+        this.setImg(Sprite.player_down.getFxImage());
+        this.direction = 1;
+        this.bombList = new ArrayList<>();
+        this.killAllEnemies = false;
+        this.collideWithAPortal = false;
+        
+        this.input = newBomber.input;
+        this.velocity = newBomber.velocity;
+        this.maxBom = newBomber.maxBom;
+        this.frameLen = newBomber.frameLen;
     }
 
     public void update() {
@@ -80,8 +97,6 @@ public class Bomber extends Character {
             if (isMoving()) {
                 calculateMove();
             }
-
-
         }
     }
 
@@ -129,28 +144,35 @@ public class Bomber extends Character {
                 y += velocity;
             }
             setDirection(0);
-            this.setImg(Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, animate, timeTransfer).getFxImage());
+            this.setImg(
+                    Sprite.movingSprite(Sprite.player_up, Sprite.player_up_1, Sprite.player_up_2, animate, timeTransfer)
+                            .getFxImage());
         } else if (input.down) {
             y += velocity;
             if (!canMove()) {
                 y -= velocity;
             }
             setDirection(1);
-            this.setImg(Sprite.movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, animate, timeTransfer).getFxImage());
+            this.setImg(Sprite
+                    .movingSprite(Sprite.player_down, Sprite.player_down_1, Sprite.player_down_2, animate, timeTransfer)
+                    .getFxImage());
         } else if (input.left) {
             x -= velocity;
             if (!canMove()) {
                 x += velocity;
             }
             setDirection(2);
-            this.setImg(Sprite.movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, animate, timeTransfer).getFxImage());
+            this.setImg(Sprite
+                    .movingSprite(Sprite.player_left, Sprite.player_left_1, Sprite.player_left_2, animate, timeTransfer)
+                    .getFxImage());
         } else {
             x += velocity;
             if (!canMove()) {
                 x -= velocity;
             }
             setDirection(3);
-            this.setImg(Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, animate, timeTransfer).getFxImage());
+            this.setImg(Sprite.movingSprite(Sprite.player_right, Sprite.player_right_1, Sprite.player_right_2, animate,
+                    timeTransfer).getFxImage());
         }
     }
 
@@ -159,8 +181,16 @@ public class Bomber extends Character {
             int newX = (getX() + AddToXToCheckCollision[i]) / Sprite.SCALED_SIZE;
             int newY = (getY() + AddToYToCheckCollision[i]) / Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
-            if (e instanceof Wall || e instanceof Brick || e instanceof Portal) {
+
+            if (e instanceof Wall || e instanceof Brick) {
                 return false;
+            }
+            if (e instanceof Portal) {
+                if (killAllEnemies) {
+                    collideWithAPortal = true;
+                    return true;
+                } else
+                    return false;
             }
             if (e instanceof Enemy) {
                 setAlive(false);
@@ -216,4 +246,13 @@ public class Bomber extends Character {
 
         }
     }
+
+    public void setKillAllEnemies(boolean killAllEnemies) {
+        this.killAllEnemies = killAllEnemies;
+    }
+
+    public boolean isCollideWithAPortal() {
+        return collideWithAPortal;
+    }
+
 }
