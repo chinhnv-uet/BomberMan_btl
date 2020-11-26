@@ -62,16 +62,15 @@ public class Bomber extends Character {
         input = BombermanGame.canvas.getInput();
 
         if (!isAlive()) {
-            this.setImg(Sprite
-                    .movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer)
-                    .getFxImage());
+            this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
+            this.setAlive(true);
         } else {
 
             if (input.space) {
                 if (bombList.size() < maxBom) {
                     Entity e = BombermanGame.canvas.getEntityInCoodinate(getXUnit(), getYUnit());
                     if (e == null) {
-                        bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen));
+                        bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen, this));
                     }
                 }
             }
@@ -98,7 +97,6 @@ public class Bomber extends Character {
             if (isMoving()) {
                 calculateMove();
             }
-
         }
     }
 
@@ -179,8 +177,7 @@ public class Bomber extends Character {
     }
 
     public boolean canMove() {
-
-        for (int i = 0; i < 4; i++) { // check collision for 4 corners
+        for (int i = 0; i < 4; i++) { //check collision for 4 corners
             int newX = (getX() + AddToXToCheckCollision[i]) / Sprite.SCALED_SIZE;
             int newY = (getY() + AddToYToCheckCollision[i]) / Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
@@ -198,6 +195,18 @@ public class Bomber extends Character {
             if (e instanceof Enemy) {
                 setAlive(false);
                 return true;
+            }
+            if (e instanceof Bomb) {
+                if (canPassBom) {
+                    ((Bomb) e).setAllowPass(true); // set nhu nay de khi update tiep tranh bi loi xuyen tuong nhu o duoi
+                } else {
+                     /*khi check lan luot 4 goc, neu i = 0 la goc trai tren
+                    se gap loi di xuyen tuong neu di sang phai vi check goc trai tren neu dang o tren bom nen van di dc
+                    ma ben phai lai gap vat can, do vay phai xet du 4 goc neu dang o tren bom tranh loi xuyen tuong*/
+                    if (((Bomb) e).isAllowPass()) {
+                        continue;
+                    } else return false;
+                }
             }
         }
         return true;
