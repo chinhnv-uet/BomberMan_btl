@@ -15,7 +15,7 @@ public class Oneal extends Enemy {
     @Override
     public void deadAnimation() {
         if (timeDead-- > 0) {
-            this.setImg(Sprite.movingSprite(Sprite.oneal_dead, Sprite.oneal_dead, animate, timeTransfer).getFxImage());
+            this.setImg(Sprite.movingSprite(Sprite.oneal_dead, Sprite.mob_dead1, Sprite.mob_dead2, animate, timeTransfer).getFxImage());
         } else {
             this.removeFromGame();
         }

@@ -27,7 +27,7 @@ public abstract class Enemy extends AnimatedEntity {
 
     protected Bomber bomber = new Bomber(0, 0, new Keyboard());
     protected final int timeTransfer = 26;
-    protected int timeDead = 26;
+    protected int timeDead = 20;
     public static final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2, 2};
     public static final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2};
 

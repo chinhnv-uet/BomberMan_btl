@@ -19,19 +19,30 @@ public class Bomb extends AnimatedEntity {
     private int timeFlame = 15;
     private int timeTransfer = 40;
     private boolean explored;
+    private boolean allowPass = true;
+    private Bomber bomber;
+
     private int flameLen = 1;
     private List<Flame> flameList = new ArrayList<>();
 
-    public Bomb(int x, int y, int flameLen) {
+    public Bomb(int x, int y, int flameLen, Bomber bomber) {
         super(x, y, Sprite.bomb.getFxImage());
         this.flameLen = flameLen;
         explored = false;
+        this.bomber = bomber;
     }
 
     @Override
     public void update() {
         animate();
         if (explored == false) {
+            if (allowPass == true) {
+                int subX = bomber.getX() - getX();
+                int subY = bomber.getY() - getY();
+                if (subX < -20 || subX > 31 || subY > 25 || subY < -31) {
+                    allowPass = false;
+                }
+            }
             if (timeBeforeExplore-- > 0) {
                 setImg(Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, animate, timeTransfer).getFxImage());
             } else {
@@ -155,7 +166,16 @@ public class Bomb extends AnimatedEntity {
         return flameList;
     }
 
+    public boolean isAllowPass() {
+        return allowPass;
+    }
+
+    public void setAllowPass(boolean allowPass) {
+        this.allowPass = allowPass;
+    }
+
     public void setTimeBeforeExplore(int timeBeforeExplore) {
         this.timeBeforeExplore = timeBeforeExplore;
     }
+
 }
