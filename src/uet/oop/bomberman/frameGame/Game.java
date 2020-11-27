@@ -3,6 +3,7 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.enemy.Enemy;
@@ -11,6 +12,8 @@ import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.*;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game {
     private List<Grass> grassList;
@@ -44,9 +47,11 @@ public class Game {
         bomberman.restoreBomber(bomberInPreLevel);
         bomberman.setX(tmp.getX());
         bomberman.setY(tmp.getY());
+        bomberman.setAlive(true);
 
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
+        setTime();
     }
 
     public void update() {
@@ -84,24 +89,65 @@ public class Game {
         if (bomberman.isCollideWithAPortal()) {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
+            if (currentLevel > paths.length) {
+            	System.out.println("You win");
+            	gameOver = true;
+            	bomberman.setAlive(false);
+            	return;
+            }
             this.createMap();
         }
-        if (bomberman.isAlive() == false) gameOver = true;
+        if (bomberman.isAlive() == false) {
+        	BombermanGame.lives -= 1;
+
+        	System.out.println("Scores: " +BombermanGame.scores);
+        	System.out.println("Lives: " +BombermanGame.lives);
+        	
+        	bomberInPreLevel.restoreBomber(bomberman);
+        	this.createMap();
+        }
+        if (BombermanGame.lives == 0) gameOver = true;
 
     }
+    
+ // set timer for one life
+    static Timer timer;
+    static int interval;
+    public void setTime() {
+    	int delay = 1000;
+    	int period = 1000;
+    	timer = new Timer();
+    	interval = BombermanGame.timeLiving;
+    	timer.scheduleAtFixedRate(new TimerTask() {
 
+			@Override
+			public void run() {
+				if (BombermanGame.lives != 0) System.out.println(setInterval());
+			}
+
+    	}, delay, period);
+
+
+    }
+    public final int setInterval() {
+    	if (interval <= 1) {
+    		timer.cancel();
+    		bomberman.setAlive(false);
+    	} 
+    	return --interval;
+
+    }
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         grassList.forEach(g -> g.render(gc));
 
-        entityList.forEach(e -> {
-            e.render(gc);
-            if (e instanceof Enemy) {
-                ((Enemy) e).setBomber(bomberman);
-            }
+        entityList.forEach(e -> e.render(gc));
+        enemyList.forEach(e -> {
+        	e.render(gc);
+        	e.setBomber(bomberman);
+        	if (e instanceof Oneal) ((Oneal) e).updateBomberForAI();
         });
-        enemyList.forEach(e -> e.render(gc));
         bomberman.bombRender(gc);
         bomberman.render(gc);
     }

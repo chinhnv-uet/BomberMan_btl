@@ -6,6 +6,7 @@ import java.io.IOException;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
+import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 
 public class CanvasGame extends Canvas {
@@ -41,6 +42,9 @@ public class CanvasGame extends Canvas {
 
     
 	public void update() {
+        if (game.isGameOver()) {
+        	return;
+        }
         game.update();
     }
 

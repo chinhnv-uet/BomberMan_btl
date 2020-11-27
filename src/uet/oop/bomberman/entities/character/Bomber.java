@@ -63,7 +63,6 @@ public class Bomber extends Character {
 
         if (!isAlive()) {
             this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
-            this.setAlive(true);
         } else {
 
             if (input.space) {
