@@ -3,6 +3,8 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
@@ -16,20 +18,23 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Game {
+    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt",};
+    public int WIDTH, HEIGHT;
+
     private List<Grass> grassList;
     private List<Entity> entityList; // list to check collision
     private List<Bomb> bombs;
     private List<Enemy> enemyList;
 
-
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt",};
-    public int WIDTH, HEIGHT;
-
     public Bomber bomberman = new Bomber(1, 1, new Keyboard());
     public Bomber bomberInPreLevel = new Bomber(1, 1, new Keyboard());
     private Bomber originBomber;
+
     public Level level = new Level();
     private int currentLevel = 1;
+    private int timeShowTransferLevel = 100;
+    private boolean TransferLevel = false;
+
     private boolean gameOver = false;
 
     public Game() {
@@ -56,6 +61,23 @@ public class Game {
     }
 
     public void update() {
+        if (TransferLevel == false) {
+            updateAllEntities();
+        }
+        if (bomberman.isAlive() == false) {
+            BombermanGame.lives -= 1;
+
+            System.out.println("Scores: " + BombermanGame.scores);
+            System.out.println("Lives: " + BombermanGame.lives);
+
+            bomberInPreLevel.restoreBomber(originBomber);
+            this.createMap();
+        }
+        if (BombermanGame.lives == 0) gameOver = true;
+
+    }
+
+    public void updateAllEntities() {
         bomberman.update();
         for (Entity e : enemyList) {
             if (e.getImg() == null) {
@@ -65,7 +87,6 @@ public class Game {
                 e.update();
             }
         }
-
 
         for (Entity e : entityList) {
 
@@ -90,72 +111,79 @@ public class Game {
         if (bomberman.isCollideWithAPortal()) {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
+            TransferLevel = true;
+
             if (currentLevel > paths.length) {
-            	System.out.println("You win");
-            	gameOver = true;
-            	bomberman.setAlive(false);
-            	return;
+                System.out.println("You win");
+                gameOver = true;
+                bomberman.setAlive(false);
+                return;
             }
             this.createMap();
         }
-        if (bomberman.isAlive() == false) {
-        	BombermanGame.lives -= 1;
-
-        	System.out.println("Scores: " +BombermanGame.scores);
-        	System.out.println("Lives: " +BombermanGame.lives);
-        	
-        	bomberInPreLevel.restoreBomber(originBomber);
-        	this.createMap();
-        }
-        if (BombermanGame.lives == 0) gameOver = true;
-
     }
-    
- // set timer for one life
+
+    // set timer for one life
     static Timer timer;
     static int interval;
 
-	int delay = 1000;
-	int period = 1200;
+    int delay = 1000;
+    int period = 1200;
+
     public void setTime() {
-    	timer = new Timer();
-    	interval = BombermanGame.timeLiving;
-    	timer.scheduleAtFixedRate(new TimerTask() {
+        timer = new Timer();
+        interval = BombermanGame.timeLiving;
+        timer.scheduleAtFixedRate(new TimerTask() {
 
-			@Override
-			public void run() {
-				if (BombermanGame.lives != 0 && bomberman.isAlive()) System.out.println(setInterval());
-			}
+            @Override
+            public void run() {
+                if (BombermanGame.lives != 0 && bomberman.isAlive()) setInterval();
+            }
 
-    	}, delay, period);
+        }, delay, period);
 
 
     }
+
     public final int setInterval() {
-    	if (interval <= 1) {
-    		timer.cancel();
-    		bomberman.setAlive(false);
-    	} 
-    	return --interval;
-
+        if (interval <= 1) {
+            timer.cancel();
+            bomberman.setAlive(false);
+        }
+        return --interval;
     }
-    
-    
+
+
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        grassList.forEach(g -> g.render(gc));
 
-        entityList.forEach(e -> e.render(gc));
-        enemyList.forEach(e -> {
-        	e.render(gc);
-        	e.setBomber(bomberman);
-        	if (e instanceof Oneal ) ((Oneal) e).updateBomberForAI();
-        	if (e instanceof Minvo)  ((Minvo) e).updateBomberForAI();
-        	if (e instanceof Kondoria) ((Kondoria) e).updateBomberForAI();
-        });
-        bomberman.bombRender(gc);
-        bomberman.render(gc);
+        if (TransferLevel == false) {
+            renderInfoOfCurrentLevel(gc);
+            grassList.forEach(g -> g.render(gc));
+
+            entityList.forEach(e -> e.render(gc));
+            enemyList.forEach(e -> {
+                e.render(gc);
+                e.setBomber(bomberman);
+                if (e instanceof Oneal) ((Oneal) e).updateBomberForAI();
+                if (e instanceof Minvo) ((Minvo) e).updateBomberForAI();
+                if (e instanceof Kondoria) ((Kondoria) e).updateBomberForAI();
+            });
+            bomberman.bombRender(gc);
+            bomberman.render(gc);
+        } else {
+            if (timeShowTransferLevel-- > 0) {
+                gc.setFill(Color.BLACK);
+                gc.fillRect(0, 0, 992, 448);
+                gc.setFill(Color.WHITE);
+                gc.setFont(new Font("", 60));
+                gc.fillText("Level: " + currentLevel, 400, 200);
+            } else {
+                TransferLevel = false;
+                timeShowTransferLevel = 100;
+            }
+        }
     }
 
 
@@ -187,25 +215,18 @@ public class Game {
         entityList.add(e);
     }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
-
-    public void setWIDTH(int wIDTH) {
-        WIDTH = wIDTH;
-    }
-
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public void setHEIGHT(int hEIGHT) {
-        HEIGHT = hEIGHT;
-    }
-
     public boolean isGameOver() {
         return gameOver;
     }
 
-
+    public void renderInfoOfCurrentLevel(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 416, 992, 448);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 15));
+        gc.fillText("Time left: " + interval, 0, 440);
+        gc.fillText("Level: " + currentLevel, 100, 440);
+        gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
+        gc.fillText("Scores: " + BombermanGame.scores, 500, 440);
+    }
 }
