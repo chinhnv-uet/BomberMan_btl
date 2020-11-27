@@ -22,7 +22,10 @@ public class Bomber extends Character {
     private int maxBom = 1;
     private int frameLen = 1;
     private boolean canPassBom = false;
-    private boolean killAllEnemies = false;
+    private boolean canPassFlame = false;
+    private boolean canPassBrick = false;
+
+	private boolean killAllEnemies = false;
     private boolean collideWithAPortal = false;
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
@@ -38,20 +41,27 @@ public class Bomber extends Character {
 
     //copy cac thuoc tinh cua bomber vao 1 bomber moi
     public void restoreBomber(Bomber newBomber) {
-        this.setX(0);
-        this.setY(0);
+    	reset();
+        
+        this.input = newBomber.input;
+        this.velocity = newBomber.velocity;
+        this.maxBom = newBomber.maxBom;
+        this.frameLen = newBomber.frameLen; 
+    }
+    public void reset() {
+    	this.setX(0);
+    	this.setY(0);
         this.setImg(Sprite.player_down.getFxImage());
         this.direction = 1;
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
-        
-        this.input = newBomber.input;
-        this.velocity = newBomber.velocity;
-        this.maxBom = newBomber.maxBom;
-        this.frameLen = newBomber.frameLen;
+        this.canPassBom = false;
+        this.canPassBrick = false;
+        this.canPassBrick = false;
     }
-
+    
+    
     public void update() {
         animate();
 
@@ -181,7 +191,7 @@ public class Bomber extends Character {
             int newY = (getY() + AddToYToCheckCollision[i]) / Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
 
-            if (e instanceof Wall || e instanceof Brick) {
+            if (e instanceof Wall || (e instanceof Brick && canPassBrick == false) ) {
                 return false;
             }
             if (e instanceof Portal) {
@@ -218,7 +228,7 @@ public class Bomber extends Character {
             List<Flame> fl = b.getFlameList();
             for (Flame f : fl) {
                 if (f.getXUnit() == x && f.getYUnit() == y) {
-                    setAlive(false);
+                    if (!canPassFlame) setAlive(false);
                     break;
                 }
             }
@@ -233,12 +243,26 @@ public class Bomber extends Character {
                 case "psi":
                     velocity++;
                     break;
+                    
                 case "pbi":
                     maxBom++;
                     break;
+                    
                 case "pfi":
                     frameLen++;
                     break;
+                    
+                case "bpi":
+                	canPassBom = true;
+                	break;
+                	
+                case "fpi":
+                	canPassFlame = true;
+                	break;
+                case "wpi":
+                	canPassBrick = true;
+                	break;
+            	
             }
 
             e.setImg(null);
@@ -254,4 +278,12 @@ public class Bomber extends Character {
         return collideWithAPortal;
     }
 
+
+    public boolean isCanPassFlame() {
+		return canPassFlame;
+	}
+
+	public void setCanPassFlame(boolean canPassFlame) {
+		this.canPassFlame = canPassFlame;
+	}
 }

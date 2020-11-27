@@ -6,11 +6,9 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Balloon extends Enemy {
 
-
     public Balloon(int x, int y) {
         super(x, y, Sprite.balloom_left1.getFxImage());
-        ai = new AILevel1();
-        setDirection(ai.setDirect());
+        ai = new AILevel1(this);
         velocity = 1;
     }
 
@@ -45,7 +43,7 @@ public class Balloon extends Enemy {
                 int xx = tempX + AddToXToCheckCollision[i];
                 int yy = tempY + AddToYToCheckCollision[i];
                 if (!canMove(xx, yy)) {
-                    setDirection(ai.setDirect());
+                	setDirection(ai.setDirect());
                     return;
                 }
             }

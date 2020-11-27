@@ -3,19 +3,18 @@ package uet.oop.bomberman.entities.enemy;
 import uet.oop.bomberman.ai.AILevel2;
 import uet.oop.bomberman.graphics.Sprite;
 
+public class Kondoria extends Enemy {
+	//dac diem: giong Oneal, nhung co the di xuyen Brick
+	public Kondoria(int x, int y) {
+		super(x, y, Sprite.kondoria_left1.getFxImage());
+		velocity = 2;
+		ai = new AILevel2(bomber,this);
+	}
 
-public class Oneal extends Enemy {
-
-    public Oneal(int x, int y) {
-        super(x, y, Sprite.oneal_left1.getFxImage());
-        ai = new AILevel2(bomber, this);
-        velocity = 2;
-    }
-
-    @Override
+	@Override
     public void deadAnimation() {
         if (timeDead-- > 0) {
-            this.setImg(Sprite.movingSprite(Sprite.oneal_dead, Sprite.mob_dead1, Sprite.mob_dead2, animate, timeTransfer).getFxImage());
+            this.setImg(Sprite.movingSprite(Sprite.kondoria_dead, Sprite.mob_dead1, Sprite.mob_dead2, animate, timeTransfer).getFxImage());
         } else {
             this.removeFromGame();
         }
@@ -71,13 +70,13 @@ public class Oneal extends Enemy {
             else ai.setWantToChangeDirect(false);
 
             if (direction == 0) {
-                this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
+                this.setImg(Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_left2, Sprite.kondoria_left3, animate, timeTransfer).getFxImage());
             } else if (direction == 1) {
-                this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_right2, Sprite.oneal_right3, animate, timeTransfer).getFxImage());
+                this.setImg(Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_right2, Sprite.kondoria_right3, animate, timeTransfer).getFxImage());
             } else if (direction == 2) {
-                this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_right1, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
+                this.setImg(Sprite.movingSprite(Sprite.kondoria_left1, Sprite.kondoria_right1, Sprite.kondoria_left3, animate, timeTransfer).getFxImage());
             } else if (direction == 3) {
-                this.setImg(Sprite.movingSprite(Sprite.oneal_right1, Sprite.oneal_left2, Sprite.oneal_right2, animate, timeTransfer).getFxImage());
+                this.setImg(Sprite.movingSprite(Sprite.kondoria_right1, Sprite.kondoria_left2, Sprite.kondoria_right2, animate, timeTransfer).getFxImage());
             }
 
         }
@@ -86,4 +85,5 @@ public class Oneal extends Enemy {
     public void updateBomberForAI() {
         ((AILevel2) ai).updateBomber(bomber);
     }
+
 }

@@ -27,7 +27,6 @@ public abstract class Enemy extends AnimatedEntity {
     protected AI ai;
 
     protected Bomber bomber = new Bomber(0, 0, new Keyboard());
-    protected final int timeTransfer = 26;
     protected int timeDead = 20;
     public static final int[] AddToXToCheckCollision = {2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2, 2};
     public static final int[] AddToYToCheckCollision = {2, 2, Sprite.SCALED_SIZE - 2, Sprite.SCALED_SIZE - 2};
@@ -41,9 +40,13 @@ public abstract class Enemy extends AnimatedEntity {
         int xUnit = (int) x / Sprite.SCALED_SIZE;
         int yUnit = (int) y / Sprite.SCALED_SIZE;
         Entity e = BombermanGame.canvas.getEntityInCoodinate(xUnit, yUnit);
+        if (this instanceof Kondoria && e instanceof Brick) {
+        	return true;
+        }
         if (e instanceof Wall || e instanceof Brick || e instanceof Bomb || e instanceof Portal) {
             return false;
         }
+        
         return true;
     }
 
