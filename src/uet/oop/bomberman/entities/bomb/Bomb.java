@@ -155,7 +155,7 @@ public class Bomb extends AnimatedEntity {
             BombermanGame.scores += 100;
         }
         if (e instanceof Bomber) {
-            ((Bomber) e).setAlive(false);
+            if (((Bomber) e).isCanPassFlame() == false) ((Bomber) e).setAlive(false);
         }
         if (e instanceof Bomb) {
             ((Bomb) e).setTimeBeforeExplore(2);

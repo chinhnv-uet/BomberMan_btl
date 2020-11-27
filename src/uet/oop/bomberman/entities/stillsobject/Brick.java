@@ -1,11 +1,8 @@
 package uet.oop.bomberman.entities.stillsobject;
 
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.AnimatedEntity;
-import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.Item;
-import uet.oop.bomberman.items.PlusBombItem;
 
 public class Brick extends AnimatedEntity {
 

@@ -6,14 +6,10 @@ import java.util.List;
 
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.character.Bomber;
-import uet.oop.bomberman.entities.enemy.Balloon;
-import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.entities.enemy.Oneal;
+import uet.oop.bomberman.entities.enemy.*;
 import uet.oop.bomberman.entities.stillsobject.*;
-import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.items.*;
 import uet.oop.bomberman.items.Item;
-import uet.oop.bomberman.items.PlusBombItem;
-import uet.oop.bomberman.items.PlusFlameItem;
 
 public class Level {
     private int level, w, h;
@@ -69,9 +65,21 @@ public class Level {
                             object = new Oneal(j, i);
                             enemyList.add((Oneal) object);
                             break;
+                        case '3':
+                        	object = new Doll(j, i);
+                        	enemyList.add((Doll) object);
+                        	break;
+                        case '4':
+                        	object = new Minvo(j, i);
+                        	enemyList.add((Minvo) object);
+                        	break;
+                        case '5':
+                        	object = new Kondoria(j, i);
+                        	enemyList.add((Kondoria) object);
+                        	break;
                         case 'b':
                             object = new Brick(j, i);
-                            Item pbi = new PlusBombItem(j, i, Sprite.powerup_bombs.getFxImage());
+                            Item pbi = new PlusBombItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pbi);
                             collidableEntities.add((Brick) object);
@@ -80,7 +88,7 @@ public class Level {
                             break;
                         case 'f':
                             object = new Brick(j, i);
-                            Item pfi = new PlusFlameItem(j, i, Sprite.powerup_flames.getFxImage());
+                            Item pfi = new PlusFlameItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pfi);
                             collidableEntities.add((Brick) object);
@@ -89,12 +97,39 @@ public class Level {
                             break;
                         case 's':
                             object = new Brick(j, i);
-                            Item psi = new PlusFlameItem(j, i, Sprite.powerup_speed.getFxImage());
+                            Item psi = new PlusSpeedItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, psi);
                             collidableEntities.add((Brick) object);
 
                             psi.setId("psi");
+                            break;
+                        case 'B':
+                            object = new Brick(j, i);
+                            Item bpi = new BombPassItem(j, i);
+
+                            ((Brick) object).setBrickHasItem(true, bpi);
+                            collidableEntities.add((Brick) object);
+
+                            bpi.setId("bpi");
+                            break;
+                        case 'F':
+                            object = new Brick(j, i);
+                            Item fpi = new FlamePassItem(j, i);
+
+                            ((Brick) object).setBrickHasItem(true, fpi);
+                            collidableEntities.add((Brick) object);
+
+                            fpi.setId("fpi");
+                            break;
+                        case 'W':
+                            object = new Brick(j, i);
+                            Item wpi = new BrickPassItem(j, i);
+
+                            ((Brick) object).setBrickHasItem(true, wpi);
+                            collidableEntities.add((Brick) object);
+
+                            wpi.setId("wpi");
                             break;
                     }
                 }

@@ -1,11 +1,11 @@
 package uet.oop.bomberman.items;
 
-import javafx.scene.image.Image;
+import uet.oop.bomberman.graphics.Sprite;
 
 public class PlusFlameItem extends Item {
 
-	public PlusFlameItem(int xUnit, int yUnit, Image img) {
-		super(xUnit, yUnit, img);
+	public PlusFlameItem(int xUnit, int yUnit) {
+		super(xUnit, yUnit, Sprite.powerup_flames.getFxImage());
 	}
 
 	

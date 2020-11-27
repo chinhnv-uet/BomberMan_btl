@@ -6,20 +6,15 @@ import java.io.IOException;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
-import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
 
 public class CanvasGame extends Canvas {
-    private int width;
-    private int height;
     private Game game = new Game();
     private Keyboard input = new Keyboard();
     public static final String TITTLE = "Bomberman";
 
     public CanvasGame(int width, int height) throws IOException {
         super(width, height);
-        this.width = width;
-        this.height = height;
 
         //key Event
         this.requestFocus();
