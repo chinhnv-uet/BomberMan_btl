@@ -25,7 +25,9 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     public static CanvasGame canvas;
     private List<Entity> entities = new ArrayList<>();
-    
+    public static int timeLiving = 200;
+    public static int scores = 0;
+    public static int lives = 3;
     
     public static Stage window;
     public static void main(String[] args) {
@@ -60,10 +62,6 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-        if (canvas.getGame().isGameOver()) {
-        	timer.stop();
-        	System.out.println("yes");
-        }
     }
 
     

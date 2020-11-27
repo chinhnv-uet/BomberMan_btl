@@ -152,6 +152,7 @@ public class Bomb extends AnimatedEntity {
         }
         if (e instanceof Enemy) {
             ((Enemy) e).setAlive(false);
+            BombermanGame.scores += 100;
         }
         if (e instanceof Bomber) {
             ((Bomber) e).setAlive(false);
