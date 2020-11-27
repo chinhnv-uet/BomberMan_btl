@@ -9,6 +9,8 @@ public abstract class Character extends AnimatedEntity {
     protected boolean moving = false;
     protected int velocity;
     protected final int timeTransfer = 26;
+    protected int timeShowDeath = 30;
+    protected boolean startDie = false;
 
     public Character(int x, int y, Image img) {
         super(x, y, img);
@@ -30,12 +32,16 @@ public abstract class Character extends AnimatedEntity {
         this.velocity = velocity;
     }
 
-    public int getVelocity() {
-        return velocity;
+    public boolean isStartDie() {
+        return startDie;
     }
 
-    public int getDirection() {
-        return direction;
+    public void setTimeShowDeath(int timeShowDeath) {
+        this.timeShowDeath = timeShowDeath;
+    }
+
+    public void setStartDie(boolean startDie) {
+        this.startDie = startDie;
     }
 
     public boolean isAlive() {

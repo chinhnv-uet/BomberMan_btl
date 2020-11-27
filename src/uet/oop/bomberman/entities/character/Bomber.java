@@ -71,8 +71,14 @@ public class Bomber extends Character {
 
         input = BombermanGame.canvas.getInput();
 
-        if (!isAlive()) {
-            this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, timeTransfer).getFxImage());
+        if (isStartDie()) {
+            if (timeShowDeath-- > 0) {
+                this.setImg(Sprite.movingSprite(Sprite.player_dead1, Sprite.player_dead2, Sprite.player_dead3, animate, 30).getFxImage());
+            } else {
+                setAlive(false);
+                setStartDie(false);
+                setTimeShowDeath(30);
+            }
         } else {
 
             if (input.space) {
@@ -228,14 +234,14 @@ public class Bomber extends Character {
             List<Flame> fl = b.getFlameList();
             for (Flame f : fl) {
                 if (f.getXUnit() == x && f.getYUnit() == y) {
-                    if (!canPassFlame) setAlive(false);
+                    if (!canPassFlame) setStartDie(true);
                     break;
                 }
             }
         }
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Enemy) {
-            setAlive(false);
+            setStartDie(true);
         }
 
         if (e instanceof Item) {

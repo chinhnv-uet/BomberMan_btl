@@ -67,9 +67,6 @@ public class Game {
         if (bomberman.isAlive() == false) {
             BombermanGame.lives -= 1;
 
-            System.out.println("Scores: " + BombermanGame.scores);
-            System.out.println("Lives: " + BombermanGame.lives);
-
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
         }
@@ -225,8 +222,8 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 15));
         gc.fillText("Time left: " + interval, 0, 440);
-        gc.fillText("Level: " + currentLevel, 100, 440);
-        gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
-        gc.fillText("Scores: " + BombermanGame.scores, 500, 440);
+        gc.fillText("Level: " + currentLevel, 200, 440);
+        gc.fillText("Lives: " + BombermanGame.lives, 500, 440);
+        gc.fillText("Scores: " + BombermanGame.scores, 700, 440);
     }
 }
