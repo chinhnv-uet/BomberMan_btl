@@ -1,6 +1,6 @@
 package uet.oop.bomberman.entities.enemy;
 
-import uet.oop.bomberman.ai.AILevel2;
+import uet.oop.bomberman.ai.AILevel3;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Kondoria extends Enemy {
@@ -8,7 +8,7 @@ public class Kondoria extends Enemy {
 	public Kondoria(int x, int y) {
 		super(x, y, Sprite.kondoria_left1.getFxImage());
 		velocity = 2;
-		ai = new AILevel2(bomber,this);
+		ai = new AILevel3(bomber,this);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class Kondoria extends Enemy {
     }
 
     public void updateBomberForAI() {
-        ((AILevel2) ai).updateBomber(bomber);
+        ((AILevel3) ai).updateBomber(bomber);
     }
 
 }

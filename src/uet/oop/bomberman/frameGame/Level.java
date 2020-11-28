@@ -131,6 +131,15 @@ public class Level {
 
                             wpi.setId("wpi");
                             break;
+                        case 'l':
+                        	object = new Brick(j, i);
+                            Item pli = new PlusLiveItem(j, i);
+
+                            ((Brick) object).setBrickHasItem(true, pli);
+                            collidableEntities.add((Brick) object);
+
+                            pli.setId("pli");
+                            break;
                     }
                 }
             }

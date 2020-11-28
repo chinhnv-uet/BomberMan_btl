@@ -1,6 +1,6 @@
 package uet.oop.bomberman.entities.enemy;
 
-import uet.oop.bomberman.ai.AILevel2;
+import uet.oop.bomberman.ai.AILevel3;
 import uet.oop.bomberman.graphics.Sprite;
 
 
@@ -8,7 +8,7 @@ public class Oneal extends Enemy {
 
     public Oneal(int x, int y) {
         super(x, y, Sprite.oneal_left1.getFxImage());
-        ai = new AILevel2(bomber, this);
+        ai = new AILevel3(bomber, this);
         velocity = 2;
     }
 
@@ -84,6 +84,6 @@ public class Oneal extends Enemy {
     }
 
     public void updateBomberForAI() {
-        ((AILevel2) ai).updateBomber(bomber);
+        ((AILevel3) ai).updateBomber(bomber);
     }
 }
