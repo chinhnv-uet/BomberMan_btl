@@ -22,10 +22,10 @@ public class MenuGame {
 
     public void showMenuGame(GraphicsContext gc) {
         try {
-            FileInputStream file = new FileInputStream("C:\\Users\\Admin\\Documents\\GitHub\\bgrGame.jpg");
+            FileInputStream file = new FileInputStream("src/uet/oop/bomberman/frameGame/bgrGame.jpg");
             Image bgrImg = new Image(file);
 
-            FileInputStream Pointer = new FileInputStream("C:\\Users\\Admin\\Documents\\GitHub\\bombPointer.png");
+            FileInputStream Pointer = new FileInputStream("src/uet/oop/bomberman/frameGame/bombPointer.png");
             Image pointer = new Image(Pointer);
 
             gc.setFill(Color.BLACK);
