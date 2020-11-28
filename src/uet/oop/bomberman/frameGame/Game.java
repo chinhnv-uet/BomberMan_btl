@@ -26,23 +26,26 @@ public class Game {
     private List<Bomb> bombs;
     private List<Enemy> enemyList;
 
+    //bomber
     public Bomber bomberman = new Bomber(1, 1, new Keyboard());
     public Bomber bomberInPreLevel = new Bomber(1, 1, new Keyboard());
     private Bomber originBomber;
 
+    //level
     public Level level = new Level();
     private int currentLevel = 1;
     private int timeShowTransferLevel = 100;
     private boolean TransferLevel = false;
 
     private boolean gameOver = false;
+    private boolean returnMainMenu = false;
 
     public Game() {
     }
 
-    
+
     public void createMap() {
-    	if (currentLevel > paths.length) return;
+        if (currentLevel > paths.length) return;
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
         HEIGHT = level.getH();
@@ -59,17 +62,15 @@ public class Game {
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
         setTime();
-        
     }
 
     public void update() {
         if (TransferLevel == false) {
-        	setDelay(delay + 400);
+            setDelay(delay + 400);
             updateAllEntities();
         }
         if (bomberman.isAlive() == false) {
-
-        	setDelay(delay + 300);
+            setDelay(delay + 300);
             BombermanGame.lives -= 1;
 
             bomberInPreLevel.restoreBomber(originBomber);
@@ -114,9 +115,9 @@ public class Game {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
             TransferLevel = true;
-            
+
             if (currentLevel > paths.length) {
-            	TransferLevel = false;
+                TransferLevel = false;
                 gameOver = true;
                 bomberman.setAlive(false);
                 return;
@@ -125,13 +126,13 @@ public class Game {
         }
     }
 
-     //set timer for one life
+    //set timer for one life
     Timer timer;
     static int interval;
 
     private int delay = 1000;
 
-	private int period = 1000;
+    private int period = 1000;
 
     public void setTime() {
         timer = new Timer();
@@ -144,8 +145,6 @@ public class Game {
             }
 
         }, delay, period);
-
-
     }
 
     public final int setInterval() {
@@ -163,8 +162,8 @@ public class Game {
         if (TransferLevel == false) {
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
-
             entityList.forEach(e -> e.render(gc));
+
             enemyList.forEach(e -> {
                 e.render(gc);
                 e.setBomber(bomberman);
@@ -175,14 +174,28 @@ public class Game {
             bomberman.render(gc);
         } else {
             if (timeShowTransferLevel-- > 0) {
-            	renderTransferLevelScreen(gc);
+                renderTransferLevelScreen(gc);
             } else {
                 TransferLevel = false;
-                timeShowTransferLevel = 50;
+                timeShowTransferLevel = 100;
             }
         }
-        if (gameOver && BombermanGame.lives == 0) renderGameOverScreen(gc);
-        else if (gameOver && BombermanGame.lives > 0) renderVictoryScreen(gc);
+
+        if (gameOver) {
+            if (timeShowTransferLevel-- > 0) { // show gameover animation
+                if (BombermanGame.lives == 0) renderGameOverScreen(gc);
+                else if (BombermanGame.lives > 0) renderVictoryScreen(gc);
+            } else { // return main menu
+                TransferLevel = false;
+                gameOver = false;
+                timeShowTransferLevel = 100;
+                returnMainMenu = true;
+
+                //reset lives and level
+                BombermanGame.lives = 3;
+                currentLevel = 1;
+            }
+        }
     }
 
 
@@ -218,10 +231,22 @@ public class Game {
         return gameOver;
     }
 
+    public void setTransferLevel(boolean transferLevel) {
+        TransferLevel = transferLevel;
+    }
+
+    public boolean isReturnMainMenu() {
+        return returnMainMenu;
+    }
+
+    public void setReturnMainMenu(boolean returnMainMenu) {
+        this.returnMainMenu = returnMainMenu;
+    }
 
     public void setDelay(int delay) {
-		this.delay = delay;
-	}
+        this.delay = delay;
+    }
+
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -232,6 +257,7 @@ public class Game {
         gc.fillText("Lives: " + BombermanGame.lives, 500, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 700, 440);
     }
+
     public void renderTransferLevelScreen(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
@@ -239,18 +265,22 @@ public class Game {
         gc.setFont(new Font("", 60));
         gc.fillText("Level: " + currentLevel, 400, 250);
     }
+
     public void renderGameOverScreen(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 60));
         gc.fillText("You Lose!\nGame Over :(", 350, 200);
+        gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
+
     public void renderVictoryScreen(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 60));
         gc.fillText("You win!\nCongrats!! :)", 350, 200);
+        gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
 }

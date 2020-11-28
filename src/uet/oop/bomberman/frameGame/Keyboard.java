@@ -6,6 +6,7 @@ import javafx.scene.input.KeyEvent;
 
 public class Keyboard {
     public boolean up, down, left, right, space;
+    public boolean release = false;// su dung de dieu huong lua chon trong menu game
 
     public Keyboard() {
         up = false;
@@ -31,6 +32,7 @@ public class Keyboard {
         if (e.getCode() == KeyCode.SPACE) {
             space = true;
         }
+        release = false;
     }
 
     public void updateKeyReleased(KeyEvent e) {
@@ -49,5 +51,10 @@ public class Keyboard {
         if (e.getCode() == KeyCode.SPACE) {
             space = false;
         }
+        release = true;
+    }
+
+    public void setRelease(boolean release) {
+        this.release = release;
     }
 }

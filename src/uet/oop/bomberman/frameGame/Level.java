@@ -66,17 +66,17 @@ public class Level {
                             enemyList.add((Oneal) object);
                             break;
                         case '3':
-                        	object = new Doll(j, i);
-                        	enemyList.add((Doll) object);
-                        	break;
+                            object = new Doll(j, i);
+                            enemyList.add((Doll) object);
+                            break;
                         case '4':
-                        	object = new Minvo(j, i);
-                        	enemyList.add((Minvo) object);
-                        	break;
+                            object = new Minvo(j, i);
+                            enemyList.add((Minvo) object);
+                            break;
                         case '5':
-                        	object = new Kondoria(j, i);
-                        	enemyList.add((Kondoria) object);
-                        	break;
+                            object = new Kondoria(j, i);
+                            enemyList.add((Kondoria) object);
+                            break;
                         case 'b':
                             object = new Brick(j, i);
                             Item pbi = new PlusBombItem(j, i);
@@ -132,7 +132,7 @@ public class Level {
                             wpi.setId("wpi");
                             break;
                         case 'l':
-                        	object = new Brick(j, i);
+                            object = new Brick(j, i);
                             Item pli = new PlusLiveItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pli);
@@ -157,15 +157,6 @@ public class Level {
         }
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-
     public List<Entity> getCollidableEntities() {
         return collidableEntities;
     }
@@ -182,15 +173,14 @@ public class Level {
     public List<Enemy> getEnemyList() {
         return enemyList;
     }
-	public int getW() {
-		return w;
-	}
+
+    public int getW() {
+        return w;
+    }
+
+    public int getH() {
+        return h;
+    }
 
 
-	public int getH() {
-		return h;
-	}
-
-	
-	
 }
