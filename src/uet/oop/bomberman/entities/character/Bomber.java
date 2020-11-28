@@ -47,6 +47,9 @@ public class Bomber extends Character {
         this.velocity = newBomber.velocity;
         this.maxBom = newBomber.maxBom;
         this.frameLen = newBomber.frameLen; 
+        this.canPassBom = newBomber.canPassBom;
+        this.canPassBrick = newBomber.canPassBrick;
+        this.canPassFlame = newBomber.canPassFlame;
     }
     public void reset() {
     	this.setX(0);
@@ -56,9 +59,6 @@ public class Bomber extends Character {
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
-        this.canPassBom = false;
-        this.canPassBrick = false;
-        this.canPassBrick = false;
     }
     
     
@@ -267,6 +267,9 @@ public class Bomber extends Character {
                 	break;
                 case "wpi":
                 	canPassBrick = true;
+                	break;
+                case "pli":
+                	BombermanGame.lives += 1;
                 	break;
             	
             }

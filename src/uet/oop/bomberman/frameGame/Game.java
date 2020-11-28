@@ -40,8 +40,9 @@ public class Game {
     public Game() {
     }
 
+    
     public void createMap() {
-
+    	if (currentLevel > paths.length) return;
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
         HEIGHT = level.getH();
@@ -58,13 +59,17 @@ public class Game {
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
         setTime();
+        
     }
 
     public void update() {
         if (TransferLevel == false) {
+        	setDelay(delay + 400);
             updateAllEntities();
         }
         if (bomberman.isAlive() == false) {
+
+        	setDelay(delay + 300);
             BombermanGame.lives -= 1;
 
             bomberInPreLevel.restoreBomber(originBomber);
@@ -109,9 +114,9 @@ public class Game {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
             TransferLevel = true;
-
+            
             if (currentLevel > paths.length) {
-                System.out.println("You win");
+            	TransferLevel = false;
                 gameOver = true;
                 bomberman.setAlive(false);
                 return;
@@ -120,12 +125,13 @@ public class Game {
         }
     }
 
-    // set timer for one life
-    static Timer timer;
+     //set timer for one life
+    Timer timer;
     static int interval;
 
-    int delay = 1000;
-    int period = 1200;
+    private int delay = 1000;
+
+	private int period = 1000;
 
     public void setTime() {
         timer = new Timer();
@@ -150,7 +156,6 @@ public class Game {
         return --interval;
     }
 
-
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -164,23 +169,20 @@ public class Game {
                 e.render(gc);
                 e.setBomber(bomberman);
                 if (e instanceof Oneal) ((Oneal) e).updateBomberForAI();
-                if (e instanceof Minvo) ((Minvo) e).updateBomberForAI();
                 if (e instanceof Kondoria) ((Kondoria) e).updateBomberForAI();
             });
             bomberman.bombRender(gc);
             bomberman.render(gc);
         } else {
             if (timeShowTransferLevel-- > 0) {
-                gc.setFill(Color.BLACK);
-                gc.fillRect(0, 0, 992, 448);
-                gc.setFill(Color.WHITE);
-                gc.setFont(new Font("", 60));
-                gc.fillText("Level: " + currentLevel, 400, 200);
+            	renderTransferLevelScreen(gc);
             } else {
                 TransferLevel = false;
-                timeShowTransferLevel = 100;
+                timeShowTransferLevel = 50;
             }
         }
+        if (gameOver && BombermanGame.lives == 0) renderGameOverScreen(gc);
+        else if (gameOver && BombermanGame.lives > 0) renderVictoryScreen(gc);
     }
 
 
@@ -216,6 +218,10 @@ public class Game {
         return gameOver;
     }
 
+
+    public void setDelay(int delay) {
+		this.delay = delay;
+	}
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -225,5 +231,26 @@ public class Game {
         gc.fillText("Level: " + currentLevel, 200, 440);
         gc.fillText("Lives: " + BombermanGame.lives, 500, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 700, 440);
+    }
+    public void renderTransferLevelScreen(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, 992, 448);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 60));
+        gc.fillText("Level: " + currentLevel, 400, 250);
+    }
+    public void renderGameOverScreen(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, 992, 448);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 60));
+        gc.fillText("You Lose!\nGame Over :(", 350, 200);
+    }
+    public void renderVictoryScreen(GraphicsContext gc) {
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0, 0, 992, 448);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font("", 60));
+        gc.fillText("You win!\nCongrats!! :)", 350, 200);
     }
 }

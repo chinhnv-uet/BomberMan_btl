@@ -5,11 +5,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Minvo extends Enemy {
-	//dac diem: giong Oneal. nhung di chuyen nhanh hon
+	
     public Minvo(int x, int y) {
-        super(x, y, Sprite.minvo_dead.getFxImage());
-        ai = new AILevel2(bomber, this);
-        velocity = 3;
+        super(x, y, Sprite.minvo_left1.getFxImage());
+        ai = new AILevel2();
+        velocity = 2;
     }
 
     @Override
@@ -83,7 +83,4 @@ public class Minvo extends Enemy {
         }
     }
 
-    public void updateBomberForAI() {
-        ((AILevel2) ai).updateBomber(bomber);
-    }
 }
