@@ -194,6 +194,7 @@ public class Game {
                 //reset lives and level
                 BombermanGame.lives = 3;
                 currentLevel = 1;
+                BombermanGame.scores = 0;
             }
         }
     }
