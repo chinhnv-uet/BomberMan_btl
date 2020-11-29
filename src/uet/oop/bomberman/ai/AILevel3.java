@@ -20,7 +20,9 @@ public class AILevel3 extends AI {
         double distance = Math.pow(e.getXUnit() - bomberman.getXUnit(), 2) +
                 Math.pow(e.getYUnit() - bomberman.getYUnit(), 2);
 
-        if (Math.sqrt(distance) < 3) {
+        if (Math.sqrt(distance) < 10 || e.getXUnit() == bomberman.getX() || e.getYUnit() == bomberman.getYUnit()) {
+
+            setWantToChangeDirect(true);
             return true;
         }
         return false;
@@ -32,7 +34,7 @@ public class AILevel3 extends AI {
             return generate.nextInt(4);
         } else {
         	
-            setWantToChangeDirect(true);
+            System.out.println("yes");
             if (e.isMoving()) {
                 int randomCheckDir = generate.nextInt(2); //check Row or Col first?
                 if (randomCheckDir == 0) {        //checkRow first
@@ -43,6 +45,7 @@ public class AILevel3 extends AI {
                     int vertical = checkCol();
                     if (vertical == -1) return checkRow();
                     else return vertical;
+                    
                 }
 
             } else {
@@ -54,14 +57,22 @@ public class AILevel3 extends AI {
     }
 
     private int checkRow() {
-        if (e.getXUnit() > bomberman.getXUnit()) return 2;
-        else if (e.getXUnit() < bomberman.getXUnit()) return 3;
+        if (e.getXUnit() > bomberman.getXUnit()) {
+        	return 2;
+        }
+        else if (e.getXUnit() < bomberman.getXUnit()) {
+        	return 3;
+        }
         return -1; //equal
     }
 
     private int checkCol() {
-        if (e.getYUnit() > bomberman.getYUnit()) return 0;
-        else if (e.getYUnit() < bomberman.getYUnit()) return 1;
+        if (e.getYUnit() > bomberman.getYUnit()) {
+        	return 0;
+        }
+        else if (e.getYUnit() < bomberman.getYUnit()) {
+        	return 1;
+        }
         return -1; //equal
     }
 

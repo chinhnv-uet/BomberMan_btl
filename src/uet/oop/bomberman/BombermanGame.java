@@ -39,6 +39,8 @@ public class BombermanGame extends Application {
         canvas = new CanvasGame(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
+        
+        
         // Tao root container
         root = new Group();
         root.getChildren().add(canvas);

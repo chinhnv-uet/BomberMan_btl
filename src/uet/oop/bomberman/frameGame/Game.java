@@ -3,6 +3,8 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uet.oop.bomberman.BombermanGame;
@@ -13,6 +15,8 @@ import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.*;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -59,6 +63,7 @@ public class Game {
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
         setTime();
+        setSound();
         
     }
 
@@ -146,6 +151,18 @@ public class Game {
         }, delay, period);
 
 
+    }
+    Media sound;
+    @SuppressWarnings("deprecation")
+	public void setSound()  {
+		
+		try {
+			sound = new Media(new File("res\\sounds\\sound.mp3").toURL().toString());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
     }
 
     public final int setInterval() {

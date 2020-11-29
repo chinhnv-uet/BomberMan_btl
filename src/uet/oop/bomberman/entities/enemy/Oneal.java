@@ -40,16 +40,21 @@ public class Oneal extends Enemy {
                     tempX = x + velocity;
                     break;
             }
-
+            
+            if (ai.wantToChangeDirect) {
+            	setDirection(ai.setDirect());
+                ai.setWantToChangeDirect(false);
+                return;
+            }
             for (int i = 0; i < 4; i++) {
                 int xx = tempX + AddToXToCheckCollision[i];
                 int yy = tempY + AddToYToCheckCollision[i];
-                if (!canMove(xx, yy) || ai.wantToChangeDirect) {
+                if (!canMove(xx, yy)) {
                     setDirection(ai.setDirect());
-                    ai.setWantToChangeDirect(false);
                     return;
                 }
             }
+            
             this.setX(tempX);
             this.setY(tempY);
 
@@ -68,7 +73,6 @@ public class Oneal extends Enemy {
             ifCollideWithItemOrFlame();
 
             if (animate % (3 * Sprite.SCALED_SIZE) == 0 && !ai.wantToChangeDirect) ai.setWantToChangeDirect(true);
-            else ai.setWantToChangeDirect(false);
 
             if (direction == 0) {
                 this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
