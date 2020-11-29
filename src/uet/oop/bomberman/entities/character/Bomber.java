@@ -25,7 +25,7 @@ public class Bomber extends Character {
     private boolean canPassFlame = false;
     private boolean canPassBrick = false;
 
-	private boolean killAllEnemies = false;
+    private boolean killAllEnemies = false;
     private boolean collideWithAPortal = false;
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
@@ -41,27 +41,28 @@ public class Bomber extends Character {
 
     //copy cac thuoc tinh cua bomber vao 1 bomber moi
     public void restoreBomber(Bomber newBomber) {
-    	reset();
-        
+        reset();
+
         this.input = newBomber.input;
         this.velocity = newBomber.velocity;
         this.maxBom = newBomber.maxBom;
-        this.frameLen = newBomber.frameLen; 
+        this.frameLen = newBomber.frameLen;
         this.canPassBom = newBomber.canPassBom;
         this.canPassBrick = newBomber.canPassBrick;
         this.canPassFlame = newBomber.canPassFlame;
     }
+
     public void reset() {
-    	this.setX(0);
-    	this.setY(0);
+        this.setX(0);
+        this.setY(0);
         this.setImg(Sprite.player_down.getFxImage());
         this.direction = 1;
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
     }
-    
-    
+
+
     public void update() {
         animate();
 
@@ -147,6 +148,10 @@ public class Bomber extends Character {
             if (b.getImg() == null) {
                 bombList.remove(b);
                 break;
+            } else {
+                for (Flame fl : b.getFlameList()) {
+                    fl.update();
+                }
             }
         }
     }
@@ -197,7 +202,7 @@ public class Bomber extends Character {
             int newY = (getY() + AddToYToCheckCollision[i]) / Sprite.SCALED_SIZE;
             Entity e = BombermanGame.canvas.getEntityInCoodinate(newX, newY);
 
-            if (e instanceof Wall || (e instanceof Brick && canPassBrick == false) ) {
+            if (e instanceof Wall || (e instanceof Brick && canPassBrick == false)) {
                 return false;
             }
             if (e instanceof Portal) {
@@ -247,31 +252,32 @@ public class Bomber extends Character {
         if (e instanceof Item) {
             switch (((Item) e).getId()) {
                 case "psi":
-                    velocity++;
+                    if (velocity < 3) { //velocity max = 3
+                        velocity++;
+                    }
                     break;
-                    
                 case "pbi":
-                    maxBom++;
+                    if (maxBom < 4) { //maxbom highest = 4
+                        maxBom++;
+                    }
                     break;
-                    
                 case "pfi":
-                    frameLen++;
+                    if (frameLen < 3) { //len max = 3
+                        frameLen++;
+                    }
                     break;
-                    
                 case "bpi":
-                	canPassBom = true;
-                	break;
-                	
+                    canPassBom = true;//TODO: trong khoang tg
+                    break;
                 case "fpi":
-                	canPassFlame = true;
-                	break;
+                    canPassFlame = true; //TODO: cai them pass trong 1 khoang thoi gian vao
+                    break;
                 case "wpi":
-                	canPassBrick = true;
-                	break;
+                    canPassBrick = true; //hiem
+                    break;
                 case "pli":
-                	BombermanGame.lives += 1;
-                	break;
-            	
+                    BombermanGame.lives += 1;
+                    break;
             }
 
             e.setImg(null);
@@ -289,10 +295,10 @@ public class Bomber extends Character {
 
 
     public boolean isCanPassFlame() {
-		return canPassFlame;
-	}
+        return canPassFlame;
+    }
 
-	public void setCanPassFlame(boolean canPassFlame) {
-		this.canPassFlame = canPassFlame;
-	}
+    public void setCanPassFlame(boolean canPassFlame) {
+        this.canPassFlame = canPassFlame;
+    }
 }

@@ -16,8 +16,8 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomb extends AnimatedEntity {
     private int timeBeforeExplore = 80;
-    private int timeFlame = 15;
-    private int timeTransfer = 40;
+    private int timeFlame = 14;
+    private final int timeTransfer = 40;
     private boolean explored;
     private boolean allowPass = true;
     private Bomber bomber;

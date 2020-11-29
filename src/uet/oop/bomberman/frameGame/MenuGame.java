@@ -22,7 +22,7 @@ public class MenuGame {
 
     public void showMenuGame(GraphicsContext gc) {
         try {
-            FileInputStream file = new FileInputStream("src/uet/oop/bomberman/frameGame/bgrGame.jpg");
+            FileInputStream file = new FileInputStream("src/uet/oop/bomberman/frameGame/bgrGame.png");
             Image bgrImg = new Image(file);
 
             FileInputStream Pointer = new FileInputStream("src/uet/oop/bomberman/frameGame/bombPointer.png");
