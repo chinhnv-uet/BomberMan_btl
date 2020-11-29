@@ -13,7 +13,7 @@ public class CanvasGame extends Canvas {
     private Keyboard input = new Keyboard();
     public static final String TITTLE = "Bomberman";
 
-    public CanvasGame(int width, int height) throws IOException {
+    public CanvasGame(int width, int height) {
         super(width, height);
 
         //key Event
@@ -32,13 +32,14 @@ public class CanvasGame extends Canvas {
             }
         });
 
+        //create map
         game.createMap();
     }
 
-    
-	public void update() {
+
+    public void update() {
         if (game.isGameOver()) {
-        	return;
+            return;
         }
         game.update();
     }
@@ -55,9 +56,15 @@ public class CanvasGame extends Canvas {
         return game.getEntityOnCoodinate(x, y);
     }
 
-	public Game getGame() {
-		return game;
-	}
+    public void setTransferLevel(boolean isTransfer) {
+        game.setTransferLevel(isTransfer);
+    }
 
-    
+    public boolean returnMenu() {
+        return game.isReturnMainMenu();
+    }
+
+    public void setReturnMenu(boolean returnMenu) {
+        game.setReturnMainMenu(returnMenu);
+    }
 }
