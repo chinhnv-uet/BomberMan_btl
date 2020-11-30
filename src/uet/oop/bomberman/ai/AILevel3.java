@@ -20,7 +20,7 @@ public class AILevel3 extends AI {
         double distance = Math.pow(e.getXUnit() - bomberman.getXUnit(), 2) +
                 Math.pow(e.getYUnit() - bomberman.getYUnit(), 2);
 
-        if (Math.sqrt(distance) < 10 || e.getXUnit() == bomberman.getX() || e.getYUnit() == bomberman.getYUnit()) {
+        if (Math.sqrt(distance) < 5 || e.getXUnit() == bomberman.getX() || e.getYUnit() == bomberman.getYUnit()) {
 
             setWantToChangeDirect(true);
             return true;
