@@ -13,6 +13,7 @@ import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundAndTimer.Sound;
 
 public class Bomb extends AnimatedEntity {
     private int timeBeforeExplore = 80;
@@ -25,13 +26,13 @@ public class Bomb extends AnimatedEntity {
     private int flameLen = 1;
     private List<Flame> flameList = new ArrayList<>();
 
+    public Sound soundExplode = new Sound(Sound.soundExplosion);
     public Bomb(int x, int y, int flameLen, Bomber bomber) {
         super(x, y, Sprite.bomb.getFxImage());
         this.flameLen = flameLen;
         explored = false;
         this.bomber = bomber;
     }
-
     @Override
     public void update() {
         animate();
@@ -50,6 +51,8 @@ public class Bomb extends AnimatedEntity {
                 explosion();
             }
         } else {
+
+        	soundExplode.setSound();
             if (timeFlame-- == 0) {
                 setImg(null);
             }
