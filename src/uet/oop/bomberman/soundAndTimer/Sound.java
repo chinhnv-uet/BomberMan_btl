@@ -67,7 +67,6 @@ public class Sound {
 			try {
 				mediaPlayer = new MediaPlayer(new Media(new File(path).toURL().toString()));
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

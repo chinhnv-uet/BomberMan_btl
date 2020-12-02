@@ -2,18 +2,14 @@ package uet.oop.bomberman.entities.character;
 
 import javafx.scene.canvas.GraphicsContext;
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.*;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.entities.stillsobject.Brick;
-import uet.oop.bomberman.entities.stillsobject.Portal;
-import uet.oop.bomberman.entities.stillsobject.Wall;
+import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.*;
-import uet.oop.bomberman.soundAndTimer.Sound;
-import uet.oop.bomberman.soundAndTimer.Timers;
+import uet.oop.bomberman.soundAndTimer.*;
 
 import java.util.ArrayList;
 import java.util.List;

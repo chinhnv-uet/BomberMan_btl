@@ -12,7 +12,7 @@ import uet.oop.bomberman.items.*;
 import uet.oop.bomberman.items.Item;
 
 public class Level {
-    private int level, w, h;
+    private int w, h;
 
     private List<Entity> collidableEntities;
     private List<Grass> grassList;
@@ -29,7 +29,6 @@ public class Level {
 
             String infoOfMap;
             infoOfMap = br.readLine();
-            level = Integer.parseInt(infoOfMap.substring(0, 1));
             h = Integer.parseInt(infoOfMap.substring(2, 4));
             w = Integer.parseInt(infoOfMap.substring(5));
 

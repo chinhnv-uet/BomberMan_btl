@@ -2,7 +2,6 @@ package uet.oop.bomberman.ai;
 
 
 import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.entities.character.Bomber;
 
 public class AILevel3 extends AI {

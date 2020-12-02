@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt"};
     public int WIDTH, HEIGHT;
 
     private List<Grass> grassList;
@@ -40,9 +40,7 @@ public class Game {
     private boolean gameOver = false;
     private boolean returnMainMenu = false;
     
-    private Timers timer = new Timers();
-    private Timers timeToStopCanPassBom = new Timers();
-    private Timers timeToStopCanPassFlame = new Timers();
+    private static Timers timer = new Timers();
     
     public Sound soundGame = new Sound(Sound.soundGame);
     public Sound soundLoseGame = new Sound(Sound.soundLoseGame);
@@ -102,13 +100,14 @@ public class Game {
             	isPlayingSoundGame = false;
             	soundLevel_up.setSound();
             	
-        	
-        	
         }
         
         if (bomberman.isAlive() == false) {
         	soundGame.getMediaPlayer().stop();
         	soundDead.setSound();
+        	
+            Bomber.canPassBom = false;
+            Bomber.canPassFlame = false;
         	
         	Timers.delay += 400;
             BombermanGame.lives -= 1;
@@ -117,7 +116,9 @@ public class Game {
         } else {
         	soundGame.setSound();
         }
+        
         if (BombermanGame.lives == 0) gameOver = true;
+        
         if (gameOver) {
         	soundGame.getMediaPlayer().stop();
         	soundDead.getMediaPlayer().stop();
@@ -128,6 +129,7 @@ public class Game {
 
     public void updateAllEntities() {
         bomberman.update();
+        
         for (Entity e : enemyList) {
             if (e.getImg() == null) {
                 enemyList.remove(e);
@@ -154,9 +156,11 @@ public class Game {
                 e.update();
             }
         }
+        
         if (enemyList.size() == 0) {
             bomberman.setKillAllEnemies((true));
         }
+        
         if (bomberman.isCollideWithAPortal()) {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
@@ -271,7 +275,8 @@ public class Game {
     }
 
     
-
+    int timeToStopFlame = 50*27;
+    int timeToStopBomb = 50*27;
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -281,16 +286,27 @@ public class Game {
         gc.fillText("Level: " + currentLevel, 200, 440);
         gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 400, 440);
+   
+    	if (Bomber.canPassFlame) {
+    		
+        	if (timeToStopFlame-- > 0 && timeToStopFlame/27 > 0) {
+        		gc.fillText("Pass Flame in: " + timeToStopFlame/27, 700, 440);
+        	} else {
+        		timeToStopFlame = 50*27;
+        		Bomber.canPassFlame = false;
+        	}
+        }
         if (Bomber.canPassBom) {
-        	timeToStopCanPassBom.setInterval(50);
-        	timeToStopCanPassBom.setTime();
-        	gc.fillText("Pass Bomb in: " + timeToStopCanPassBom.getInterval(), 500, 440);
+        	if (timeToStopBomb-- > 0 && timeToStopBomb/27 > 0) {
+        		gc.fillText("Pass Bomb in: " + timeToStopBomb/27, 500, 440);
+        	} else {
+        		timeToStopBomb = 50*27;
+        		Bomber.canPassBom = false;
+        	}
+        	
         }
-        if (Bomber.canPassFlame) {
-        	timeToStopCanPassFlame.setInterval(60);
-        	timeToStopCanPassFlame.setTime();
-        	gc.fillText("Pass Flame in: " + timeToStopCanPassFlame.getInterval(), 700, 440);
-        }
+      
+	        
     }
 
     public void renderTransferLevelScreen(GraphicsContext gc) {
