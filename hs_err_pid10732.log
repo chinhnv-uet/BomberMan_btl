@@ -1,0 +1,145 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 368656 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:389), pid=10732, tid=0x000000000000268c
+#
+# JRE version:  (8.0_261-b12) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.261-b12 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000000003a3000):  JavaThread "Unknown thread" [_thread_in_vm, id=9868, stack(0x0000000002310000,0x0000000002410000)]
+
+Stack: [0x0000000002310000,0x0000000002410000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x33e5f9]
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x00000000003a3000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=9868, stack(0x0000000002310000,0x0000000002410000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x00000000c1600000, size: 1002 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
+Compressed class space size: 1073741824 Address: 0x0000000014360000
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:
+0x000000013f510000 - 0x000000013f557000 	C:\Program Files\Java\jre1.8.0_261\bin\javaw.exe
+0x0000000076e40000 - 0x0000000076fdf000 	C:\Windows\SYSTEM32\ntdll.dll
+0x0000000076c20000 - 0x0000000076d3f000 	C:\Windows\system32\kernel32.dll
+0x000007fefc9b0000 - 0x000007fefca17000 	C:\Windows\system32\KERNELBASE.dll
+0x000007fefeb80000 - 0x000007fefec5b000 	C:\Windows\system32\ADVAPI32.dll
+0x000007fefdce0000 - 0x000007fefdd7f000 	C:\Windows\system32\msvcrt.dll
+0x000007fefdb70000 - 0x000007fefdb8f000 	C:\Windows\SYSTEM32\sechost.dll
+0x000007fefe550000 - 0x000007fefe67c000 	C:\Windows\system32\RPCRT4.dll
+0x0000000076d40000 - 0x0000000076e3a000 	C:\Windows\system32\USER32.dll
+0x000007fefec60000 - 0x000007fefecc7000 	C:\Windows\system32\GDI32.dll
+0x000007fefcd50000 - 0x000007fefcd5e000 	C:\Windows\system32\LPK.dll
+0x000007fefddd0000 - 0x000007fefde9b000 	C:\Windows\system32\USP10.dll
+0x000007fefa1b0000 - 0x000007fefa3a5000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.7601.24483_none_e372d88f30fbb845\COMCTL32.dll
+0x000007fefdb90000 - 0x000007fefdc01000 	C:\Windows\system32\SHLWAPI.dll
+0x000007fefdc10000 - 0x000007fefdc3e000 	C:\Windows\system32\IMM32.DLL
+0x000007fefe960000 - 0x000007fefea6b000 	C:\Windows\system32\MSCTF.dll
+0x000007fefa0a0000 - 0x000007fefa0a3000 	C:\Windows\system32\api-ms-win-core-synch-l1-2-0.DLL
+0x000007feedc50000 - 0x000007feedc65000 	C:\Program Files\Java\jre1.8.0_261\bin\vcruntime140.dll
+0x000007fef0470000 - 0x000007fef0474000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-runtime-l1-1-0.dll
+0x000007feeb220000 - 0x000007feeb31c000 	C:\Program Files\Java\jre1.8.0_261\bin\ucrtbase.DLL
+0x000007fef0460000 - 0x000007fef0463000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-core-localization-l1-2-0.dll
+0x000007feedc30000 - 0x000007feedc33000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-core-processthreads-l1-1-1.dll
+0x000007feedc40000 - 0x000007feedc43000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-core-file-l1-2-0.dll
+0x000007feedc10000 - 0x000007feedc13000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-core-timezone-l1-1-0.dll
+0x000007feedc20000 - 0x000007feedc23000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-core-file-l2-1-0.dll
+0x000007feed670000 - 0x000007feed673000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-heap-l1-1-0.dll
+0x000007feedc00000 - 0x000007feedc04000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-string-l1-1-0.dll
+0x000007feed650000 - 0x000007feed654000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-stdio-l1-1-0.dll
+0x000007feed660000 - 0x000007feed664000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-convert-l1-1-0.dll
+0x000007feecfd0000 - 0x000007feed06b000 	C:\Program Files\Java\jre1.8.0_261\bin\msvcp140.dll
+0x000007feed620000 - 0x000007feed623000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-locale-l1-1-0.dll
+0x000007feed640000 - 0x000007feed645000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-math-l1-1-0.dll
+0x000007feed600000 - 0x000007feed603000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-filesystem-l1-1-0.dll
+0x000007feed610000 - 0x000007feed613000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-time-l1-1-0.dll
+0x000007feed5e0000 - 0x000007feed5e3000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-environment-l1-1-0.dll
+0x000007feed5f0000 - 0x000007feed5f3000 	C:\Program Files\Java\jre1.8.0_261\bin\api-ms-win-crt-utility-l1-1-0.dll
+0x00000000718c0000 - 0x000000007212c000 	C:\Program Files\Java\jre1.8.0_261\bin\server\jvm.dll
+0x000007fef5590000 - 0x000007fef5599000 	C:\Windows\system32\WSOCK32.dll
+0x000007fefdd80000 - 0x000007fefddcd000 	C:\Windows\system32\WS2_32.dll
+0x000007fefea70000 - 0x000007fefea78000 	C:\Windows\system32\NSI.dll
+0x000007fef1b10000 - 0x000007fef1b4b000 	C:\Windows\system32\WINMM.dll
+0x000007fefba70000 - 0x000007fefba7c000 	C:\Windows\system32\VERSION.dll
+0x0000000076fe0000 - 0x0000000076fe7000 	C:\Windows\system32\PSAPI.DLL
+0x000007feed480000 - 0x000007feed490000 	C:\Program Files\Java\jre1.8.0_261\bin\verify.dll
+0x000007feed450000 - 0x000007feed47b000 	C:\Program Files\Java\jre1.8.0_261\bin\java.dll
+0x000007feed430000 - 0x000007feed448000 	C:\Program Files\Java\jre1.8.0_261\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=Cp1252 
+java_command: uet.oop.bomberman.BombermanGame
+java_class_path (initial): C:\Users\Administrator\Documents\GitHub\BomberMan_btl\target\classes;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-controls\15\javafx-controls-15.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-controls\15\javafx-controls-15-win.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-fxml\15\javafx-fxml-15.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-fxml\15\javafx-fxml-15-win.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-base\15\javafx-base-15.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-base\15\javafx-base-15-win.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-graphics\15\javafx-graphics-15.jar;C:\Users\Administrator\.m2\repository\org\openjfx\javafx-graphics\15\javafx-graphics-15-win.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk-14.0.2
+PATH=C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Git\cmd;C:\Program Files\Java\jdk-14.0.2\bin; C:\Program Files\Java\jdk-14.0.2\bin\;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2020.2.3\bin;;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin
+USERNAME=Administrator
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 , 64 bit Build 7601 (6.1.7601.24524)
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, clmul, ht, tsc, tscinvbit
+
+Memory: 4k page, physical 4099976k(487156k free), swap 12290076k(5116k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.261-b12) for windows-amd64 JRE (1.8.0_261-b12), built on Jun 18 2020 06:56:32 by "" with unknown MS VC++:1916
+
+time: Tue Dec  1 21:22:07 2020
+timezone: SE Asia Standard Time
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.frameGame.CanvasGame;
 import uet.oop.bomberman.frameGame.MenuGame;
 import uet.oop.bomberman.graphics.Sprite;
+import uet.oop.bomberman.soundAndTimer.Sound;
 
 public class BombermanGame extends Application {
 
@@ -18,7 +19,7 @@ public class BombermanGame extends Application {
     public Group root;
     private GraphicsContext gc;
     public static CanvasGame canvas;
-    public MenuGame menuGame;
+    public static MenuGame menuGame;
     public static Stage window;
 
     //thong so game
@@ -27,8 +28,9 @@ public class BombermanGame extends Application {
     public static int lives = 3;
 
     public boolean showMenu = true;
-    public boolean mute = false;
+    public static boolean mute = false;
 
+    public Sound menuSound = new Sound(Sound.soundMenu);
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
@@ -63,8 +65,10 @@ public class BombermanGame extends Application {
             public void handle(long l) {
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
+                    if (menuGame.isMute() == false) menuSound.setSound();
+                    else menuSound.getMediaPlayer().stop();
                     menuGame.update();
-
+                    
                     //handle selections in menu
                     if (menuGame.isQuit()) {
                         window.close();
@@ -75,6 +79,7 @@ public class BombermanGame extends Application {
                         canvas.setTransferLevel(true);
                     }
                 } else {
+                	menuSound.getMediaPlayer().stop();
                     canvas.update();
                     canvas.render();
                     if (canvas.returnMenu()) { //khi win or loose se return menu chinh

@@ -12,6 +12,8 @@ import uet.oop.bomberman.entities.stillsobject.Wall;
 import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.items.*;
+import uet.oop.bomberman.soundAndTimer.Sound;
+import uet.oop.bomberman.soundAndTimer.Timers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +23,8 @@ public class Bomber extends Character {
     private Keyboard input;
     private int maxBom = 1;
     private int frameLen = 1;
-    private boolean canPassBom = false;
-    private boolean canPassFlame = false;
+    public static boolean canPassBom = false;
+    public static boolean canPassFlame = false;
     private boolean canPassBrick = false;
 
     private boolean killAllEnemies = false;
@@ -30,6 +32,11 @@ public class Bomber extends Character {
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
+    
+    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
+    public Sound soundPlaceBomb = new Sound(Sound.soundPlaceBomb);
+    public Sound soundMoving = new Sound(Sound.soundMoving);
+    
 
     public Bomber(int x, int y, Keyboard kb) {
         super(x, y, Sprite.player_down.getFxImage()); // luc dau mac dinh la huong xuong
@@ -40,7 +47,8 @@ public class Bomber extends Character {
     }
 
     //copy cac thuoc tinh cua bomber vao 1 bomber moi
-    public void restoreBomber(Bomber newBomber) {
+    @SuppressWarnings("static-access")
+	public void restoreBomber(Bomber newBomber) {
         reset();
 
         this.input = newBomber.input;
@@ -61,7 +69,6 @@ public class Bomber extends Character {
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
     }
-
 
     public void update() {
         animate();
@@ -87,8 +94,12 @@ public class Bomber extends Character {
                     Entity e = BombermanGame.canvas.getEntityInCoodinate(getXUnit(), getYUnit());
                     if (e == null) {
                         bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen, this));
+
+                    	soundPlaceBomb.setSound();
                     }
                 }
+            } else {
+            	soundPlaceBomb.getMediaPlayer().stop();
             }
 
             if (input.up || input.right || input.left || input.down) {
@@ -111,9 +122,14 @@ public class Bomber extends Character {
                 }
             }
             if (isMoving()) {
+            	soundMoving.setSound();
                 calculateMove();
             }
+            else {
+            	soundMoving.getMediaPlayer().stop();
+            }
         }
+        
     }
 
     public void render() {
@@ -123,14 +139,14 @@ public class Bomber extends Character {
     public List<Bomb> getBombList() {
         return bombList;
     }
-
-    public void setCanPassBom(boolean canPassBom) {
-        this.canPassBom = canPassBom;
-    }
-
-    public boolean isCanPassBom() {
-        return canPassBom;
-    }
+//
+//    public void setCanPassBom(boolean canPassBom) {
+//        this.canPassBom = canPassBom;
+//    }
+//
+//    public boolean isCanPassBom() {
+//        return canPassBom;
+//    }
 
     public void bombRender(GraphicsContext gc) {
         for (Bomb b : bombList) {
@@ -250,6 +266,7 @@ public class Bomber extends Character {
         }
 
         if (e instanceof Item) {
+        	soundEatingItem.setSound();
             switch (((Item) e).getId()) {
                 case "psi":
                     if (velocity < 3) { //velocity max = 3
@@ -267,10 +284,10 @@ public class Bomber extends Character {
                     }
                     break;
                 case "bpi":
-                    canPassBom = true;//TODO: trong khoang tg
+                	canPassBom = true;
                     break;
                 case "fpi":
-                    canPassFlame = true; //TODO: cai them pass trong 1 khoang thoi gian vao
+                    canPassFlame = true; 
                     break;
                 case "wpi":
                     canPassBrick = true; //hiem
@@ -282,7 +299,7 @@ public class Bomber extends Character {
 
             e.setImg(null);
 
-        }
+        } 
     }
 
     public void setKillAllEnemies(boolean killAllEnemies) {
@@ -298,7 +315,7 @@ public class Bomber extends Character {
         return canPassFlame;
     }
 
-    public void setCanPassFlame(boolean canPassFlame) {
-        this.canPassFlame = canPassFlame;
-    }
+//    public void setCanPassFlame(boolean canPassFlame) {
+//        this.canPassFlame = canPassFlame;
+//    }
 }

@@ -1,8 +1,5 @@
 package uet.oop.bomberman.frameGame;
 
-
-import java.io.IOException;
-
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
@@ -10,7 +7,11 @@ import uet.oop.bomberman.entities.Entity;
 
 public class CanvasGame extends Canvas {
     private Game game = new Game();
-    private Keyboard input = new Keyboard();
+    public Game getGame() {
+		return game;
+	}
+
+	private Keyboard input = new Keyboard();
     public static final String TITTLE = "Bomberman";
 
     public CanvasGame(int width, int height) {
@@ -31,8 +32,8 @@ public class CanvasGame extends Canvas {
                 input.updateKeyReleased(keyEvent);
             }
         });
-
         //create map
+       
         game.createMap();
     }
 

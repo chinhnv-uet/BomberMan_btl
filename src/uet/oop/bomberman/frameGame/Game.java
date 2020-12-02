@@ -3,8 +3,6 @@ package uet.oop.bomberman.frameGame;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import uet.oop.bomberman.BombermanGame;
@@ -12,17 +10,15 @@ import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.*;
+import uet.oop.bomberman.soundAndTimer.Sound;
+import uet.oop.bomberman.soundAndTimer.Timers;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.*;
-
-import java.io.File;
-import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt",};
+    public static String[] paths = {"res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
 
     private List<Grass> grassList;
@@ -31,24 +27,37 @@ public class Game {
     private List<Enemy> enemyList;
 
     //bomber
-    public Bomber bomberman = new Bomber(1, 1, new Keyboard());
+    public static Bomber bomberman = new Bomber(1, 1, new Keyboard());
     public Bomber bomberInPreLevel = new Bomber(1, 1, new Keyboard());
     private Bomber originBomber;
 
     //level
     public Level level = new Level();
     private int currentLevel = 1;
-    private int timeShowTransferLevel = 100;
+    private int timeShowTransferLevel = 150;
     private boolean TransferLevel = false;
 
     private boolean gameOver = false;
     private boolean returnMainMenu = false;
+    
+    private Timers timer = new Timers();
+    private Timers timeToStopCanPassBom = new Timers();
+    private Timers timeToStopCanPassFlame = new Timers();
+    
+    public Sound soundGame = new Sound(Sound.soundGame);
+    public Sound soundLoseGame = new Sound(Sound.soundLoseGame);
+    public Sound soundWinGame = new Sound(Sound.soundWinGame);
+    public Sound soundLevel_up = new Sound(Sound.soundTransferLevel);
+    public Sound soundDead = new Sound(Sound.soundDead);
 
+    
+    
     public Game() {
     }
 
 
-    public void createMap() {
+	public void createMap() {
+    	//TODO: map được tạo ra trước, nên là thời gian cứ bị đếm trong khi chưa vào Game
         if (currentLevel > paths.length) return;
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
@@ -65,24 +74,56 @@ public class Game {
 
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
-        setTime();
-        setSound();
+        
+        timer.setInterval(BombermanGame.timeLiving);
+        timer.setTime();
     }
+    private boolean isPlayingSoundGame = false;
+    
 
-    public void update() {
-        if (TransferLevel == false) {
-            setDelay(delay + 400);
+	public void update() {
+		
+		
+		if (!TransferLevel) {
+			soundLevel_up.getMediaPlayer().stop();
+            Timers.delay += 400;
+            
             updateAllEntities();
+            
+            if  (!isPlayingSoundGame ) {
+        		soundGame.setSound();
+        		isPlayingSoundGame = true;
+            } 
+            
+            
+        } else {
+        	
+        	 	soundGame.getMediaPlayer().stop();
+            	isPlayingSoundGame = false;
+            	soundLevel_up.setSound();
+            	
+        	
+        	
         }
+        
         if (bomberman.isAlive() == false) {
-            setDelay(delay + 300);
+        	soundGame.getMediaPlayer().stop();
+        	soundDead.setSound();
+        	
+        	Timers.delay += 400;
             BombermanGame.lives -= 1;
-
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
+        } else {
+        	soundGame.setSound();
         }
         if (BombermanGame.lives == 0) gameOver = true;
-
+        if (gameOver) {
+        	soundGame.getMediaPlayer().stop();
+        	soundDead.getMediaPlayer().stop();
+        	if (BombermanGame.lives == 0) soundLoseGame.setSound();
+        	else if (BombermanGame.lives > 0) soundWinGame.setSound();
+        }
     }
 
     public void updateAllEntities() {
@@ -130,53 +171,15 @@ public class Game {
             this.createMap();
         }
     }
+    
 
-    //set timer for one life
-    Timer timer;
-    static int interval;
-
-    private int delay = 1000;
-
-    private int period = 1000;
-
-    public void setTime() {
-        timer = new Timer();
-        interval = BombermanGame.timeLiving;
-        timer.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                if (BombermanGame.lives != 0 && bomberman.isAlive()) setInterval();
-            }
-
-        }, delay, period);
-    }
-    Media sound;
-    @SuppressWarnings("deprecation")
-	public void setSound()  {
-		
-		try {
-			sound = new Media(new File("res\\sounds\\sound.mp3").toURL().toString());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-    }
-
-    public final int setInterval() {
-        if (interval <= 1) {
-            timer.cancel();
-            bomberman.setAlive(false);
-        }
-        return --interval;
-    }
 
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        if (TransferLevel == false) {
+        
+        if (TransferLevel == false ) {
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -189,24 +192,30 @@ public class Game {
             });
             bomberman.bombRender(gc);
             bomberman.render(gc);
-        } else {
+        } else if (TransferLevel == true) {
+        	
             if (timeShowTransferLevel-- > 0) {
                 renderTransferLevelScreen(gc);
             } else {
                 TransferLevel = false;
-                timeShowTransferLevel = 100;
+                timeShowTransferLevel = 150;
             }
         }
 
         if (gameOver) {
             if (timeShowTransferLevel-- > 0) { // show gameover animation
-                if (BombermanGame.lives == 0) renderGameOverScreen(gc);
-                else if (BombermanGame.lives > 0) renderVictoryScreen(gc);
+                if (BombermanGame.lives == 0) {
+                	renderGameOverScreen(gc);
+                }
+                else if (BombermanGame.lives > 0) {
+                	renderVictoryScreen(gc);
+                }
             } else { // return main menu
                 TransferLevel = false;
                 gameOver = false;
-                timeShowTransferLevel = 100;
+                timeShowTransferLevel = 150;
                 returnMainMenu = true;
+                
 
                 //reset lives and level
                 BombermanGame.lives = 3;
@@ -261,19 +270,27 @@ public class Game {
         this.returnMainMenu = returnMainMenu;
     }
 
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
+    
 
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 15));
-        gc.fillText("Time left: " + interval, 0, 440);
+        gc.fillText("Time left: " + timer.getInterval(), 0, 440);
         gc.fillText("Level: " + currentLevel, 200, 440);
-        gc.fillText("Lives: " + BombermanGame.lives, 500, 440);
-        gc.fillText("Scores: " + BombermanGame.scores, 700, 440);
+        gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
+        gc.fillText("Scores: " + BombermanGame.scores, 400, 440);
+        if (Bomber.canPassBom) {
+        	timeToStopCanPassBom.setInterval(50);
+        	timeToStopCanPassBom.setTime();
+        	gc.fillText("Pass Bomb in: " + timeToStopCanPassBom.getInterval(), 500, 440);
+        }
+        if (Bomber.canPassFlame) {
+        	timeToStopCanPassFlame.setInterval(60);
+        	timeToStopCanPassFlame.setTime();
+        	gc.fillText("Pass Flame in: " + timeToStopCanPassFlame.getInterval(), 700, 440);
+        }
     }
 
     public void renderTransferLevelScreen(GraphicsContext gc) {

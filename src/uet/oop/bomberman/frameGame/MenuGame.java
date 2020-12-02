@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import uet.oop.bomberman.BombermanGame;
 
 import java.io.FileInputStream;
 
@@ -22,10 +23,10 @@ public class MenuGame {
 
     public void showMenuGame(GraphicsContext gc) {
         try {
-            FileInputStream file = new FileInputStream("src/uet/oop/bomberman/frameGame/bgrGame.png");
+            FileInputStream file = new FileInputStream("src\\uet\\oop\\bomberman\\frameGame\\bgrGame.png");
             Image bgrImg = new Image(file);
 
-            FileInputStream Pointer = new FileInputStream("src/uet/oop/bomberman/frameGame/bombPointer.png");
+            FileInputStream Pointer = new FileInputStream("src\\uet\\oop\\bomberman\\frameGame\\bombPointer.png");
             Image pointer = new Image(Pointer);
 
             gc.setFill(Color.BLACK);
@@ -39,8 +40,10 @@ public class MenuGame {
             String sound;
             if (mute) {
                 sound = "off";
+                BombermanGame.mute = true;
             } else {
                 sound = "on";
+                BombermanGame.mute = false;
             }
             gc.fillText("Sound: " + sound, 400, 300);
 
