@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import uet.oop.bomberman.BombermanGame;
-import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.frameGame.Game;
 
 public class Timers {
@@ -32,8 +31,8 @@ public class Timers {
         if (interval <= 1) {
             timers.cancel();
             if (check == BombermanGame.timeLiving) Game.bomberman.setAlive(false);
-            if (check == 50) Bomber.canPassBom = false;
-            if (check == 60) Bomber.canPassFlame = false;
+//            if (check == 50) Bomber.canPassBom = false;
+//            if (check == 60) Bomber.canPassFlame = false;
             setPlay(false);
             
         }
