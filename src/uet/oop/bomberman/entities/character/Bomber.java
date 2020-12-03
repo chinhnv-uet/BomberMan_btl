@@ -91,11 +91,11 @@ public class Bomber extends Character {
                     if (e == null) {
                         bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen, this));
 
-                    	soundPlaceBomb.setSound();
+                    	soundPlaceBomb.play();
                     }
                 }
             } else {
-            	soundPlaceBomb.getMediaPlayer().stop();
+            	soundPlaceBomb.stop();
             }
 
             if (input.up || input.right || input.left || input.down) {
@@ -118,11 +118,11 @@ public class Bomber extends Character {
                 }
             }
             if (isMoving()) {
-            	soundMoving.setSound();
+            	soundMoving.play();
                 calculateMove();
             }
             else {
-            	soundMoving.getMediaPlayer().stop();
+            	soundMoving.stop();
             }
         }
         
@@ -262,7 +262,7 @@ public class Bomber extends Character {
         }
 
         if (e instanceof Item) {
-        	soundEatingItem.setSound();
+        	soundEatingItem.play();
             switch (((Item) e).getId()) {
                 case "psi":
                     if (velocity < 3) { //velocity max = 3

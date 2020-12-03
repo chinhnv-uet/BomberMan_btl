@@ -76,35 +76,30 @@ public class Game {
         timer.setInterval(BombermanGame.timeLiving);
         timer.setTime();
     }
-    private boolean isPlayingSoundGame = false;
     
 
 	public void update() {
 		
 		
 		if (!TransferLevel) {
-			soundLevel_up.getMediaPlayer().stop();
+			soundLevel_up.stop();
             Timers.delay += 400;
             
             updateAllEntities();
             
-            if  (!isPlayingSoundGame ) {
-        		soundGame.setSound();
-        		isPlayingSoundGame = true;
-            } 
+            soundGame.play();
             
             
         } else {
         	
-        	 	soundGame.getMediaPlayer().stop();
-            	isPlayingSoundGame = false;
-            	soundLevel_up.setSound();
+        	 	soundGame.stop();
+            	soundLevel_up.play();
             	
         }
         
         if (bomberman.isAlive() == false) {
-        	soundGame.getMediaPlayer().stop();
-        	soundDead.setSound();
+        	soundGame.stop();
+        	soundDead.play();
         	
             Bomber.canPassBom = false;
             Bomber.canPassFlame = false;
@@ -114,16 +109,16 @@ public class Game {
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
         } else {
-        	soundGame.setSound();
+        	soundGame.play();
         }
         
         if (BombermanGame.lives == 0) gameOver = true;
         
         if (gameOver) {
-        	soundGame.getMediaPlayer().stop();
-        	soundDead.getMediaPlayer().stop();
-        	if (BombermanGame.lives == 0) soundLoseGame.setSound();
-        	else if (BombermanGame.lives > 0) soundWinGame.setSound();
+        	soundGame.stop();
+        	soundDead.stop();
+        	if (BombermanGame.lives == 0) soundLoseGame.play();
+        	else if (BombermanGame.lives > 0) soundWinGame.play();
         }
     }
 
