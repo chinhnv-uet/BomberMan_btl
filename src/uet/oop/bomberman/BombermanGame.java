@@ -13,8 +13,8 @@ import uet.oop.bomberman.graphics.Sprite;
 public class BombermanGame extends Application {
 
     //frame game
-    public final int WIDTH = 31;
-    public final int HEIGHT = 14;
+    public static int WIDTH = 31;
+    public static int HEIGHT = 14;
     public Group root;
     private GraphicsContext gc;
     public static CanvasGame canvas;
@@ -35,8 +35,16 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        window = stage;
 
+//        new Thread(new Runnable() {
+//            // The wrapper thread is unnecessary, unless it blocks on the
+//            // Clip finishing; see comments.
+//            public void run() {
+//                Sound.playTitle();
+//            }
+//        }).start();
+
+        window = stage;
         // Tao Canvas
         canvas = new CanvasGame(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();

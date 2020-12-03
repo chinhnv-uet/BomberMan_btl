@@ -41,7 +41,7 @@ public class Sound {
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
-    public static void main(String[] args) {
+    public static void playTitle() {
         try {
             filePath = "src/uet/oop/bomberman/darlingIFXX.wav";
             Sound audioPlayer = new Sound();
@@ -50,11 +50,11 @@ public class Sound {
             Scanner sc = new Scanner(System.in);
 
             while (true) {
-//                System.out.println("1. pause");
-//                System.out.println("2. resume");
-//                System.out.println("3. restart");
-//                System.out.println("4. stop");
-//                System.out.println("5. Jump to specific time");
+                System.out.println("1. pause");
+                System.out.println("2. resume");
+                System.out.println("3. restart");
+                System.out.println("4. stop");
+                System.out.println("5. Jump to specific time");
                 int c = sc.nextInt();
 //                audioPlayer.gotoChoice(c);
                 if (c == 4)
