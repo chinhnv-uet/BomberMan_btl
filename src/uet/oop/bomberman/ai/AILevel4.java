@@ -2,21 +2,34 @@ package uet.oop.bomberman.ai;
 
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.Enemy;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
-import uet.oop.bomberman.graphics.Sprite;
 
-public class AILevel4 extends AI {
-    private int n = BombermanGame.HEIGHT - 1;
-    private int m = BombermanGame.WIDTH;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AILevel4 extends AI { //TODO: ailevel4 k the an item de tang toc do chay dc
+    private final int n = BombermanGame.HEIGHT - 1;
+    private final int m = BombermanGame.WIDTH;
     private int[][] board = new int[n][m];
 
-    private int[] addToX = {0, 0, -1, 1};
-    private int[] addToY = {-1, 1, 0, 0};
+    //to check can reach bomber or not
+    private int[][] f = new int[n][m];
+
+    //if cant find bomber
+    private int lastestDirection = 0;
+
+    private final int[] addToX = {0, -1, 0, 1};
+    private final int[] addToY = {1, 0, -1, 0};
     private int count = 0;
+
+    private boolean reachedTarget = true;
+    private point target = new point();
+    private List<point> targetList = new ArrayList<>();
 
     private Bomber bomber;
     private Enemy e;
@@ -24,52 +37,81 @@ public class AILevel4 extends AI {
     public AILevel4(Bomber bomber, Enemy e) {
         this.bomber = bomber;
         this.e = e;
+        target.x = e.getXUnit();
+        target.y = e.getYUnit();
     }
 
-    private void init() {
+    private void init(int[][] board) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                board[i][j] = -10; //mac dinh la -1
+                board[i][j] = -1; //mac dinh la -1
             }
         }
         count = 0;
     }
 
-    //TODO: xet truong hop tim thay trc, ko tim thay sau
     public int setDirect() {
-        init();
-        findBomber(e.getXUnit(), e.getYUnit()); //ko tim duong den bomber dc
-        printBoard();
-        return truyVet();
+        if (targetList.size() == 0) {
+            init(board);
+            findBomber(e.getXUnit(), e.getYUnit());
+        }
+        init(f);
+        if (canReachBomber(e.getXUnit(), e.getYUnit())) {
+            return truyVet();
+        } else {
+            if (e.getAnimate() % 40 == 0) {
+                lastestDirection =  generate.nextInt(4);
+            }
+            return lastestDirection;
+        }
     }
 
     private int truyVet() {
-        int x = e.getXUnit();
-        int y = e.getYUnit();
-        for (int i = 0; i < 4; i++) {
-            int xx = x + addToX[i];
-            int yy = y + addToY[i];
-            if (xx >= 0 && xx < m && yy >= 0 && yy < n) {
-                if (board[y][x] == board[yy][xx] + 1) {
-                    if (!tronVenTrong1VienGach(x*32, y*32)) { // chua den chinh giua 2 vien gach
-                        if (i < 2) {
-                            return 1-i;
-                        } else {
-                            return 5-i;
-                        }
-                    } else {
-                        return i;
-                    }
-                }
+        if (!reachedTarget) {
+            return findTarget();
+        }
+        else {
+            if (targetList.size() > 0) {
+                target = targetList.get(targetList.size() - 1);
+                targetList.remove(targetList.size() - 1);
+            } else {
+                init(board);
+                findBomber(e.getXUnit(), e.getYUnit());
             }
+            reachedTarget = false;
         }
         return generate.nextInt(4); // neu k tim thay thi random
     }
 
+    private int findTarget() {
+        int x = target.x * 32;
+        int y = target.y * 32;
+        if (e.getX() > x + 1) {
+            return 2;
+        } else if (e.getX() < x) {
+            return 3;
+        } else if (e.getY() < y) {
+            return 1;
+        } else if (e.getY() > y + 1) {
+            return 0;
+        } else {
+            if (targetList.size() == 0) {
+                reachedTarget = true;
+                return generate.nextInt(4);
+            }
+            else {
+                target = targetList.get(targetList.size() - 1);
+                targetList.remove(targetList.size() - 1);
+            }
+            return findTarget();
+        }
+    }
+
     private boolean findBomber(int x, int y) { //use backtracking
         board[y][x] = 0; // 0 la da xet qua
-        if (x == bomber.getXUnit() && y == bomber.getYUnit()) {
+        if (x == bomber.getXUnit() && y == bomber.getYUnit()) {//tim thay bomber
             board[y][x] = ++count;
+            targetList.add(new point(x, y));
             return true;
         } else {
             for (int i = 0; i < 4; i++) {
@@ -77,13 +119,14 @@ public class AILevel4 extends AI {
                 int yNew = y + addToY[i];
 
                 if (xNew >= 0 && xNew < m && yNew >= 0 && yNew < n) {
-                    if (board[yNew][xNew] == -10) {
+                    if (board[yNew][xNew] == -1) {
                         Entity tmp = BombermanGame.canvas.getEntityInCoodinate(xNew, yNew);
-                        if (tmp instanceof Wall || tmp instanceof Brick || tmp instanceof Portal) {
+                        if (tmp instanceof Wall || tmp instanceof Brick || tmp instanceof Portal || tmp instanceof Bomb) {
                             continue;
                         }
                         if (findBomber(xNew, yNew)) {
                             board[y][x] = ++count;
+                            targetList.add(new point(x, y));
                             return true;
                         }
                     }
@@ -97,28 +140,49 @@ public class AILevel4 extends AI {
         this.bomber = bomber;
     }
 
-    public void printBoard() {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("---------------------");
+    public void ReachedTargetAndChangeDirect() {
+        targetList = new ArrayList<>();
+        init(board);
+        findBomber(e.getXUnit(), e.getYUnit());
+        this.reachedTarget = true;
     }
 
-    public int getXUnit() {
-        return (int) Math.floor((e.getX()-3)/ Sprite.SCALED_SIZE);
-    }
-
-    public int getYUnit() {
-        return (int) Math.floor((e.getY()-3)/ Sprite.SCALED_SIZE);
-    }
-
-    public boolean tronVenTrong1VienGach(int xx, int yy) {
-        if (e.getX()+1 > xx && e.getY() + 1 > yy) {
+    private boolean canReachBomber(int x, int y) { //use backtracking
+        f[y][x] = 0; // 0 la da xet qua
+        if (x == bomber.getXUnit() && y == bomber.getYUnit()) {//tim thay bomber
             return true;
+        } else {
+            for (int i = 0; i < 4; i++) {
+                int xNew = x + addToX[i];
+                int yNew = y + addToY[i];
+
+                if (xNew >= 0 && xNew < m && yNew >= 0 && yNew < n) {
+                    if (f[yNew][xNew] == -1) {
+                        Entity tmp = BombermanGame.canvas.getEntityInCoodinate(xNew, yNew);
+                        if (tmp instanceof Wall || tmp instanceof Brick || tmp instanceof Portal || tmp instanceof Bomb) {
+                            continue;
+                        }
+                        if (canReachBomber(xNew, yNew)) {
+                            return true;
+                        }
+                    }
+                }
+            }
         }
         return false;
+    }
+}
+
+class point {
+    public int x;
+    public int y;
+
+    public point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public point() {
+
     }
 }

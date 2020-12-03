@@ -206,15 +206,17 @@ public class Game {
                 return e;
             }
         }
-        for (Enemy e : enemyList) {
-            if (e.getXUnit() == x && e.getYUnit() == y) {
-                return e;
-            }
-        }
+
         bombs = bomberman.getBombList();
         for (Bomb b : bombs) {
             if (b.getXUnit() == x && b.getYUnit() == y) {
                 return b;
+            }
+        }
+
+        for (Enemy e : enemyList) {
+            if (e.getXUnit() == x && e.getYUnit() == y) {
+                return e;
             }
         }
         return null;

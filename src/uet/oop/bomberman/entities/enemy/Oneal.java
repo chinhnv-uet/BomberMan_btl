@@ -1,6 +1,5 @@
 package uet.oop.bomberman.entities.enemy;
 
-import uet.oop.bomberman.ai.AILevel3;
 import uet.oop.bomberman.ai.AILevel4;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -88,5 +87,9 @@ public class Oneal extends Enemy {
 
     public void updateBomberForAI() {
         ((AILevel4) ai).updateBomber(bomber);
+    }
+
+    public void CollideWithBomb() {
+        ((AILevel4) ai).ReachedTargetAndChangeDirect();
     }
 }

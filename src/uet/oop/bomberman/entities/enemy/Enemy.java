@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.enemy;
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.ai.AI;
+import uet.oop.bomberman.ai.AILevel4;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.Entity;
@@ -44,6 +45,9 @@ public abstract class Enemy extends AnimatedEntity {
         	return true;
         }
         if (e instanceof Wall || e instanceof Brick || e instanceof Bomb || e instanceof Portal) {
+            if (this instanceof Oneal && e instanceof Bomb) {
+                ((Oneal) this).CollideWithBomb();
+            }
             return false;
         }
         
@@ -90,6 +94,10 @@ public abstract class Enemy extends AnimatedEntity {
         return velocity;
     }
 
+    public int getAnimate() {
+        return animate;
+    }
+
 
     public void setVelocity(int velocity) {
         this.velocity = velocity;
@@ -101,6 +109,7 @@ public abstract class Enemy extends AnimatedEntity {
         //enemy gap bat ky item auto se tang speed
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Item) {
+            //TODO: if (e instanceof Oneal) tranh loi ailevel4
             setVelocity(velocity + 1);
             e.setImg(null);
         }
