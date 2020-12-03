@@ -65,8 +65,8 @@ public class BombermanGame extends Application {
             public void handle(long l) {
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
-                    if (menuGame.isMute() == false) menuSound.setSound();
-                    else menuSound.getMediaPlayer().stop();
+                    if (menuGame.isMute() == false) menuSound.play();
+                    else menuSound.stop();
                     menuGame.update();
                     
                     //handle selections in menu
@@ -79,7 +79,7 @@ public class BombermanGame extends Application {
                         canvas.setTransferLevel(true);
                     }
                 } else {
-                	menuSound.getMediaPlayer().stop();
+                	menuSound.stop();
                     canvas.update();
                     canvas.render();
                     if (canvas.returnMenu()) { //khi win or loose se return menu chinh
