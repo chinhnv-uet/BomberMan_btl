@@ -40,9 +40,8 @@ public class Sound {
 	public void play() {
 		if (running || BombermanGame.mute) return;
 		clip.setFramePosition(0);
-		if (path.equals(soundMenu)) clip.loop(Clip.LOOP_CONTINUOUSLY);
+		if (path.equals(soundMenu) || path.equals(soundGame)) clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
-		System.out.println(path);
 		running = true;
 	}
 	public void stop() {
