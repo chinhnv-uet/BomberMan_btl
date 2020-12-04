@@ -14,13 +14,16 @@ import uet.oop.bomberman.soundAndTimer.Sound;
 import uet.oop.bomberman.soundAndTimer.Timers;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.enemy.*;
+
 import java.util.List;
 
 
 public class Game {
     public static String[] paths = {"res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
+    public boolean pause = false;
 
+    //list to render in canvas
     private List<Grass> grassList;
     private List<Entity> entityList; // list to check collision
     private List<Bomb> bombs;
@@ -39,25 +42,28 @@ public class Game {
 
     private boolean gameOver = false;
     private boolean returnMainMenu = false;
-    
+
     private static Timers timer = new Timers();
-    
+
+    //sound game
     public Sound soundGame = new Sound(Sound.soundGame);
     public Sound soundLoseGame = new Sound(Sound.soundLoseGame);
     public Sound soundWinGame = new Sound(Sound.soundWinGame);
     public Sound soundLevel_up = new Sound(Sound.soundTransferLevel);
     public Sound soundDead = new Sound(Sound.soundDead);
 
-    
-    
+
     public Game() {
     }
 
+    public void createNewGame() {
+        currentLevel = 1;
+        createMap();
+    }
+    public void createMap() {
+        //TODO: map được tạo ra trước, nên là thời gian cứ bị đếm trong khi chưa vào Game
+        if (currentLevel > paths.length) return;
 
-	public void createMap() {
-    	//TODO: map được tạo ra trước, nên là thời gian cứ bị đếm trong khi chưa vào Game
-		if (currentLevel > paths.length) return;
-        
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
         HEIGHT = level.getH();
@@ -73,53 +79,52 @@ public class Game {
 
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
-        
+
         timer.setInterval(BombermanGame.timeLiving);
         timer.setTime();
     }
-    
 
-	public void update() {
-		
-		if (!TransferLevel) {
-			soundLevel_up.stop();
+
+    public void update() {
+        if (!TransferLevel) {
+            soundLevel_up.stop();
             Timers.delay += 400;
-            
+
             updateAllEntities();
-            
+
             if (timeShowTransferLevel == 150) soundGame.play();
-            
-            
+
+
         } else {
-        	 	soundLevel_up.play();
-        	 	soundGame.stop();
-            	
+            soundLevel_up.play();
+            soundGame.stop();
+
         }
-        
+
         if (bomberman.isAlive() == false) {
-        	soundGame.stop();
-        	
+            soundGame.stop();
+
             Bomber.canPassBom = false;
             Bomber.canPassFlame = false;
-        	
-        	Timers.delay += 400;
+
+            Timers.delay += 400;
             if (!gameOver) {
-            	BombermanGame.lives -= 1;
-            	new Sound(Sound.soundDead).play();
+                BombermanGame.lives -= 1;
+                new Sound(Sound.soundDead).play();
             }
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
         } else {
-        	if (!TransferLevel) soundGame.play();
+            if (!TransferLevel) soundGame.play();
         }
-        
+
         if (BombermanGame.lives == 0) gameOver = true;
-        
+
     }
 
     public void updateAllEntities() {
         bomberman.update();
-        
+
         for (Entity e : enemyList) {
             if (e.getImg() == null) {
                 enemyList.remove(e);
@@ -146,11 +151,11 @@ public class Game {
                 e.update();
             }
         }
-        
+
         if (enemyList.size() == 0) {
             bomberman.setKillAllEnemies((true));
         }
-        
+
         if (bomberman.isCollideWithAPortal()) {
             bomberInPreLevel.restoreBomber(bomberman);
             currentLevel++;
@@ -164,15 +169,14 @@ public class Game {
             this.createMap();
         }
     }
-    
 
 
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        
-        if (TransferLevel == false ) {
+
+        if (TransferLevel == false) {
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -196,26 +200,25 @@ public class Game {
 
         if (gameOver) {
 
-        	soundGame.stop();
-        	soundDead.stop();
-        	bomberman.setAlive(false);
-        	boolean win = BombermanGame.lives > 0;
-        	if (!win) soundLoseGame.play();
-        	else soundWinGame.play();
-        	
+            soundGame.stop();
+            soundDead.stop();
+            bomberman.setAlive(false);
+            boolean win = BombermanGame.lives > 0;
+            if (!win) soundLoseGame.play();
+            else soundWinGame.play();
+
             if (timeShowTransferLevel-- > 0) { // show gameover animation
                 if (!win) {
-                	renderGameOverScreen(gc);
-                }
-                else if (win) {
-                	renderVictoryScreen(gc);
+                    renderGameOverScreen(gc);
+                } else if (win) {
+                    renderVictoryScreen(gc);
                 }
             } else { // return main menu
                 TransferLevel = false;
                 gameOver = false;
                 timeShowTransferLevel = 150;
                 returnMainMenu = true;
-                
+
 
                 //reset lives and level
                 BombermanGame.lives = 3;
@@ -270,9 +273,10 @@ public class Game {
         this.returnMainMenu = returnMainMenu;
     }
 
-    
-    int timeToStopFlame = 50*27;
-    int timeToStopBomb = 50*27;
+
+    int timeToStopFlame = 50 * 27;
+    int timeToStopBomb = 50 * 27;
+
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -282,34 +286,34 @@ public class Game {
         gc.fillText("Level: " + currentLevel, 200, 440);
         gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 400, 440);
-   
-    	if (Bomber.canPassFlame) {
-    		
-        	if (timeToStopFlame-- > 0 && timeToStopFlame/27 > 0) {
-        		gc.fillText("Pass Flame in: " + timeToStopFlame/27, 700, 440);
-        	} else {
-        		timeToStopFlame = 50*27;
-        		Bomber.canPassFlame = false;
-        	}
+
+        if (Bomber.canPassFlame) {
+
+            if (timeToStopFlame-- > 0 && timeToStopFlame / 27 > 0) {
+                gc.fillText("Pass Flame in: " + timeToStopFlame / 27, 700, 440);
+            } else {
+                timeToStopFlame = 50 * 27;
+                Bomber.canPassFlame = false;
+            }
         }
         if (Bomber.canPassBom) {
-        	if (timeToStopBomb-- > 0 && timeToStopBomb/27 > 0) {
-        		gc.fillText("Pass Bomb in: " + timeToStopBomb/27, 500, 440);
-        	} else {
-        		timeToStopBomb = 50*27;
-        		Bomber.canPassBom = false;
-        	}
-        	
+            if (timeToStopBomb-- > 0 && timeToStopBomb / 27 > 0) {
+                gc.fillText("Pass Bomb in: " + timeToStopBomb / 27, 500, 440);
+            } else {
+                timeToStopBomb = 50 * 27;
+                Bomber.canPassBom = false;
+            }
+
         }
-      
-	        
+
+
     }
 
     public void renderTransferLevelScreen(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font("", 60));
+        gc.setFont(new Font(60));
         gc.fillText("Level: " + currentLevel, 400, 250);
     }
 
@@ -317,7 +321,7 @@ public class Game {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font("", 60));
+        gc.setFont(new Font(60));
         gc.fillText("You Lose!\nGame Over :(", 350, 200);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
@@ -326,8 +330,28 @@ public class Game {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, 992, 448);
         gc.setFill(Color.WHITE);
-        gc.setFont(new Font("", 60));
+        gc.setFont(new Font(60));
         gc.fillText("You win!\nCongrats!! :)", 350, 200);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
+
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void pauseSound() {
+        if (soundGame.isRunning()) {
+            soundGame.pause();
+        }
+    }
+
+    public void resumeSound() {
+        if (!soundGame.isRunning() && soundGame.getStatus().equals("pause")) {
+            soundGame.resume();
+        }
     }
 }

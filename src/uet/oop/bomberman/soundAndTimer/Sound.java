@@ -21,10 +21,12 @@ public class Sound {
 	public static String soundMoving = "res\\sounds\\moving.wav";
 	public static String soundPlaceBomb = "res\\sounds\\placeBomb.wav";
 	
-	
+	long currentFrame;
 	Clip clip;
 	private boolean running = false;
 	private String path;
+	private String status = "";
+
 	public Sound(String path){
 		this.path = path;
 		try {
@@ -34,7 +36,7 @@ public class Sound {
 			clip.open(ais);
 			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	public void play() {
@@ -42,20 +44,57 @@ public class Sound {
 		clip.setFramePosition(0);
 		if (path.equals(soundMenu)) clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
-		System.out.println(path);
+//		System.out.println(path);
 		running = true;
+		status = "play";
 	}
 	public void stop() {
 		clip.stop();
 		running = false;
+		status = "stop";
 	}
+	public void pause() {
+		clip.stop();
+		running = false;
+		currentFrame = clip.getMicrosecondPosition();
+		status = "pause";
+	}
+
+	public void resume() {
+		if (status.equals("pause")) {
+			if (running || BombermanGame.mute) return;
+			clip.close();
+			resetAudioStream();
+			if (path.equals(soundGame)) {
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			}
+			clip.setMicrosecondPosition(currentFrame);
+			clip.start();
+			running = true;
+			status = "play";
+		}
+	}
+
+	private void resetAudioStream() {
+		try {
+			File file = new File(path);
+			AudioInputStream ais = AudioSystem.getAudioInputStream(file);;
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public boolean isRunning() {
 		return running;
 	}
 	public void setRunning(boolean running) {
 		this.running = running;
 	}
-	
 
-
+	public String getStatus() {
+		return status;
+	}
 }
