@@ -16,15 +16,18 @@ public class Timers {
     private int check; //kiem tra xem dem nguoc thoi gian cho doi tuong nao
     public void setTime() {
         timers = new Timer();
+        if (!play) {
+        	timers.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    setInterval();
+                }
+
+            }, delay, period);
+        }
+        
         setPlay(true);
-        timers.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                setInterval();
-            }
-
-        }, delay, period);
         
     }
     public final int setInterval() {
