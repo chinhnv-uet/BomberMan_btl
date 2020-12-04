@@ -1,12 +1,10 @@
 package uet.oop.bomberman.soundAndTimer;
 
 import java.io.File;
-import java.io.IOException;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import uet.oop.bomberman.BombermanGame;
 
@@ -23,51 +21,41 @@ public class Sound {
 	public static String soundMoving = "res\\sounds\\moving.wav";
 	public static String soundPlaceBomb = "res\\sounds\\placeBomb.wav";
 	
-	Long currentFrame;
+	
 	Clip clip;
-
-	String status;
-
-	AudioInputStream audioInputStream;
-	private String filePath;
-	
-	public Sound(String path)  {
-		this.filePath = path;
-		
+	private boolean running = false;
+	private String path;
+	public Sound(String path){
+		this.path = path;
 		try {
-			audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+			File file = new File(path);
+			AudioInputStream ais = AudioSystem.getAudioInputStream(file);; 
 			clip = AudioSystem.getClip();
-			clip.open(audioInputStream);
+			clip.open(ais);
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
-
 	}
-	
 	public void play() {
+		if (running || BombermanGame.mute) return;
+		clip.setFramePosition(0);
+		if (path.equals(soundMenu)) clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
+		System.out.println(path);
+		running = true;
 	}
 	public void stop() {
 		clip.stop();
-		clip.close();
-		try {
-			resetAudioStream();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		running = false;
+	}
+	public boolean isRunning() {
+		return running;
+	}
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 	
-	public void resetAudioStream() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-		clip.open(audioInputStream);
-	}
-    
-	public String getFilePath() {
-		return filePath;
-	}
-	public void setFilePath(String path) {
-		this.filePath = path;
-	}
 
 
 }

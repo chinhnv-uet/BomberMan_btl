@@ -18,7 +18,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
 
     private List<Grass> grassList;
@@ -56,7 +56,8 @@ public class Game {
 
 	public void createMap() {
     	//TODO: map được tạo ra trước, nên là thời gian cứ bị đếm trong khi chưa vào Game
-        if (currentLevel > paths.length) return;
+		if (currentLevel > paths.length) return;
+        
         level.createMapLevel(paths[currentLevel - 1]);
         WIDTH = level.getW();
         HEIGHT = level.getH();
@@ -80,46 +81,40 @@ public class Game {
 
 	public void update() {
 		
-		
 		if (!TransferLevel) {
 			soundLevel_up.stop();
             Timers.delay += 400;
             
             updateAllEntities();
             
-            soundGame.play();
+            if (timeShowTransferLevel == 150) soundGame.play();
             
             
         } else {
-        	
+        	 	soundLevel_up.play();
         	 	soundGame.stop();
-            	soundLevel_up.play();
             	
         }
         
         if (bomberman.isAlive() == false) {
         	soundGame.stop();
-        	soundDead.play();
         	
             Bomber.canPassBom = false;
             Bomber.canPassFlame = false;
         	
         	Timers.delay += 400;
-            BombermanGame.lives -= 1;
+            if (!gameOver) {
+            	BombermanGame.lives -= 1;
+            	new Sound(Sound.soundDead).play();
+            }
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
         } else {
-        	soundGame.play();
+        	if (!TransferLevel) soundGame.play();
         }
         
         if (BombermanGame.lives == 0) gameOver = true;
         
-        if (gameOver) {
-        	soundGame.stop();
-        	soundDead.stop();
-        	if (BombermanGame.lives == 0) soundLoseGame.play();
-        	else if (BombermanGame.lives > 0) soundWinGame.play();
-        }
     }
 
     public void updateAllEntities() {
@@ -164,7 +159,6 @@ public class Game {
             if (currentLevel > paths.length) {
                 TransferLevel = false;
                 gameOver = true;
-                bomberman.setAlive(false);
                 return;
             }
             this.createMap();
@@ -192,7 +186,6 @@ public class Game {
             bomberman.bombRender(gc);
             bomberman.render(gc);
         } else if (TransferLevel == true) {
-        	
             if (timeShowTransferLevel-- > 0) {
                 renderTransferLevelScreen(gc);
             } else {
@@ -202,11 +195,19 @@ public class Game {
         }
 
         if (gameOver) {
+
+        	soundGame.stop();
+        	soundDead.stop();
+        	bomberman.setAlive(false);
+        	boolean win = BombermanGame.lives > 0;
+        	if (!win) soundLoseGame.play();
+        	else soundWinGame.play();
+        	
             if (timeShowTransferLevel-- > 0) { // show gameover animation
-                if (BombermanGame.lives == 0) {
+                if (!win) {
                 	renderGameOverScreen(gc);
                 }
-                else if (BombermanGame.lives > 0) {
+                else if (win) {
                 	renderVictoryScreen(gc);
                 }
             } else { // return main menu
