@@ -52,7 +52,7 @@ public class Bomb extends AnimatedEntity {
             }
         } else {
 
-        	soundExplode.play();
+        	if (soundExplode.isRunning() == false) soundExplode.play();
             if (timeFlame-- == 0) {
                 setImg(null);
             }

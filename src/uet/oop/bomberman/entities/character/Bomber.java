@@ -91,7 +91,7 @@ public class Bomber extends Character {
                     if (e == null) {
                         bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen, this));
 
-                    	soundPlaceBomb.play();
+                    	if (!soundPlaceBomb.isRunning()) soundPlaceBomb.play();
                     }
                 }
             } else {
@@ -118,7 +118,7 @@ public class Bomber extends Character {
                 }
             }
             if (isMoving()) {
-            	soundMoving.play();
+            	if (!soundMoving.isRunning()) soundMoving.play();
                 calculateMove();
             }
             else {
@@ -262,7 +262,7 @@ public class Bomber extends Character {
         }
 
         if (e instanceof Item) {
-        	soundEatingItem.play();
+        	new Sound(Sound.soundEatingItem).play();
             switch (((Item) e).getId()) {
                 case "psi":
                     if (velocity < 3) { //velocity max = 3

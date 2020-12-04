@@ -1,5 +1,6 @@
 package uet.oop.bomberman;
 
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -35,8 +36,9 @@ public class BombermanGame extends Application {
         Application.launch(BombermanGame.class);
     }
 
-    @Override
+	@Override
     public void start(Stage stage) {
+    	
         window = stage;
 
         // Tao Canvas
@@ -61,12 +63,13 @@ public class BombermanGame extends Application {
         menuGame = new MenuGame(canvas.getInput());
 
         AnimationTimer timer = new AnimationTimer() {
-            @Override
+			@Override
             public void handle(long l) {
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
-                    if (menuGame.isMute() == false) menuSound.play();
-                    else menuSound.stop();
+                    
+                    if (menuGame.isMute() == false && !menuSound.isRunning()) menuSound.play();
+                    else if (menuGame.isMute()) menuSound.stop(); 
                     menuGame.update();
                     
                     //handle selections in menu
@@ -82,7 +85,7 @@ public class BombermanGame extends Application {
                 	menuSound.stop();
                     canvas.update();
                     canvas.render();
-                    if (canvas.returnMenu()) { //khi win or loose se return menu chinh
+                    if (canvas.returnMenu()) { //khi win or loose se return menu chin
                         showMenu = true;
                         canvas.setReturnMenu(false);
                     }
