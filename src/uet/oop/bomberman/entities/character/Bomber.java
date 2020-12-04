@@ -225,7 +225,7 @@ public class Bomber extends Character {
                     return false;
             }
             if (e instanceof Enemy) {
-                setAlive(false);
+                setStartDie(false);
                 return true;
             }
             if (e instanceof Bomb) {

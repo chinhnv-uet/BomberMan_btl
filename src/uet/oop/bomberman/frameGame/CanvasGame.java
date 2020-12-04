@@ -32,9 +32,6 @@ public class CanvasGame extends Canvas {
                 input.updateKeyReleased(keyEvent);
             }
         });
-        //create map
-       
-        game.createMap();
     }
 
 

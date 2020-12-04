@@ -86,11 +86,6 @@ public abstract class Enemy extends AnimatedEntity {
         isAlive = alive;
     }
 
-    public int getVelocity() {
-        return velocity;
-    }
-
-
     public void setVelocity(int velocity) {
         this.velocity = velocity;
     }

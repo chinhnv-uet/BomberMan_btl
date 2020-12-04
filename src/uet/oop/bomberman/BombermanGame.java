@@ -8,7 +8,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.frameGame.CanvasGame;
+import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.frameGame.MenuGame;
+import uet.oop.bomberman.frameGame.PauseGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.soundAndTimer.Sound;
 
@@ -20,8 +22,9 @@ public class BombermanGame extends Application {
     public Group root;
     private GraphicsContext gc;
     public static CanvasGame canvas;
-    public static MenuGame menuGame;
     public static Stage window;
+    public MenuGame menuGame;
+    public PauseGame pauseGame;
 
     //thong so game
     public static int timeLiving = 300;
@@ -32,21 +35,21 @@ public class BombermanGame extends Application {
     public static boolean mute = false;
 
     public Sound menuSound = new Sound(Sound.soundMenu);
+
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
     }
 
-	@Override
+    @Override
     public void start(Stage stage) {
-    	
+
         window = stage;
 
         // Tao Canvas
         canvas = new CanvasGame(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
 
-        
-        
+
         // Tao root container
         root = new Group();
         root.getChildren().add(canvas);
@@ -61,31 +64,58 @@ public class BombermanGame extends Application {
 
         //init menu game
         menuGame = new MenuGame(canvas.getInput());
+        pauseGame = new PauseGame(canvas.getInput());
 
         AnimationTimer timer = new AnimationTimer() {
-			@Override
+            @Override
             public void handle(long l) {
+
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
-                    
+
                     if (menuGame.isMute() == false && !menuSound.isRunning()) menuSound.play();
-                    else if (menuGame.isMute()) menuSound.stop(); 
+                    else if (menuGame.isMute()) menuSound.stop();
                     menuGame.update();
-                    
+
                     //handle selections in menu
                     if (menuGame.isQuit()) {
                         window.close();
                     } else if (menuGame.isStartGame()) {
+                        //create new map level 1
+                        canvas.getGame().createNewGame();
+
                         mute = menuGame.isMute();
                         menuGame.setStartGame(false);
                         showMenu = false;
                         canvas.setTransferLevel(true);
+                        if (canvas.getInput().pause == true) { // truong hop an 'p' trong menu
+                            canvas.getInput().pause = false;
+                        }
                     }
+                } else if (canvas.getInput().pause == true) { //if pause
+                    if (!canvas.getGame().isPause()) {
+                        canvas.getGame().pauseSound();
+                        canvas.getGame().setPause(true);
+                    }
+
+                    pauseGame.showPauseGame(gc);
+                    pauseGame.update();
+
+                    //handle selections in pause game
+                    if (pauseGame.getFinalSelected() == 2) { //return main menu
+                        canvas.getInput().pause = false;
+                        showMenu = true;
+                    } else if (pauseGame.getFinalSelected() == 1) { //if resume game
+                        canvas.getInput().pause = false;
+                        canvas.getGame().resumeSound();
+                    }
+                    canvas.getGame().setPause(false);
+                    pauseGame.setFinalSelected(-1);
                 } else {
-                	menuSound.stop();
+                    menuSound.stop();
                     canvas.update();
                     canvas.render();
-                    if (canvas.returnMenu()) { //khi win or loose se return menu chin
+                    if (canvas.returnMenu()) { //khi win or loose se return menu chinh
                         showMenu = true;
                         canvas.setReturnMenu(false);
                     }

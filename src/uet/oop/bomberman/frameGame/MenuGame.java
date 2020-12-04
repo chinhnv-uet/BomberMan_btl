@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 
 public class MenuGame {
     private boolean startGame = false;
-    private boolean mute = false;
     private boolean quit = false;
 
     private Keyboard keyboard;
@@ -37,14 +36,8 @@ public class MenuGame {
             gc.setFont(new Font("", 40));
             gc.fillText("New game", 400, 250);
 
-            String sound;
-            if (mute) {
-                sound = "off";
-                BombermanGame.mute = true;
-            } else {
-                sound = "on";
-                BombermanGame.mute = false;
-            }
+            String sound = BombermanGame.mute ? "off" : "on";;
+
             gc.fillText("Sound: " + sound, 400, 300);
 
             gc.fillText("Quit", 400, 350);
@@ -64,13 +57,13 @@ public class MenuGame {
             Selecting--;
             keyboard.setRelease(true);
         }
-        if (keyboard.space && !keyboard.release) {
+        if ((keyboard.space || keyboard.enter) && !keyboard.release) {
             switch (Selecting) {
                 case 0:
                     startGame = true;
                     break;
                 case 1:
-                    mute = !mute;
+                    BombermanGame.mute = !BombermanGame.mute;
                     break;
                 case 2:
                     quit = true;
@@ -89,7 +82,7 @@ public class MenuGame {
     }
 
     public boolean isMute() {
-        return mute;
+        return BombermanGame.mute;
     }
 
     public boolean isQuit() {
