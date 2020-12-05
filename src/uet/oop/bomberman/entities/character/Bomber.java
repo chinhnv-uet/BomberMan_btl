@@ -64,14 +64,8 @@ public class Bomber extends Character {
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
-        BombermanGame.lives = 3;
 
-        this.velocity = 1;
-        this.maxBom = 1;
-        this.frameLen = 1;
-        this.canPassBom = false;
-        this.canPassBrick = false;
-        this.canPassFlame = false;
+
     }
 
     public void update() {
@@ -136,7 +130,9 @@ public class Bomber extends Character {
         
     }
 
-    public void render() {
+    
+
+	public void render() {
 
     }
 
@@ -319,6 +315,29 @@ public class Bomber extends Character {
         return canPassFlame;
     }
 
+    public int getMaxBom() {
+		return maxBom;
+	}
+
+	public void setMaxBom(int maxBom) {
+		this.maxBom = maxBom;
+	}
+
+	public int getFrameLen() {
+		return frameLen;
+	}
+
+	public void setFrameLen(int frameLen) {
+		this.frameLen = frameLen;
+	}
+
+	public boolean isCanPassBrick() {
+		return canPassBrick;
+	}
+
+	public void setCanPassBrick(boolean canPassBrick) {
+		this.canPassBrick = canPassBrick;
+	}
 //    public void setCanPassFlame(boolean canPassFlame) {
 //        this.canPassFlame = canPassFlame;
 //    }
