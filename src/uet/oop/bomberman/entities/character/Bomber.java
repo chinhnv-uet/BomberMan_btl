@@ -29,7 +29,7 @@ public class Bomber extends Character {
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
 
-    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
+//    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
     public Sound soundPlaceBomb = new Sound(Sound.soundPlaceBomb);
     public Sound soundMoving = new Sound(Sound.soundMoving);
 
@@ -85,7 +85,7 @@ public class Bomber extends Character {
             } else {
                 setAlive(false);
                 setStartDie(false);
-                setTimeShowDeath(30);
+                setTimeShowDeath(100);
             }
         } else {
 
@@ -255,14 +255,18 @@ public class Bomber extends Character {
             List<Flame> fl = b.getFlameList();
             for (Flame f : fl) {
                 if (f.getXUnit() == x && f.getYUnit() == y) {
-                    if (!canPassFlame) setStartDie(true);
+                    if (!canPassFlame && !startDie) {
+                        setStartDie(true);
+                        new Sound(Sound.soundDead).play();
+                    }
                     break;
                 }
             }
         }
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
-        if (e instanceof Enemy) {
+        if (e instanceof Enemy && !startDie) {
             setStartDie(true);
+            new Sound(Sound.soundDead).play();
         }
 
         if (e instanceof Item) {

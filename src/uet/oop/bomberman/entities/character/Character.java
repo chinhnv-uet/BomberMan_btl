@@ -9,7 +9,7 @@ public abstract class Character extends AnimatedEntity {
     protected boolean moving = false;
     protected int velocity;
     protected final int timeTransfer = 26;
-    protected int timeShowDeath = 30;
+    protected int timeShowDeath = 100;
     protected boolean startDie = false;
 
     public Character(int x, int y, Image img) {

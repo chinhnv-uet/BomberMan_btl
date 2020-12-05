@@ -79,6 +79,7 @@ public class BombermanGame extends Application {
 
                     //handle selections in menu
                     if (menuGame.isQuit()) {
+                        mute = true;
                         window.close();
                     } else if (menuGame.isStartGame()) {
                         //create new map level 1

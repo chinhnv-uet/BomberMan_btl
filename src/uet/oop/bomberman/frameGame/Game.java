@@ -111,7 +111,7 @@ public class Game {
             Timers.delay += 400;
             if (!gameOver) {
                 BombermanGame.lives -= 1;
-                new Sound(Sound.soundDead).play();
+//                new Sound(Sound.soundDead).play();
             }
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
