@@ -61,10 +61,10 @@ public class Game {
         currentLevel = 1;
         createMap();
         bomberman.setVelocity(1);
-        bomberman.maxBom = 1;
-        bomberman.frameLen = 1;
+        bomberman.setMaxBom(1);
+        bomberman.setFrameLen(1);;
         bomberman.canPassBom = false;
-        bomberman.canPassBrick = false;
+        bomberman.setCanPassBrick(false);
         bomberman.canPassFlame = false;
     }
     public void createMap() {
@@ -93,11 +93,6 @@ public class Game {
 
    
 	public void update() {
-    	
-//    	if (BombermanGame.menuGame.isStartGame()) {
-//    		bomberman.reset();
-//            
-//    	}
         if (!TransferLevel) {
             soundLevel_up.stop();
             Timers.delay += 400;

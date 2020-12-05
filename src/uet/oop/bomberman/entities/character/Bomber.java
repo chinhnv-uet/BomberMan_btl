@@ -17,11 +17,11 @@ import java.util.List;
 public class Bomber extends Character {
     private List<Bomb> bombList = new ArrayList<>();
     private Keyboard input;
-    public int maxBom = 1;
-    public int frameLen = 1;
+    private int maxBom = 1;
+    private int frameLen = 1;
     public static boolean canPassBom = false;
     public static boolean canPassFlame = false;
-    public boolean canPassBrick = false;
+    private boolean canPassBrick = false;
 
     private boolean killAllEnemies = false;
     private boolean collideWithAPortal = false;
@@ -130,7 +130,9 @@ public class Bomber extends Character {
         
     }
 
-    public void render() {
+    
+
+	public void render() {
 
     }
 
@@ -313,6 +315,29 @@ public class Bomber extends Character {
         return canPassFlame;
     }
 
+    public int getMaxBom() {
+		return maxBom;
+	}
+
+	public void setMaxBom(int maxBom) {
+		this.maxBom = maxBom;
+	}
+
+	public int getFrameLen() {
+		return frameLen;
+	}
+
+	public void setFrameLen(int frameLen) {
+		this.frameLen = frameLen;
+	}
+
+	public boolean isCanPassBrick() {
+		return canPassBrick;
+	}
+
+	public void setCanPassBrick(boolean canPassBrick) {
+		this.canPassBrick = canPassBrick;
+	}
 //    public void setCanPassFlame(boolean canPassFlame) {
 //        this.canPassFlame = canPassFlame;
 //    }
