@@ -361,8 +361,19 @@ public class Game {
         if (soundGame.isRunning()) {
             soundGame.pause();
         }
+
         if (soundDead.isRunning()) soundDead.pause();
         if (Bomber.soundEatingItem.isRunning()) Bomber.soundEatingItem.pause();
+
+        if (soundLevel_up.isRunning()) {
+            soundLevel_up.pause();
+        }
+        if (soundWinGame.isRunning()) {
+            soundWinGame.pause();
+        }
+        if (soundLoseGame.isRunning()) {
+            soundLoseGame.pause();
+        
     }
 
     public void resumeSound() {
@@ -375,6 +386,15 @@ public class Game {
         }
         if (!Bomber.soundEatingItem.isRunning() && Bomber.soundEatingItem.getStatus().equals("pause")) {
             Bomber.soundEatingItem.resume();
+        }
+        if (!soundLevel_up.isRunning() && soundLevel_up.getStatus().equals("pause")) {
+            soundLevel_up.resume();
+        }
+        if (!soundWinGame.isRunning() && soundWinGame.getStatus().equals("pause")) {
+            soundWinGame.resume();
+        }
+        if (!soundLoseGame.isRunning() && soundLoseGame.getStatus().equals("pause")) {
+            soundLoseGame.resume();
         }
     }
 }
