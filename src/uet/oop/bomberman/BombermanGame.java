@@ -17,8 +17,8 @@ import uet.oop.bomberman.soundAndTimer.Sound;
 public class BombermanGame extends Application {
 
     //frame game
-    public final int WIDTH = 31;
-    public final int HEIGHT = 14;
+    public static int WIDTH = 31;
+    public static int HEIGHT = 14;
     public Group root;
     private GraphicsContext gc;
     public static CanvasGame canvas;

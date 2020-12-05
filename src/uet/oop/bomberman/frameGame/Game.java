@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt"};
+    public static String[] paths = {"res\\levels\\Level4.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 

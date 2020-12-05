@@ -182,7 +182,32 @@ public class Sprite {
 	public static Sprite powerup_detonator = new Sprite(DEFAULT_SIZE, 4, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_bombpass = new Sprite(DEFAULT_SIZE, 5, 10, SpriteSheet.tiles, 16, 16);
 	public static Sprite powerup_flamepass = new Sprite(DEFAULT_SIZE, 6, 10, SpriteSheet.tiles, 16, 16);
-	
+
+	/*
+	|--------------------------------------------------------------------------
+	| Boss
+	|--------------------------------------------------------------------------
+	 */
+	public static Sprite boss_down1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_down2 = new Sprite(DEFAULT_SIZE, 1, 0, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_down3 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_down4 = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.boss, 16, 16);
+
+	public static Sprite boss_up1 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_up2 = new Sprite(DEFAULT_SIZE, 1, 3, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_up3 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_up4 = new Sprite(DEFAULT_SIZE, 3, 3, SpriteSheet.boss, 16, 16);
+
+	public static Sprite boss_right1 = new Sprite(DEFAULT_SIZE, 0, 2, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_right2 = new Sprite(DEFAULT_SIZE, 1, 2, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_right3 = new Sprite(DEFAULT_SIZE, 2, 2, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_right4 = new Sprite(DEFAULT_SIZE, 3, 2, SpriteSheet.boss, 16, 16);
+
+	public static Sprite boss_left1 = new Sprite(DEFAULT_SIZE, 0, 1, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_left2 = new Sprite(DEFAULT_SIZE, 1, 1, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_left3 = new Sprite(DEFAULT_SIZE, 2, 1, SpriteSheet.boss, 16, 16);
+	public static Sprite boss_left4 = new Sprite(DEFAULT_SIZE, 3, 1, SpriteSheet.boss, 16, 16);
+
 	public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
 		SIZE = size;
 		_pixels = new int[SIZE * SIZE];
@@ -227,6 +252,25 @@ public class Sprite {
 		}
 			
 		return x2;
+	}
+
+	public static Sprite movingSpriteFourImg(Sprite normal, Sprite x1, Sprite x2, Sprite x3, int animate, int time) {
+		int calc = animate % time;
+		int diff = time / 4;
+
+		if(calc < diff) {
+			return normal;
+		}
+
+		if(calc < diff * 2) {
+			return x1;
+		}
+
+		if (calc < diff * 3) {
+			return x2;
+		}
+
+		return x3;
 	}
 	
 	public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
