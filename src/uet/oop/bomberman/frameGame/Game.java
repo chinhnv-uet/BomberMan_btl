@@ -222,7 +222,7 @@ public class Game {
             	bomberman.setAlive(false);
             	check = 1;
                 //reset lives and level
-                BombermanGame.lives = 4; // +1 mang, do loi o phan tren <moi lan gameOver do minh de co bomberman chet>
+                BombermanGame.lives = 3;
                 currentLevel = 1;
                 BombermanGame.scores = 0;
             }
@@ -345,11 +345,29 @@ public class Game {
         if (soundGame.isRunning()) {
             soundGame.pause();
         }
+        if (soundLevel_up.isRunning()) {
+            soundLevel_up.pause();
+        }
+        if (soundWinGame.isRunning()) {
+            soundWinGame.pause();
+        }
+        if (soundLoseGame.isRunning()) {
+            soundLoseGame.pause();
+        }
     }
 
     public void resumeSound() {
         if (!soundGame.isRunning() && soundGame.getStatus().equals("pause")) {
             soundGame.resume();
+        }
+        if (!soundLevel_up.isRunning() && soundLevel_up.getStatus().equals("pause")) {
+            soundLevel_up.resume();
+        }
+        if (!soundWinGame.isRunning() && soundWinGame.getStatus().equals("pause")) {
+            soundWinGame.resume();
+        }
+        if (!soundLoseGame.isRunning() && soundLoseGame.getStatus().equals("pause")) {
+            soundLoseGame.resume();
         }
     }
 }
