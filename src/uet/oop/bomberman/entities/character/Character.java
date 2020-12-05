@@ -7,7 +7,7 @@ public abstract class Character extends AnimatedEntity {
     protected int direction;// 0 Up, 1 Down, 2 Left, 3 Right
     protected boolean alive = true;
     protected boolean moving = false;
-    public int velocity;
+    protected int velocity;
     protected final int timeTransfer = 26;
     protected int timeShowDeath = 30;
     protected boolean startDie = false;

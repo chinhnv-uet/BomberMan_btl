@@ -23,7 +23,7 @@ public class BombermanGame extends Application {
     private GraphicsContext gc;
     public static CanvasGame canvas;
     public static Stage window;
-    public static MenuGame menuGame;
+    public MenuGame menuGame;
     public PauseGame pauseGame;
 
     //thong so game
@@ -67,8 +67,7 @@ public class BombermanGame extends Application {
         pauseGame = new PauseGame(canvas.getInput());
 
         AnimationTimer timer = new AnimationTimer() {
-            @SuppressWarnings("static-access")
-			@Override
+            @Override
             public void handle(long l) {
 
                 if (showMenu) {
@@ -111,7 +110,6 @@ public class BombermanGame extends Application {
                     } else if (pauseGame.getFinalSelected() == 1) { //if resume game
                         canvas.getInput().pause = false;
                         canvas.getGame().resumeSound();
-
                         canvas.getGame().timer.setPlay(true);
                     }
                     canvas.getGame().setPause(false);

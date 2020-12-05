@@ -28,11 +28,11 @@ public class Bomber extends Character {
 
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
-    
-    public static Sound soundEatingItem = new Sound(Sound.soundEatingItem);
+
+    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
     public Sound soundPlaceBomb = new Sound(Sound.soundPlaceBomb);
     public Sound soundMoving = new Sound(Sound.soundMoving);
-    
+
 
     public Bomber(int x, int y, Keyboard kb) {
         super(x, y, Sprite.player_down.getFxImage()); // luc dau mac dinh la huong xuong
@@ -40,11 +40,15 @@ public class Bomber extends Character {
         direction = 1;
         velocity = 2;
         input = kb;
+        frameLen = 1;
+        canPassBrick = false;
+        canPassBom = false;
+        canPassFlame = false;
     }
 
     //copy cac thuoc tinh cua bomber vao 1 bomber moi
     @SuppressWarnings("static-access")
-	public void restoreBomber(Bomber newBomber) {
+    public void restoreBomber(Bomber newBomber) {
         reset();
 
         this.input = newBomber.input;
@@ -64,8 +68,6 @@ public class Bomber extends Character {
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
-
-
     }
 
     public void update() {
@@ -93,11 +95,11 @@ public class Bomber extends Character {
                     if (e == null) {
                         bombList.add(new Bomb(getXUnit(), getYUnit(), frameLen, this));
 
-                    	if (!soundPlaceBomb.isRunning()) soundPlaceBomb.play();
+                        if (!soundPlaceBomb.isRunning()) soundPlaceBomb.play();
                     }
                 }
             } else {
-            	soundPlaceBomb.stop();
+                soundPlaceBomb.stop();
             }
 
             if (input.up || input.right || input.left || input.down) {
@@ -120,19 +122,17 @@ public class Bomber extends Character {
                 }
             }
             if (isMoving()) {
-            	if (!soundMoving.isRunning()) soundMoving.play();
+                if (!soundMoving.isRunning()) soundMoving.play();
                 calculateMove();
             }
             else {
-            	soundMoving.stop();
+                soundMoving.stop();
             }
         }
-        
+
     }
 
-    
-
-	public void render() {
+    public void render() {
 
     }
 
@@ -266,7 +266,7 @@ public class Bomber extends Character {
         }
 
         if (e instanceof Item) {
-        	soundEatingItem.play();
+            new Sound(Sound.soundEatingItem).play();
             switch (((Item) e).getId()) {
                 case "psi":
                     if (velocity < 3) { //velocity max = 3
@@ -284,10 +284,10 @@ public class Bomber extends Character {
                     }
                     break;
                 case "bpi":
-                	canPassBom = true;
+                    canPassBom = true;
                     break;
                 case "fpi":
-                    canPassFlame = true; 
+                    canPassFlame = true;
                     break;
                 case "wpi":
                     canPassBrick = true; //hiem
@@ -299,7 +299,7 @@ public class Bomber extends Character {
 
             e.setImg(null);
 
-        } 
+        }
     }
 
     public void setKillAllEnemies(boolean killAllEnemies) {
@@ -315,29 +315,6 @@ public class Bomber extends Character {
         return canPassFlame;
     }
 
-    public int getMaxBom() {
-		return maxBom;
-	}
-
-	public void setMaxBom(int maxBom) {
-		this.maxBom = maxBom;
-	}
-
-	public int getFrameLen() {
-		return frameLen;
-	}
-
-	public void setFrameLen(int frameLen) {
-		this.frameLen = frameLen;
-	}
-
-	public boolean isCanPassBrick() {
-		return canPassBrick;
-	}
-
-	public void setCanPassBrick(boolean canPassBrick) {
-		this.canPassBrick = canPassBrick;
-	}
 //    public void setCanPassFlame(boolean canPassFlame) {
 //        this.canPassFlame = canPassFlame;
 //    }
