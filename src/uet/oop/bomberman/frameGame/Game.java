@@ -55,10 +55,17 @@ public class Game {
 
     public Game() {
     }
-
+    @SuppressWarnings("static-access")
     public void createNewGame() {
+    	BombermanGame.lives = 3;
         currentLevel = 1;
         createMap();
+        bomberman.setVelocity(1);
+        bomberman.maxBom = 1;
+        bomberman.frameLen = 1;
+        bomberman.canPassBom = false;
+        bomberman.canPassBrick = false;
+        bomberman.canPassFlame = false;
     }
     public void createMap() {
         //TODO: map được tạo ra trước, nên là thời gian cứ bị đếm trong khi chưa vào Game
@@ -84,11 +91,13 @@ public class Game {
         timer.setTime();
     }
 
-    public void update() {
+   
+	public void update() {
     	
-    	if (BombermanGame.menuGame.isStartGame()) {
-    		bomberman.reset();
-    	}
+//    	if (BombermanGame.menuGame.isStartGame()) {
+//    		bomberman.reset();
+//            
+//    	}
         if (!TransferLevel) {
             soundLevel_up.stop();
             Timers.delay += 400;
@@ -163,6 +172,7 @@ public class Game {
 
         if (bomberman.isCollideWithAPortal()) {
             bomberInPreLevel.restoreBomber(bomberman);
+            
             currentLevel++;
             TransferLevel = true;
 
@@ -373,6 +383,7 @@ public class Game {
         }
         if (soundLoseGame.isRunning()) {
             soundLoseGame.pause();
+        }
         
     }
 

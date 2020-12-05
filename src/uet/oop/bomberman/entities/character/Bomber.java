@@ -17,11 +17,11 @@ import java.util.List;
 public class Bomber extends Character {
     private List<Bomb> bombList = new ArrayList<>();
     private Keyboard input;
-    private int maxBom = 1;
-    private int frameLen = 1;
+    public int maxBom = 1;
+    public int frameLen = 1;
     public static boolean canPassBom = false;
     public static boolean canPassFlame = false;
-    private boolean canPassBrick = false;
+    public boolean canPassBrick = false;
 
     private boolean killAllEnemies = false;
     private boolean collideWithAPortal = false;
@@ -64,14 +64,8 @@ public class Bomber extends Character {
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
-        BombermanGame.lives = 3;
 
-        this.velocity = 1;
-        this.maxBom = 1;
-        this.frameLen = 1;
-        this.canPassBom = false;
-        this.canPassBrick = false;
-        this.canPassFlame = false;
+
     }
 
     public void update() {
