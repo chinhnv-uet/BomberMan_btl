@@ -29,7 +29,7 @@ public class Bomber extends Character {
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
     
-    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
+    public static Sound soundEatingItem = new Sound(Sound.soundEatingItem);
     public Sound soundPlaceBomb = new Sound(Sound.soundPlaceBomb);
     public Sound soundMoving = new Sound(Sound.soundMoving);
     
@@ -64,6 +64,14 @@ public class Bomber extends Character {
         this.bombList = new ArrayList<>();
         this.killAllEnemies = false;
         this.collideWithAPortal = false;
+        BombermanGame.lives = 3;
+
+        this.velocity = 1;
+        this.maxBom = 1;
+        this.frameLen = 1;
+        this.canPassBom = false;
+        this.canPassBrick = false;
+        this.canPassFlame = false;
     }
 
     public void update() {
@@ -262,7 +270,7 @@ public class Bomber extends Character {
         }
 
         if (e instanceof Item) {
-        	new Sound(Sound.soundEatingItem).play();
+        	soundEatingItem.play();
             switch (((Item) e).getId()) {
                 case "psi":
                     if (velocity < 3) { //velocity max = 3
