@@ -43,7 +43,7 @@ public class Game {
     private boolean gameOver = false;
     private boolean returnMainMenu = false;
 
-    private static Timers timer = new Timers();
+    public static Timers timer = new Timers();
 
     //sound game
     public Sound soundGame = new Sound(Sound.soundGame);
@@ -84,8 +84,11 @@ public class Game {
         timer.setTime();
     }
 
-
     public void update() {
+    	
+    	if (BombermanGame.menuGame.isStartGame()) {
+    		bomberman.reset();
+    	}
         if (!TransferLevel) {
             soundLevel_up.stop();
             Timers.delay += 400;
@@ -109,7 +112,10 @@ public class Game {
         	
         	Timers.delay += 400;
         	BombermanGame.lives -= 1;
-        	if (check != 1) new Sound(Sound.soundDead).play();
+        	if (check != 1) {
+        		soundDead.play();
+        		
+        	}
           
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
@@ -118,7 +124,7 @@ public class Game {
         }
 
         if (BombermanGame.lives == 0) gameOver = true;
-
+        	
     }
 
     public void updateAllEntities() {
@@ -171,12 +177,17 @@ public class Game {
 
 
     public int check = 0; //check = 1, k chay soundDead
+    public boolean resetTimer = false;
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         check = 0;
         if (TransferLevel == false ) {
+        	if (resetTimer) {
+        		timer.setInterval(BombermanGame.timeLiving);
+        		resetTimer = false;
+        	}
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -189,6 +200,8 @@ public class Game {
             });
             bomberman.bombRender(gc);
             bomberman.render(gc);
+           
+            
         } else if (TransferLevel == true) {
             if (timeShowTransferLevel-- > 0) {
                 renderTransferLevelScreen(gc);
@@ -196,6 +209,7 @@ public class Game {
                 TransferLevel = false;
                 timeShowTransferLevel = 150;
             }
+            resetTimer = true;
         }
 
         if (gameOver) {
@@ -219,6 +233,7 @@ public class Game {
                 returnMainMenu = true;
                 soundLoseGame.stop();
                 soundWinGame.stop();
+                
             	bomberman.setAlive(false);
             	check = 1;
                 //reset lives and level
@@ -303,6 +318,7 @@ public class Game {
         		Bomber.canPassBom = false;
         	}
         }
+        
 
 
     }
@@ -345,6 +361,10 @@ public class Game {
         if (soundGame.isRunning()) {
             soundGame.pause();
         }
+
+        if (soundDead.isRunning()) soundDead.pause();
+        if (Bomber.soundEatingItem.isRunning()) Bomber.soundEatingItem.pause();
+
         if (soundLevel_up.isRunning()) {
             soundLevel_up.pause();
         }
@@ -353,12 +373,19 @@ public class Game {
         }
         if (soundLoseGame.isRunning()) {
             soundLoseGame.pause();
-        }
+        
     }
 
     public void resumeSound() {
         if (!soundGame.isRunning() && soundGame.getStatus().equals("pause")) {
             soundGame.resume();
+            Bomber.soundEatingItem.resume();
+        }
+        if (!soundDead.isRunning() && soundDead.getStatus().equals("pause")) {
+        	soundDead.resume();
+        }
+        if (!Bomber.soundEatingItem.isRunning() && Bomber.soundEatingItem.getStatus().equals("pause")) {
+            Bomber.soundEatingItem.resume();
         }
         if (!soundLevel_up.isRunning() && soundLevel_up.getStatus().equals("pause")) {
             soundLevel_up.resume();

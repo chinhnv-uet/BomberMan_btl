@@ -39,7 +39,8 @@ public class Timers {
             setPlay(false);
             
         }
-        return --interval;
+        if (play) return --interval;
+        return interval;
     }
 	public boolean isPlay() {
 		return play;
