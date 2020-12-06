@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level4.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt", "res\\levels\\Level4.txt"};
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 
@@ -62,7 +62,21 @@ public class Game {
         BombermanGame.scores = 0;
         bomberman = new Bomber(1, 1, new Keyboard());
         createMap();
+        updateEnemy(bomberman);
     }
+
+    private void updateEnemy(Bomber bomberman) {
+        for (Enemy e : enemyList) {
+                e.setBomber(bomberman);
+                if (e instanceof Oneal) {
+                    ((Oneal) e).updateBomberForAI();
+                }
+                if (e instanceof Dragon) {
+                    ((Dragon) e).updateBomberForAI();
+                }
+        }
+    }
+
     public void createMap() {
         if (currentLevel > paths.length) return;
 
@@ -81,6 +95,7 @@ public class Game {
 
         entityList = level.getCollidableEntities();
         enemyList = level.getEnemyList();
+        updateEnemy(bomberman);
 
         timer.setInterval(BombermanGame.timeLiving);
         timer.setTime();
@@ -234,7 +249,6 @@ public class Game {
             }
         }
     }
-
 
     public Entity getEntityOnCoodinate(int x, int y) {
         for (Entity e : entityList) {
