@@ -105,8 +105,8 @@ public class Game {
         if (bomberman.isAlive() == false) {
             soundGame.stop();
 
-            Bomber.canPassBom = false;
-            Bomber.canPassFlame = false;
+            bomberman.canPassBom = false;
+            bomberman.canPassFlame = false;
 
             Timers.delay += 400;
             if (!gameOver) {
@@ -120,6 +120,9 @@ public class Game {
         }
 
         if (BombermanGame.lives == 0) gameOver = true;
+        
+        if (bomberman.canPassBom == false) bomberman.timeToStopBomb = 0;
+        if (bomberman.canPassFlame == false) bomberman.timeToStopFlame = 0;
 
     }
 
@@ -177,13 +180,17 @@ public class Game {
         }
     }
 
-
+    boolean resetTimer = false;
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 
         if (TransferLevel == false) {
+        	if (resetTimer) {
+        		timer.setInterval(BombermanGame.timeLiving);
+        		resetTimer = false;
+        	}
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -203,6 +210,7 @@ public class Game {
                 TransferLevel = false;
                 timeShowTransferLevel = 150;
             }
+            resetTimer = true;
         }
 
         if (gameOver) {
@@ -281,9 +289,7 @@ public class Game {
     }
 
 
-    int timeToStopFlame = 50 * 27;
-    int timeToStopBomb = 50 * 27;
-
+   
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -294,21 +300,19 @@ public class Game {
         gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 400, 440);
 
-        if (Bomber.canPassFlame) {
+        if (bomberman.canPassFlame) {
 
-            if (timeToStopFlame-- > 0 && timeToStopFlame / 27 > 0) {
-                gc.fillText("Pass Flame in: " + timeToStopFlame / 27, 700, 440);
+            if (bomberman.timeToStopFlame-- > 0 && bomberman.timeToStopFlame / 37 > 0) {
+                gc.fillText("Pass Flame in: " + bomberman.timeToStopFlame / 37, 700, 440);
             } else {
-                timeToStopFlame = 50 * 27;
-                Bomber.canPassFlame = false;
+                bomberman.canPassFlame = false;
             }
         }
-        if (Bomber.canPassBom) {
-            if (timeToStopBomb-- > 0 && timeToStopBomb / 27 > 0) {
-                gc.fillText("Pass Bomb in: " + timeToStopBomb / 27, 500, 440);
+        if (bomberman.canPassBom) {
+            if (bomberman.timeToStopBomb-- > 0 && bomberman.timeToStopBomb / 37 > 0) {
+                gc.fillText("Pass Bomb in: " + bomberman.timeToStopBomb / 37, 500, 440);
             } else {
-                timeToStopBomb = 50 * 27;
-                Bomber.canPassBom = false;
+                bomberman.canPassBom = false;
             }
 
         }
