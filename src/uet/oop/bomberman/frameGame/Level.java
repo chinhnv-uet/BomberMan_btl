@@ -76,6 +76,10 @@ public class Level {
                             object = new Kondoria(j, i);
                             enemyList.add((Kondoria) object);
                             break;
+                        case '6':
+                            object = new Dragon(j, i);
+                            enemyList.add((Dragon) object);
+                            break;
                         case 'b':
                             object = new Brick(j, i);
                             Item pbi = new PlusBombItem(j, i);
@@ -139,14 +143,6 @@ public class Level {
 
                             pli.setId("pli");
                             break;
-                    }
-                }
-            }
-            for (Entity e : enemyList) {
-                if (e instanceof Enemy) {
-                    ((Enemy) e).setBomber(bomber);
-                    if (e instanceof Oneal) {
-                        ((Oneal) e).updateBomberForAI();
                     }
                 }
             }

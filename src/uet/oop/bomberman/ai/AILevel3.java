@@ -32,8 +32,6 @@ public class AILevel3 extends AI {
         if (!recognizeBomberman()) {
             return generate.nextInt(4);
         } else {
-        	
-            System.out.println("yes");
             if (e.isMoving()) {
                 int randomCheckDir = generate.nextInt(2); //check Row or Col first?
                 if (randomCheckDir == 0) {        //checkRow first
