@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
 import uet.oop.bomberman.frameGame.CanvasGame;
-import uet.oop.bomberman.frameGame.Keyboard;
 import uet.oop.bomberman.frameGame.MenuGame;
 import uet.oop.bomberman.frameGame.PauseGame;
 import uet.oop.bomberman.graphics.Sprite;
@@ -67,7 +66,8 @@ public class BombermanGame extends Application {
         pauseGame = new PauseGame(canvas.getInput());
 
         AnimationTimer timer = new AnimationTimer() {
-            @Override
+            @SuppressWarnings("static-access")
+			@Override
             public void handle(long l) {
 
                 if (showMenu) {
@@ -79,7 +79,7 @@ public class BombermanGame extends Application {
 
                     //handle selections in menu
                     if (menuGame.isQuit()) {
-                        mute = true;
+                        menuSound.stop();
                         window.close();
                     } else if (menuGame.isStartGame()) {
                         //create new map level 1

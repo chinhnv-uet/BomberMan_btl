@@ -19,9 +19,13 @@ public class Bomber extends Character {
     private Keyboard input;
     private int maxBom = 1;
     private int frameLen = 1;
-    public static boolean canPassBom = false;
-    public static boolean canPassFlame = false;
+    public boolean canPassBom = false;
+    public boolean canPassFlame = false;
     private boolean canPassBrick = false;
+    
+    public int timeToStopFlame = 0;
+    public int timeToStopBomb = 0;
+
 
     private boolean killAllEnemies = false;
     private boolean collideWithAPortal = false;
@@ -29,7 +33,6 @@ public class Bomber extends Character {
     private final int[] AddToXToCheckCollision = {0, Sprite.SCALED_SIZE - 10, Sprite.SCALED_SIZE - 10, 0};
     private final int[] AddToYToCheckCollision = {7, 7, Sprite.SCALED_SIZE - 1, Sprite.SCALED_SIZE - 1};
 
-//    public Sound soundEatingItem = new Sound(Sound.soundEatingItem);
     public Sound soundPlaceBomb = new Sound(Sound.soundPlaceBomb);
     public Sound soundMoving = new Sound(Sound.soundMoving);
 
@@ -41,13 +44,13 @@ public class Bomber extends Character {
         velocity = 2;
         input = kb;
         frameLen = 1;
+        maxBom = 1;
         canPassBrick = false;
         canPassBom = false;
         canPassFlame = false;
     }
 
     //copy cac thuoc tinh cua bomber vao 1 bomber moi
-    @SuppressWarnings("static-access")
     public void restoreBomber(Bomber newBomber) {
         reset();
 
@@ -61,8 +64,8 @@ public class Bomber extends Character {
     }
 
     public void reset() {
-        this.setX(0);
-        this.setY(0);
+//        this.setX(0);
+//        this.setY(0);
         this.setImg(Sprite.player_down.getFxImage());
         this.direction = 1;
         this.bombList = new ArrayList<>();
@@ -289,9 +292,12 @@ public class Bomber extends Character {
                     break;
                 case "bpi":
                     canPassBom = true;
+                    timeToStopBomb += 50*37;
+                    
                     break;
                 case "fpi":
                     canPassFlame = true;
+                    timeToStopFlame += 50*37;
                     break;
                 case "wpi":
                     canPassBrick = true; //hiem
