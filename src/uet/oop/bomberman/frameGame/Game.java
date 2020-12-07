@@ -67,13 +67,13 @@ public class Game {
 
     private void updateEnemy(Bomber bomberman) {
         for (Enemy e : enemyList) {
-                e.setBomber(bomberman);
-                if (e instanceof Oneal) {
-                    ((Oneal) e).updateBomberForAI();
-                }
-                if (e instanceof Dragon) {
-                    ((Dragon) e).updateBomberForAI();
-                }
+            e.setBomber(bomberman);
+            if (e instanceof Oneal) {
+                ((Oneal) e).updateBomberForAI();
+            }
+            if (e instanceof Dragon) {
+                ((Dragon) e).updateBomberForAI();
+            }
         }
     }
 
@@ -88,7 +88,9 @@ public class Game {
 
         //phuc hoi cac thuoc tinh bomber cua level truoc va set vi tri moi
         originBomber = level.getBomber();
-        bomberman.restoreBomber(bomberInPreLevel);
+        if (currentLevel > 1) {
+            bomberman.restoreBomber(bomberInPreLevel);
+        }
         bomberman.setX(originBomber.getX());
         bomberman.setY(originBomber.getY());
         bomberman.setAlive(true);
@@ -135,7 +137,7 @@ public class Game {
         }
 
         if (BombermanGame.lives == 0) gameOver = true;
-        
+
         if (bomberman.canPassBom == false) bomberman.timeToStopBomb = 0;
         if (bomberman.canPassFlame == false) bomberman.timeToStopFlame = 0;
 
@@ -196,16 +198,17 @@ public class Game {
     }
 
     boolean resetTimer = false;
+
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 
         if (TransferLevel == false) {
-        	if (resetTimer) {
-        		timer.setInterval(BombermanGame.timeLiving);
-        		resetTimer = false;
-        	}
+            if (resetTimer) {
+                timer.setInterval(BombermanGame.timeLiving);
+                resetTimer = false;
+            }
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -303,7 +306,6 @@ public class Game {
     }
 
 
-   
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -348,6 +350,7 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(60));
         gc.fillText("You Lose!\nGame Over :(", 350, 200);
+        gc.setFill(Color.ORANGE);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
 
@@ -357,6 +360,7 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(60));
         gc.fillText("You win!\nCongrats!! :)", 350, 200);
+        gc.setFill(Color.ORANGE);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
 
