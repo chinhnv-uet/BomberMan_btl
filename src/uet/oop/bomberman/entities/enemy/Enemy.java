@@ -116,4 +116,10 @@ public abstract class Enemy extends AnimatedEntity {
     public int getAnimate() {
         return animate;
     }
+
+
+	public int getVelocity() {
+		return velocity;
+	}
+    
 }

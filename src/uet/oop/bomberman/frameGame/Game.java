@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt", "res\\levels\\Level4.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 
@@ -88,6 +88,11 @@ public class Game {
 
         //phuc hoi cac thuoc tinh bomber cua level truoc va set vi tri moi
         originBomber = level.getBomber();
+        
+        //luc createNewGame, bomberInPreLevel se luu lai thuoc tinh cua level cua tran truoc(tran Win vua roi)
+        
+        if (currentLevel == 1) bomberInPreLevel.restoreBomber(originBomber);
+        
         bomberman.restoreBomber(bomberInPreLevel);
         bomberman.setX(originBomber.getX());
         bomberman.setY(originBomber.getY());
