@@ -1,11 +1,16 @@
 package uet.oop.bomberman.entities.enemy;
 
+import java.util.List;
+
 import uet.oop.bomberman.ai.AILevel3;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Oneal extends Enemy {
-
+	protected int max_Steps = Sprite.SCALED_SIZE / 2; // 2 is velocity
+	protected int steps_now = 0;
+	
     public Oneal(int x, int y) {
         super(x, y, Sprite.oneal_left1.getFxImage());
         ai = new AILevel3(bomber, this);
@@ -24,43 +29,34 @@ public class Oneal extends Enemy {
 
     public void move() {
 
-        if (isAlive) {
-            int tempX = x, tempY = y;
-            switch (direction) {
-                case 0:
-                    tempY = y - velocity;
-                    break;
-                case 1:
-                    tempY = y + velocity;
-                    break;
-                case 2:
-                    tempX = x - velocity;
-                    break;
-                case 3:
-                    tempX = x + velocity;
-                    break;
-            }
-            
-            if (ai.wantToChangeDirect) {
-            	setDirection(ai.setDirect());
-                ai.setWantToChangeDirect(false);
-                return;
-            }
-            for (int i = 0; i < 4; i++) {
-                int xx = tempX + AddToXToCheckCollision[i];
-                int yy = tempY + AddToYToCheckCollision[i];
-                if (!canMove(xx, yy)) {
-                    setDirection(ai.setDirect());
-                    return;
-                }
-            }
-            
-            this.setX(tempX);
-            this.setY(tempY);
-
+    	if (steps_now == max_Steps) {
+            setDirection(ai.setDirect());
+            steps_now = 0;
         }
 
+        int tempX = x, tempY = y;
+        switch (direction) {
+            case 0:
+                tempY = y - velocity;
+                break;
+            case 1:
+                tempY = y + velocity;
+                break;
+            case 2:
+                tempX = x - velocity;
+                break;
+            case 3:
+                tempX = x + velocity;
+                break;
+        }
+
+        this.setX(tempX);
+        this.setY(tempY);
+        steps_now++;
+
     }
+
+    
 
     @Override
     public void update() {
@@ -71,8 +67,8 @@ public class Oneal extends Enemy {
             animate();
             move();
             ifCollideWithItemOrFlame();
+            CollideWithBomb();
 
-            if (animate % (3 * Sprite.SCALED_SIZE) == 0 && !ai.wantToChangeDirect) ai.setWantToChangeDirect(true);
 
             if (direction == 0) {
                 this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
@@ -89,5 +85,14 @@ public class Oneal extends Enemy {
 
     public void updateBomberForAI() {
         ((AILevel3) ai).updateBomber(bomber);
+    }
+    public void CollideWithBomb() {
+        List<Bomb> bombs = bomber.getBombList();
+        for (Bomb b : bombs) {
+            if (b.getXUnit() == this.getXUnit() && b.getYUnit() == this.getYUnit()) {
+                setVelocity(0);
+                break;
+            }
+        }
     }
 }
