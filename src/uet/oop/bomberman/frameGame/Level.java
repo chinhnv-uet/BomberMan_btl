@@ -19,7 +19,7 @@ public class Level {
     private List<Enemy> enemyList;
     private Bomber bomber;
 
-    public void createMapLevel(String path) {
+    public void createMapLevel(String path, int level) {
         collidableEntities = new ArrayList<>();
         grassList = new ArrayList<>();
         enemyList = new ArrayList<>();
@@ -36,20 +36,20 @@ public class Level {
                 String temp = br.readLine();
                 Entity object;
                 for (int j = 0; j < temp.length(); j++) {
-                    object = new Grass(j, i);
+                    object = new Grass(j, i, level);
                     grassList.add((Grass) object);
 
                     switch (temp.charAt(j)) {
                         case '#':
-                            object = new Wall(j, i);
+                            object = new Wall(j, i, level);
                             collidableEntities.add(object);
                             break;
                         case '*':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             collidableEntities.add(object);
                             break;
                         case 'x':
-                            Brick object2 = new Brick(j, i);
+                            Brick object2 = new Brick(j, i, level);
                             object2.setBrickHasPortal(true);
                             collidableEntities.add((Brick) object2);
                             break;
@@ -81,7 +81,7 @@ public class Level {
                             enemyList.add((Dragon) object);
                             break;
                         case 'b':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item pbi = new PlusBombItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pbi);
@@ -90,7 +90,7 @@ public class Level {
                             pbi.setId("pbi");
                             break;
                         case 'f':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item pfi = new PlusFlameItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pfi);
@@ -99,7 +99,7 @@ public class Level {
                             pfi.setId("pfi");
                             break;
                         case 's':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item psi = new PlusSpeedItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, psi);
@@ -108,7 +108,7 @@ public class Level {
                             psi.setId("psi");
                             break;
                         case 'B':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item bpi = new BombPassItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, bpi);
@@ -117,7 +117,7 @@ public class Level {
                             bpi.setId("bpi");
                             break;
                         case 'F':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item fpi = new FlamePassItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, fpi);
@@ -126,7 +126,7 @@ public class Level {
                             fpi.setId("fpi");
                             break;
                         case 'W':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item wpi = new BrickPassItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, wpi);
@@ -135,7 +135,7 @@ public class Level {
                             wpi.setId("wpi");
                             break;
                         case 'l':
-                            object = new Brick(j, i);
+                            object = new Brick(j, i, level);
                             Item pli = new PlusLiveItem(j, i);
 
                             ((Brick) object).setBrickHasItem(true, pli);

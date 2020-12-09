@@ -96,7 +96,7 @@ public abstract class Enemy extends AnimatedEntity {
         //enemy gap bat ky item auto se tang speed
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Item) {
-            if (!(e instanceof Dragon)) {
+            if (!(this instanceof Dragon)) {
                 setVelocity(velocity + 1);
             }
             e.setImg(null);

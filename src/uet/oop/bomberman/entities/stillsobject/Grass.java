@@ -5,8 +5,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Grass extends Entity {
 
-    public Grass(int x, int y) {
-        super(x, y, Sprite.grass.getFxImage());
+    private Sprite[] spriteList = {Sprite.grass1, Sprite.grass2, Sprite.grass3, Sprite.grass4, Sprite.grass5, Sprite.grass6, Sprite.grass7};
+
+    public Grass(int x, int y, int level) {
+        super(x, y, null);
+        this.setImg(spriteList[level].getFxImage());
     }
 
     @Override

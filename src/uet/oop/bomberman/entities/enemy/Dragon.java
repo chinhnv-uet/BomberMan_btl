@@ -15,6 +15,7 @@ public class Dragon extends Enemy {
         super(x, y, Sprite.boss_down1.getFxImage());
         ai = new AILevel4(bomber, this);
         velocity = 2;
+        direction = -1;
     }
 
     @Override
