@@ -5,8 +5,11 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Wall extends Entity {
 
-    public Wall(int x, int y) {
-        super(x, y, Sprite.wall.getFxImage());
+    private Sprite[] spriteList = {Sprite.wall1, Sprite.wall2, Sprite.wall3, Sprite.wall4, Sprite.wall5, Sprite.wall6, Sprite.wall7};
+
+    public Wall(int x, int y, int level) {
+        super(x, y, null);
+        this.setImg(spriteList[level].getFxImage());
     }
 
     @Override

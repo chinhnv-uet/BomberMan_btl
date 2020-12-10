@@ -281,12 +281,12 @@ public class Bomber extends Character {
                     }
                     break;
                 case "pbi":
-                    if (maxBom < 4) { //maxbom highest = 4
+                    if (maxBom < 5) { //maxbom highest = 5
                         maxBom++;
                     }
                     break;
                 case "pfi":
-                    if (frameLen < 3) { //len max = 3
+                    if (frameLen < 4) { //len max = 4
                         frameLen++;
                     }
                     break;

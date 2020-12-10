@@ -208,6 +208,37 @@ public class Sprite {
 	public static Sprite boss_left3 = new Sprite(DEFAULT_SIZE, 2, 1, SpriteSheet.boss, 16, 16);
 	public static Sprite boss_left4 = new Sprite(DEFAULT_SIZE, 3, 1, SpriteSheet.boss, 16, 16);
 
+	/*
+	// new tiles map
+	 */
+	public static Sprite grass1 = new Sprite(DEFAULT_SIZE, 0, 0, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall1 = new Sprite(DEFAULT_SIZE, 1,0, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick1 = new Sprite(DEFAULT_SIZE, 2, 0, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass2 = new Sprite(DEFAULT_SIZE, 0, 1, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall2 = new Sprite(DEFAULT_SIZE, 1,1, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick2 = new Sprite(DEFAULT_SIZE, 2, 1, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass3 = new Sprite(DEFAULT_SIZE, 0, 2, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall3 = new Sprite(DEFAULT_SIZE, 1,2, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick3 = new Sprite(DEFAULT_SIZE, 2, 2, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass4 = new Sprite(DEFAULT_SIZE, 0, 3, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall4 = new Sprite(DEFAULT_SIZE, 1,3, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick4 = new Sprite(DEFAULT_SIZE, 2, 3, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass5 = new Sprite(DEFAULT_SIZE, 0, 4, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall5 = new Sprite(DEFAULT_SIZE, 1,4, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick5 = new Sprite(DEFAULT_SIZE, 2, 4, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass6 = new Sprite(DEFAULT_SIZE, 0, 5, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall6 = new Sprite(DEFAULT_SIZE, 1,5, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick6 = new Sprite(DEFAULT_SIZE, 2, 5, SpriteSheet.tiles1, 32,32);
+
+	public static Sprite grass7 = new Sprite(DEFAULT_SIZE, 3, 0, SpriteSheet.tiles1, 32,32);
+	public static Sprite wall7 = new Sprite(DEFAULT_SIZE, 4,0, SpriteSheet.tiles1, 32, 32);
+	public static Sprite brick7 = new Sprite(DEFAULT_SIZE, 5, 0, SpriteSheet.tiles1, 32,32);
+
 	public Sprite(int size, int x, int y, SpriteSheet sheet, int rw, int rh) {
 		SIZE = size;
 		_pixels = new int[SIZE * SIZE];

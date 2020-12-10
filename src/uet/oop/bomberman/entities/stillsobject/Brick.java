@@ -15,8 +15,11 @@ public class Brick extends AnimatedEntity {
     
     private boolean brickHasPortal = false;
 
-    public Brick(int x, int y) {
-        super(x, y, Sprite.brick.getFxImage());
+    private Sprite[] spriteList = {Sprite.brick1, Sprite.brick2, Sprite.brick3, Sprite.brick4, Sprite.brick5, Sprite.brick6, Sprite.brick7};
+
+    public Brick(int x, int y, int level) {
+        super(x, y, null);
+        this.setImg(spriteList[level].getFxImage());
     }
 
     public boolean isBrickHasItem() {

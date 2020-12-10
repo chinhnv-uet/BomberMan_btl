@@ -19,7 +19,7 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt"};
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 
@@ -67,20 +67,20 @@ public class Game {
 
     private void updateEnemy(Bomber bomberman) {
         for (Enemy e : enemyList) {
-                e.setBomber(bomberman);
-                if (e instanceof Oneal) {
-                    ((Oneal) e).updateBomberForAI();
-                }
-                if (e instanceof Dragon) {
-                    ((Dragon) e).updateBomberForAI();
-                }
+            e.setBomber(bomberman);
+            if (e instanceof Oneal) {
+                ((Oneal) e).updateBomberForAI();
+            }
+            if (e instanceof Dragon) {
+                ((Dragon) e).updateBomberForAI();
+            }
         }
     }
 
     public void createMap() {
         if (currentLevel > paths.length) return;
 
-        level.createMapLevel(paths[currentLevel - 1]);
+        level.createMapLevel(paths[currentLevel - 1], currentLevel-1);
         WIDTH = level.getW();
         HEIGHT = level.getH();
 
@@ -88,12 +88,9 @@ public class Game {
 
         //phuc hoi cac thuoc tinh bomber cua level truoc va set vi tri moi
         originBomber = level.getBomber();
-        
-        //luc createNewGame, bomberInPreLevel se luu lai thuoc tinh cua level cua tran truoc(tran Win vua roi)
-        
-        if (currentLevel == 1) bomberInPreLevel.restoreBomber(originBomber);
-        
-        bomberman.restoreBomber(bomberInPreLevel);
+        if (currentLevel > 1) {
+            bomberman.restoreBomber(bomberInPreLevel);
+        }
         bomberman.setX(originBomber.getX());
         bomberman.setY(originBomber.getY());
         bomberman.setAlive(true);
@@ -131,7 +128,7 @@ public class Game {
             Timers.delay += 400;
             if (!gameOver) {
                 BombermanGame.lives -= 1;
-//                new Sound(Sound.soundDead).play();
+                bomberman = new Bomber(1, 1, BombermanGame.canvas.getInput());
             }
             bomberInPreLevel.restoreBomber(originBomber);
             this.createMap();
@@ -140,7 +137,7 @@ public class Game {
         }
 
         if (BombermanGame.lives == 0) gameOver = true;
-        
+
         if (bomberman.canPassBom == false) bomberman.timeToStopBomb = 0;
         if (bomberman.canPassFlame == false) bomberman.timeToStopFlame = 0;
 
@@ -201,16 +198,17 @@ public class Game {
     }
 
     boolean resetTimer = false;
+
     public void render(Canvas canvas) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 
         if (TransferLevel == false) {
-        	if (resetTimer) {
-        		timer.setInterval(BombermanGame.timeLiving);
-        		resetTimer = false;
-        	}
+            if (resetTimer) {
+                timer.setInterval(BombermanGame.timeLiving);
+                resetTimer = false;
+            }
             renderInfoOfCurrentLevel(gc);
             grassList.forEach(g -> g.render(gc));
             entityList.forEach(e -> e.render(gc));
@@ -308,7 +306,6 @@ public class Game {
     }
 
 
-   
     public void renderInfoOfCurrentLevel(GraphicsContext gc) {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 416, 992, 448);
@@ -353,6 +350,7 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(60));
         gc.fillText("You Lose!\nGame Over :(", 350, 200);
+        gc.setFill(Color.ORANGE);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
 
@@ -362,6 +360,7 @@ public class Game {
         gc.setFill(Color.WHITE);
         gc.setFont(new Font(60));
         gc.fillText("You win!\nCongrats!! :)", 350, 200);
+        gc.setFill(Color.ORANGE);
         gc.fillText("Your score: " + BombermanGame.scores, 350, 350);
     }
 
