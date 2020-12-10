@@ -6,7 +6,8 @@ public class bfsMatrix {
     private int V; // No. of vertices
     private LinkedList<Integer> adj[]; //Adjacency Lists
 
-    bfsMatrix(int v) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	bfsMatrix(int v) {
         V = v;
         adj = new LinkedList[v];
         for (int i = 0; i < v; ++i)

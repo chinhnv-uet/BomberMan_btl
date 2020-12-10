@@ -19,7 +19,8 @@ import java.util.List;
 
 
 public class Game {
-    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt", "res\\levels\\Level1.txt"};
+    public static String[] paths = {"res\\levels\\Level1.txt", "res\\levels\\Level2.txt", "res\\levels\\Level3.txt",
+    		"res\\levels\\Level4.txt", "res\\levels\\Level5.txt", "res\\levels\\Level6.txt", "res\\levels\\Level7.txt"};
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 
@@ -251,12 +252,8 @@ public class Game {
                 gameOver = false;
                 timeShowTransferLevel = 150;
                 returnMainMenu = true;
-
-
-                //reset lives and level
-                BombermanGame.lives = 3;
-                currentLevel = 1;
-                BombermanGame.scores = 0;
+                soundLoseGame.stop();
+                soundWinGame.stop();
             }
         }
     }
