@@ -15,7 +15,7 @@ public class Brick extends AnimatedEntity {
     
     private boolean brickHasPortal = false;
 
-    private Sprite[] spriteList = {Sprite.brick1, Sprite.brick2, Sprite.brick3, Sprite.brick4, Sprite.brick5, Sprite.brick6, Sprite.brick7};
+    private Sprite[] spriteList = {Sprite.brick, Sprite.brick2, Sprite.brick3, Sprite.brick4, Sprite.brick5, Sprite.brick6, Sprite.brick7};
 
     public Brick(int x, int y, int level) {
         super(x, y, null);

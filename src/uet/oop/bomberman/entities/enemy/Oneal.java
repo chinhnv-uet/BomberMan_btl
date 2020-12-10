@@ -1,15 +1,13 @@
 package uet.oop.bomberman.entities.enemy;
 
-import java.util.List;
 
 import uet.oop.bomberman.ai.AILevel3;
-import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.graphics.Sprite;
 
 
 public class Oneal extends Enemy {
 	protected int max_Steps = Sprite.SCALED_SIZE / 2; // 2 is velocity
-	protected int steps_now = 0;
+	protected int steps_now = max_Steps;
 	
     public Oneal(int x, int y) {
         super(x, y, Sprite.oneal_left1.getFxImage());
@@ -68,8 +66,6 @@ public class Oneal extends Enemy {
             move();
             ifCollideWithItemOrFlame();
             CollideWithBomb();
-
-
             if (direction == 0) {
                 this.setImg(Sprite.movingSprite(Sprite.oneal_left1, Sprite.oneal_left2, Sprite.oneal_left3, animate, timeTransfer).getFxImage());
             } else if (direction == 1) {
@@ -86,13 +82,5 @@ public class Oneal extends Enemy {
     public void updateBomberForAI() {
         ((AILevel3) ai).updateBomber(bomber);
     }
-    public void CollideWithBomb() {
-        List<Bomb> bombs = bomber.getBombList();
-        for (Bomb b : bombs) {
-            if (b.getXUnit() == this.getXUnit() && b.getYUnit() == this.getYUnit()) {
-                setVelocity(0);
-                break;
-            }
-        }
-    }
+    
 }

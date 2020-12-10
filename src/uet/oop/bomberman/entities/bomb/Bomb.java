@@ -8,10 +8,9 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.entities.AnimatedEntity;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.enemy.*;
 import uet.oop.bomberman.entities.enemy.Enemy;
-import uet.oop.bomberman.entities.stillsobject.Brick;
-import uet.oop.bomberman.entities.stillsobject.Portal;
-import uet.oop.bomberman.entities.stillsobject.Wall;
+import uet.oop.bomberman.entities.stillsobject.*;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.soundAndTimer.Sound;
 
@@ -146,8 +145,12 @@ public class Bomb extends AnimatedEntity {
     }
 
     public boolean canPassThrough(Entity e) { // return false if ko truyen qua dc e, true if truyen qua dc
+
+        int gotScore = 0;
         if (e instanceof Brick) {
             ((Brick) e).setDestroyed(true);
+            gotScore = 5;
+            BombermanGame.scores += gotScore;
             return false;
         }
         if (e instanceof Wall || e instanceof Portal) {
@@ -155,7 +158,13 @@ public class Bomb extends AnimatedEntity {
         }
         if (e instanceof Enemy) {
             ((Enemy) e).setAlive(false);
-            BombermanGame.scores += 100;
+            
+            if (e instanceof Balloon) gotScore = 10;
+            else if (e instanceof Oneal || e instanceof Doll) gotScore = 20;
+            else if (e instanceof Minvo) gotScore = 30;
+            else if (e instanceof Kondoria) gotScore = 35;
+            else if (e instanceof Dragon) gotScore = 50;
+            BombermanGame.scores += gotScore;
         }
         if (e instanceof Bomber) {
             if (((Bomber) e).isCanPassFlame() == false) ((Bomber) e).setAlive(false);

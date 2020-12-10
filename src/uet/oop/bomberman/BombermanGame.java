@@ -73,7 +73,9 @@ public class BombermanGame extends Application {
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
 
-                    if (menuGame.isMute() == false && !menuSound.isRunning()) menuSound.play();
+                    if (menuGame.isMute() == false && !menuSound.isRunning()) {
+                    	menuSound.play();
+                    }
                     else if (menuGame.isMute()) menuSound.stop();
                     menuGame.update();
 

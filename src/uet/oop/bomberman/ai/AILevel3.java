@@ -2,6 +2,7 @@ package uet.oop.bomberman.ai;
 
 
 import uet.oop.bomberman.entities.enemy.Enemy;
+import uet.oop.bomberman.entities.enemy.Kondoria;
 import uet.oop.bomberman.entities.stillsobject.Brick;
 import uet.oop.bomberman.entities.stillsobject.Portal;
 import uet.oop.bomberman.entities.stillsobject.Wall;
@@ -33,7 +34,7 @@ public class AILevel3 extends AI {
     @Override
     public int setDirect() {
     	int direct = -1;
-        if (!recognizeBomberman()) {
+        if (!recognizeBomberman() || !bomberman.isMoving()) {
             direct = randomDirect();
         } else {
             int randomCheckDir = generate.nextInt(2); //check Row or Col first?
@@ -109,8 +110,9 @@ public class AILevel3 extends AI {
 	            x += 1;
 	            break;
     	}
-	    Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
-	    if (e instanceof Wall || e instanceof Brick || e instanceof Portal || e instanceof Bomb) {
+	    Entity en = BombermanGame.canvas.getEntityInCoodinate(x, y);
+	    if (en instanceof Brick && e instanceof Kondoria) return false;
+	    if (en instanceof Wall || en instanceof Brick || en instanceof Portal || en instanceof Bomb) {
 	        return true;
 	    }
 	    return false;

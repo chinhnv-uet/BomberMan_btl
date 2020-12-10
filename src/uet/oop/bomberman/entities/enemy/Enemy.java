@@ -96,9 +96,9 @@ public abstract class Enemy extends AnimatedEntity {
         //enemy gap bat ky item auto se tang speed
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         if (e instanceof Item) {
-            if (!(this instanceof Dragon)) {
-                setVelocity(velocity + 1);
-            }
+//            if (!(this instanceof Dragon)) {
+//                setVelocity(velocity + 1);
+//            }
             e.setImg(null);
         }
         List<Bomb> bombList = bomber.getBombList();
@@ -109,6 +109,15 @@ public abstract class Enemy extends AnimatedEntity {
                     setAlive(false);
                     break;
                 }
+            }
+        }
+    }
+    public void CollideWithBomb() {
+        List<Bomb> bombs = bomber.getBombList();
+        for (Bomb b : bombs) {
+            if (b.getXUnit() == this.getXUnit() && b.getYUnit() == this.getYUnit()) {
+                setVelocity(0);
+                break;
             }
         }
     }
