@@ -9,7 +9,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Oneal extends Enemy {
 	protected int max_Steps = Sprite.SCALED_SIZE / 2; // 2 is velocity
-	protected int steps_now = 0;
+	protected int steps_now = max_Steps;
 	
     public Oneal(int x, int y) {
         super(x, y, Sprite.oneal_left1.getFxImage());

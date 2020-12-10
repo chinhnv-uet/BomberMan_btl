@@ -97,7 +97,7 @@ public class AILevel4 extends AI {
         this.bomber = bomber;
     }
 
-    public void ReachedTargetAndChangeDirect() { //TODO: noice
+    public void ReachedTargetAndChangeDirect() { //TODO: noise
         targetId = -1;
     }
 

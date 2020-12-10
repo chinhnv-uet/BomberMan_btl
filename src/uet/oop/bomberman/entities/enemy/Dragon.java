@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Dragon extends Enemy {
     protected int max_Steps = Sprite.SCALED_SIZE / 2; // 2 is velocity
-    protected int steps_now = 0;
+    protected int steps_now = max_Steps;
 
     public Dragon(int x, int y) {
         super(x, y, Sprite.boss_down1.getFxImage());
