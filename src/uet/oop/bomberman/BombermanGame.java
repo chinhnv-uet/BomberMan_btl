@@ -44,7 +44,6 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-
         window = stage;
         initGame();
 
@@ -122,6 +121,7 @@ public class BombermanGame extends Application {
         // Them scene vao stage
         window.setScene(scene);
         window.setTitle(CanvasGame.TITTLE);
+        window.setResizable(false);
         window.show();
 
         //init menu game
