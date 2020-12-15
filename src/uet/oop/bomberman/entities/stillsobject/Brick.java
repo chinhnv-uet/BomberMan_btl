@@ -42,6 +42,7 @@ public class Brick extends AnimatedEntity {
     public void update() {
         if (isDestroyed) {
             animate();
+            
             if (timeAnimate-- > 0) {
                 setImg(Sprite.movingSprite(Sprite.brick_exploded, Sprite.brick_exploded1, Sprite.brick_exploded2, animate, timeTransfer).getFxImage());
             } else {

@@ -27,12 +27,12 @@ public class Timers {
         }, delay, period);
 
     }
+    
+    public static int fixTime = 0;
     public final int setInterval() {
         if (interval <= 1) {
             timers.cancel();
             if (check == BombermanGame.timeLiving) Game.bomberman.setAlive(false);
-//            if (check == 50) Bomber.canPassBom = false;
-//            if (check == 60) Bomber.canPassFlame = false;
             setPlay(false);
 
         }

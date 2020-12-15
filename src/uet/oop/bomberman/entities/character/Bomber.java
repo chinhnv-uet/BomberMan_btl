@@ -19,7 +19,7 @@ public class Bomber extends Character {
     private Keyboard input;
     private int maxBom = 1;
     private int frameLen = 1;
-    public boolean canPassBom = false;
+	public boolean canPassBom = false;
     public boolean canPassFlame = false;
     private boolean canPassBrick = false;
     
@@ -328,4 +328,9 @@ public class Bomber extends Character {
 //    public void setCanPassFlame(boolean canPassFlame) {
 //        this.canPassFlame = canPassFlame;
 //    }
+    
+
+    public int getFrameLen() {
+		return frameLen;
+	}
 }
