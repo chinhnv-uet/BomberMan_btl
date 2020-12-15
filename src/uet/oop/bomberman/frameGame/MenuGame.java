@@ -11,10 +11,11 @@ import java.io.FileInputStream;
 public class MenuGame {
     private boolean startGame = false;
     private boolean quit = false;
+    private boolean showTutorial = false;
 
     private Keyboard keyboard;
     private int Selecting = 0;
-    private final int[] CoodinateYOfPointer = {200, 250, 300};
+    private final int[] CoodinateYOfPointer = {200, 250, 300, 350};
 
     public MenuGame(Keyboard keyboard) {
         this.keyboard = keyboard;
@@ -22,10 +23,10 @@ public class MenuGame {
 
     public void showMenuGame(GraphicsContext gc) {
         try {
-            FileInputStream file = new FileInputStream("src\\uet\\oop\\bomberman\\frameGame\\bgrGame.png");
+            FileInputStream file = new FileInputStream("res/textures/bgrGame.png");
             Image bgrImg = new Image(file);
 
-            FileInputStream Pointer = new FileInputStream("src\\uet\\oop\\bomberman\\frameGame\\bombPointer.png");
+            FileInputStream Pointer = new FileInputStream("res/textures/bombPointer.png");
             Image pointer = new Image(Pointer);
 
             gc.setFill(Color.BLACK);
@@ -40,16 +41,18 @@ public class MenuGame {
 
             gc.fillText("Sound: " + sound, 400, 300);
 
-            gc.fillText("Quit", 400, 350);
+            gc.fillText("Tutorial", 400, 350);
 
-            //TODO: co the cai tien cho them high score, cach choi nua
+            gc.fillText("Quit", 400, 400);
+
+            //TODO: co the cai tien cho them high score
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void update() {
-        if (!keyboard.release && keyboard.down && Selecting < 2) {
+        if (!keyboard.release && keyboard.down && Selecting < 3) {
             Selecting++;
             keyboard.setRelease(true);
         }
@@ -66,6 +69,9 @@ public class MenuGame {
                     BombermanGame.mute = !BombermanGame.mute;
                     break;
                 case 2:
+                    showTutorial = true;
+                    break;
+                case 3:
                     quit = true;
                     break;
             }
@@ -87,5 +93,13 @@ public class MenuGame {
 
     public boolean isQuit() {
         return quit;
+    }
+
+    public boolean isShowTutorial() {
+        return showTutorial;
+    }
+
+    public void setShowTutorial(boolean showTutorial) {
+        this.showTutorial = showTutorial;
     }
 }

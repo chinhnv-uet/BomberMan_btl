@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import uet.oop.bomberman.frameGame.CanvasGame;
 import uet.oop.bomberman.frameGame.MenuGame;
 import uet.oop.bomberman.frameGame.PauseGame;
+import uet.oop.bomberman.frameGame.TutorialGame;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.soundAndTimer.Sound;
 
@@ -24,6 +25,7 @@ public class BombermanGame extends Application {
     public static Stage window;
     public MenuGame menuGame;
     public PauseGame pauseGame;
+    public TutorialGame tutorialGame;
 
     //thong so game
     public static int timeLiving = 300;
@@ -32,6 +34,7 @@ public class BombermanGame extends Application {
 
     public boolean showMenu = true;
     public static boolean mute = false;
+    public boolean showTutorial = false;
 
     public Sound menuSound = new Sound(Sound.soundMenu);
 
@@ -43,57 +46,30 @@ public class BombermanGame extends Application {
     public void start(Stage stage) {
 
         window = stage;
-
-        // Tao Canvas
-        canvas = new CanvasGame(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
-        gc = canvas.getGraphicsContext2D();
-
-
-        // Tao root container
-        root = new Group();
-        root.getChildren().add(canvas);
-
-        // Tao scene
-        Scene scene = new Scene(root);
-
-        // Them scene vao stage
-        window.setScene(scene);
-        window.setTitle(CanvasGame.TITTLE);
-        window.show();
-
-        //init menu game
-        menuGame = new MenuGame(canvas.getInput());
-        pauseGame = new PauseGame(canvas.getInput());
+        initGame();
 
         AnimationTimer timer = new AnimationTimer() {
             @SuppressWarnings("static-access")
-			@Override
+            @Override
             public void handle(long l) {
 
                 if (showMenu) {
                     menuGame.showMenuGame(gc);
-
-                    if (menuGame.isMute() == false && !menuSound.isRunning()) {
-                    	menuSound.play();
-                    }
-                    else if (menuGame.isMute()) menuSound.stop();
                     menuGame.update();
 
-                    //handle selections in menu
-                    if (menuGame.isQuit()) {
-                        menuSound.stop();
-                        window.close();
-                    } else if (menuGame.isStartGame()) {
-                        //create new map level 1
-                        canvas.getGame().createNewGame();
+                    if (menuGame.isMute() == false && !menuSound.isRunning()) {
+                        menuSound.play();
+                    } else if (menuGame.isMute()) menuSound.stop();
 
-                        mute = menuGame.isMute();
-                        menuGame.setStartGame(false);
-                        showMenu = false;
-                        canvas.setTransferLevel(true);
-                        if (canvas.getInput().pause == true) { // truong hop an 'p' trong menu
-                            canvas.getInput().pause = false;
-                        }
+                    handleSelection();
+
+                } else if (showTutorial) {
+                    tutorialGame.showTutorialGame(gc);
+                    tutorialGame.update();
+                    if (tutorialGame.isReturnMenu()) {
+                        showMenu = true;
+                        showTutorial = false;
+                        tutorialGame.setReturnMenu(false);
                     }
                 } else if (canvas.getInput().pause == true) { //if pause
 
@@ -129,5 +105,51 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
+    }
+
+    private void initGame() {
+        // Tao Canvas
+        canvas = new CanvasGame(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        gc = canvas.getGraphicsContext2D();
+
+        // Tao root container
+        root = new Group();
+        root.getChildren().add(canvas);
+
+        // Tao scene
+        Scene scene = new Scene(root);
+
+        // Them scene vao stage
+        window.setScene(scene);
+        window.setTitle(CanvasGame.TITTLE);
+        window.show();
+
+        //init menu game
+        menuGame = new MenuGame(canvas.getInput());
+        pauseGame = new PauseGame(canvas.getInput());
+        tutorialGame = new TutorialGame(canvas.getInput());
+    }
+
+    private void handleSelection() {
+        //handle selections in menu
+        if (menuGame.isQuit()) {
+            menuSound.stop();
+            window.close();
+        } else if (menuGame.isStartGame()) {
+            //create new map level 1
+            canvas.getGame().createNewGame();
+
+            mute = menuGame.isMute();
+            menuGame.setStartGame(false);
+            showMenu = false;
+            canvas.setTransferLevel(true);
+            if (canvas.getInput().pause == true) { // truong hop an 'p' trong menu
+                canvas.getInput().pause = false;
+            }
+        } else if (menuGame.isShowTutorial()) {
+            showTutorial = true;
+            showMenu = false;
+            menuGame.setShowTutorial(false);
+        }
     }
 }
