@@ -58,9 +58,11 @@ public class Game {
     }
 
     public void createNewGame() {
+    	gameOver = false;
         currentLevel = 1;
         BombermanGame.lives = 3;
         BombermanGame.scores = 0;
+        Timers.delay += 400;
         bomberman = new Bomber(1, 1, new Keyboard());
         createMap();
         updateEnemy(bomberman);
@@ -107,10 +109,9 @@ public class Game {
 
     public void update() {
         if (!TransferLevel) {
-            Timers.delay += 400;
-
             updateAllEntities();
 
+            Timers.delay += 400;
             if (timeShowTransferLevel == 150) soundGame.play();
             soundLevel_up.stop();
 
@@ -122,11 +123,10 @@ public class Game {
 
         if (bomberman.isAlive() == false) {
             soundGame.stop();
+            Timers.delay += 400;
 
             bomberman.canPassBom = false;
             bomberman.canPassFlame = false;
-
-            Timers.delay += 400;
             if (!gameOver) {
                 BombermanGame.lives -= 1;
                 bomberman = new Bomber(1, 1, BombermanGame.canvas.getInput());
@@ -239,7 +239,7 @@ public class Game {
             bomberman.setAlive(false);
             boolean win = BombermanGame.lives > 0;
             if (!win) soundLoseGame.play();
-            else soundWinGame.play();
+            else if (win) soundWinGame.play();
 
             if (timeShowTransferLevel-- > 0) { // show gameover animation
                 if (!win) {
@@ -308,7 +308,7 @@ public class Game {
         gc.fillRect(0, 416, 992, 448);
         gc.setFill(Color.WHITE);
         gc.setFont(new Font("", 15));
-        gc.fillText("Time left: " + timer.getInterval(), 0, 440);
+        gc.fillText("Time left: " + formatTime(timer.getInterval()), 10, 440);
         gc.fillText("Level: " + currentLevel, 200, 440);
         gc.fillText("Lives: " + BombermanGame.lives, 300, 440);
         gc.fillText("Scores: " + BombermanGame.scores, 400, 440);
@@ -316,21 +316,28 @@ public class Game {
         if (bomberman.canPassFlame) {
 
             if (bomberman.timeToStopFlame-- > 0 && bomberman.timeToStopFlame / 37 > 0) {
-                gc.fillText("Pass Flame in: " + bomberman.timeToStopFlame / 37, 700, 440);
+                gc.fillText("Pass Flame in: " + formatTime(bomberman.timeToStopFlame / 37), 700, 440);
             } else {
                 bomberman.canPassFlame = false;
             }
         }
         if (bomberman.canPassBom) {
             if (bomberman.timeToStopBomb-- > 0 && bomberman.timeToStopBomb / 37 > 0) {
-                gc.fillText("Pass Bomb in: " + bomberman.timeToStopBomb / 37, 500, 440);
+                gc.fillText("Pass Bomb in: " + formatTime(bomberman.timeToStopBomb/37), 500, 440);
             } else {
                 bomberman.canPassBom = false;
             }
 
         }
 
-
+    }
+    
+    public String formatTime(int time) {
+    	String res = (time/60) + ":";
+    	int second = time % 60;
+    	if (second < 10) res += "0" + second;
+    	else res += second;
+    	return res;
     }
 
     public void renderTransferLevelScreen(GraphicsContext gc) {

@@ -15,7 +15,7 @@ import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.soundAndTimer.Sound;
 
 public class Bomb extends AnimatedEntity {
-    private int timeBeforeExplore = 80;
+    private int timeBeforeExplore = 100;
     private int timeFlame = 14;
     private final int timeTransfer = 40;
     private boolean explored;
@@ -59,6 +59,7 @@ public class Bomb extends AnimatedEntity {
     }
 
     private void explosion() {//init FlameList
+    	flameLen = bomber.getFrameLen();
         int x = getXUnit();
         int y = getYUnit();
 
@@ -66,7 +67,9 @@ public class Bomb extends AnimatedEntity {
         //truong hop bomber o tren qua bom
         Entity e = BombermanGame.canvas.getEntityInCoodinate(x, y);
         canPassThrough(e);
-
+        
+        
+        
         //check left
         int il = 1;
         for (; il <= flameLen; il++) { //check tu 1 den FrameLen neu gap vat can break
@@ -170,7 +173,7 @@ public class Bomb extends AnimatedEntity {
             if (((Bomber) e).isCanPassFlame() == false) ((Bomber) e).setAlive(false);
         }
         if (e instanceof Bomb) {
-            ((Bomb) e).setTimeBeforeExplore(2);
+            ((Bomb) e).setTimeBeforeExplore(5);
         }
         return true;
     }

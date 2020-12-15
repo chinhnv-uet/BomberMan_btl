@@ -19,7 +19,7 @@ public class PauseGame {
 
     public void showPauseGame(GraphicsContext gc) {
         String sound = BombermanGame.mute ? "off" : "on";
-
+       
         gc.setFill(Color.OLIVE);
         gc.fillRect(0, 0, 992, 448);
         gc.setFont(new Font(60));
@@ -54,7 +54,7 @@ public class PauseGame {
             selecting--;
             keyboard.setRelease(true);
         }
-        if (keyboard.enter && !keyboard.release) {
+        if ((keyboard.enter || keyboard.space) && !keyboard.release) {
             switch (selecting) {
                 case 0:
                     finalSelected = 1;
