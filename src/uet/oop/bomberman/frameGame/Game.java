@@ -24,6 +24,7 @@ public class Game {
     public int WIDTH, HEIGHT;
     public boolean pause = false;
 
+    
     //list to render in canvas
     private List<Grass> grassList;
     private List<Entity> entityList; // list to check collision
